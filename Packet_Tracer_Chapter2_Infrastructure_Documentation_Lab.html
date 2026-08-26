@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Packet Tracer Demo Lab | Chapter 2 Infrastructure and Documentation</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --paper: #ffffff;
+      --ink: #1f2937;
+      --muted: #5f6b7a;
+      --line: #d9e2ec;
+      --accent: #1d4ed8;
+      --accent-soft: #e8f0ff;
+      --code-bg: #111827;
+      --code-ink: #f9fafb;
+      --note: #fff7ed;
+      --note-line: #fed7aa;
+      --ok: #ecfdf5;
+      --ok-line: #a7f3d0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.58;
+      font-size: 16px;
+    }
+
+    .page {
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 28px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    aside {
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 8px 25px rgba(31, 41, 55, 0.06);
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+    }
+
+    aside h2 {
+      font-size: 0.95rem;
+      margin: 0 0 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    aside a {
+      display: block;
+      color: var(--ink);
+      text-decoration: none;
+      padding: 7px 0;
+      border-bottom: 1px solid #eef2f7;
+      font-size: 0.94rem;
+    }
+
+    aside a:hover { color: var(--accent); }
+
+    main {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 8px 25px rgba(31, 41, 55, 0.07);
+      overflow: hidden;
+    }
+
+    header {
+      padding: 44px 48px;
+      background: linear-gradient(135deg, #1d4ed8, #0f172a);
+      color: #fff;
+    }
+
+    header .eyebrow {
+      margin: 0 0 10px;
+      color: #bfdbfe;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.05;
+    }
+
+    header p {
+      margin: 16px 0 0;
+      max-width: 900px;
+      color: #dbeafe;
+      font-size: 1.08rem;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .meta-card {
+      background: rgba(255,255,255,.11);
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .meta-card strong {
+      display: block;
+      color: #ffffff;
+      font-size: .9rem;
+    }
+
+    .meta-card span {
+      color: #dbeafe;
+      font-size: .92rem;
+    }
+
+    section {
+      padding: 34px 48px;
+      border-top: 1px solid var(--line);
+    }
+
+    section:first-of-type { border-top: 0; }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 1.65rem;
+      line-height: 1.2;
+      color: #0f172a;
+    }
+
+    h3 {
+      margin: 26px 0 8px;
+      font-size: 1.15rem;
+      color: #111827;
+    }
+
+    h4 {
+      margin: 20px 0 8px;
+      font-size: 1rem;
+      color: #111827;
+    }
+
+    p { margin: 0 0 13px; }
+
+    ul, ol { margin-top: 8px; padding-left: 24px; }
+    li { margin: 4px 0; }
+
+    .callout {
+      border-radius: 16px;
+      padding: 16px 18px;
+      margin: 18px 0;
+      border: 1px solid var(--note-line);
+      background: var(--note);
+    }
+
+    .callout.ok {
+      border-color: var(--ok-line);
+      background: var(--ok);
+    }
+
+    .callout strong { display: block; margin-bottom: 4px; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      background: #fbfdff;
+    }
+
+    .topology {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      overflow: auto;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-ink);
+      border-radius: 14px;
+      padding: 16px 18px;
+      overflow: auto;
+      margin: 12px 0 20px;
+      font-size: .92rem;
+      line-height: 1.45;
+    }
+
+    code {
+      font-family: Consolas, Monaco, 'Courier New', monospace;
+      font-size: .95em;
+    }
+
+    p code, li code, td code {
+      background: #eef2ff;
+      color: #172554;
+      padding: 2px 5px;
+      border-radius: 5px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 24px;
+      font-size: .94rem;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--accent-soft);
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) td { background: #fafcff; }
+
+    .step {
+      border-left: 5px solid var(--accent);
+      background: #f8fafc;
+      border-radius: 0 14px 14px 0;
+      padding: 16px 18px;
+      margin: 18px 0;
+    }
+
+    .step h3 { margin-top: 0; }
+
+    .tag {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1e3a8a;
+      border-radius: 999px;
+      padding: 2px 9px;
+      font-size: .8rem;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    footer {
+      padding: 28px 48px 44px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      background: #fbfdff;
+    }
+
+    @media (max-width: 980px) {
+      .page { display: block; padding: 12px; }
+      aside { position: static; margin-bottom: 16px; max-height: none; }
+      section, header, footer { padding-left: 24px; padding-right: 24px; }
+      .meta-grid, .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { display: block; max-width: none; padding: 0; }
+      aside { display: none; }
+      main { border: 0; box-shadow: none; border-radius: 0; }
+      header { background: #fff; color: #000; padding: 20px 0; }
+      header p, header .eyebrow, .meta-card span { color: #000; }
+      .meta-card { border: 1px solid #999; background: #fff; }
+      .meta-card strong { color: #000; }
+      section { padding: 18px 0; page-break-inside: avoid; }
+      pre { white-space: pre-wrap; background: #f3f4f6; color: #000; border: 1px solid #ddd; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <aside aria-label="Page navigation">
+      <h2>Contents</h2>
+      <a href="#overview">1. Overview</a>
+      <a href="#scenario">2. Demo Scenario</a>
+      <a href="#concepts">3. Chapter 2 Concepts</a>
+      <a href="#devices">4. Devices and Naming</a>
+      <a href="#addressing">5. Addressing Plan</a>
+      <a href="#topology">6. Target Topologies</a>
+      <a href="#build">7. Build the Logical Network</a>
+      <a href="#labels">8. Add Documentation Labels</a>
+      <a href="#enddevices">9. Configure End Devices</a>
+      <a href="#router">10. Configure the Router</a>
+      <a href="#switches">11. Configure Switches</a>
+      <a href="#verify">12. Verify Connectivity</a>
+      <a href="#simulation">13. Simulation Mode Demo</a>
+      <a href="#physical">14. Physical View Demo</a>
+      <a href="#documentation">15. Documentation Examples</a>
+      <a href="#asset">16. Asset Record Demo</a>
+      <a href="#troubleshooting">17. Troubleshooting Demonstrations</a>
+      <a href="#timing">18. Two-Hour Demo Timing</a>
+      <a href="#extensions">19. Optional Extensions</a>
+    </aside>
+
+    <main>
+      <header>
+        <p class="eyebrow">Instructor Demo Webpage · No Assignment Requirements</p>
+        <h1>Packet Tracer Demo Lab: Infrastructure and Documentation</h1>
+        <p>Chapter 2 companion demo for West’s <em>CompTIA Network+ Guide to Networks</em>, 10th Edition. This version is formatted as an instructor-led demonstration, not a graded student lab.</p>
+        <div class="meta-grid">
+          <div class="meta-card"><strong>Course</strong><span>Internetworking Basics</span></div>
+          <div class="meta-card"><strong>Duration</strong><span>2-hour lab period</span></div>
+          <div class="meta-card"><strong>Tool</strong><span>Cisco Packet Tracer</span></div>
+          <div class="meta-card"><strong>Focus</strong><span>Physical layout, naming, labels, inventory</span></div>
+        </div>
+      </header>
+
+      <section id="overview">
+        <h2>1. Overview</h2>
+        <p>This demonstration shows how a small business network can be represented, configured, labeled, and documented in Cisco Packet Tracer. The focus is not advanced routing or subnetting. The focus is infrastructure awareness: where devices are located, how links are labeled, how devices are named, and how basic documentation supports troubleshooting.</p>
+        <div class="callout ok">
+          <strong>Demo goal</strong>
+          Build one small network in Logical View, organize it in Physical View, configure management addresses, add interface descriptions, and create example documentation tables.
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <h3>What the audience should see</h3>
+            <ul>
+              <li>How logical and physical diagrams differ.</li>
+              <li>How MDF and IDF locations organize campus cabling.</li>
+              <li>How interface descriptions reduce guessing.</li>
+              <li>How device names encode role and location.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>What this demo avoids</h3>
+            <ul>
+              <li>No graded deliverables.</li>
+              <li>No assignment evidence checklist.</li>
+              <li>No lab-question section.</li>
+              <li>No submission or rubric section.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="scenario">
+        <h2>2. Demo Scenario</h2>
+        <p>The example organization is <strong>Northstar Training Center</strong>, a small campus with a Main Building and an Annex Building. The Main Building contains the main telecommunications room, while the Annex contains a smaller wiring closet that uplinks back to the Main Building.</p>
+        <ul>
+          <li><strong>City:</strong> Northstar City</li>
+          <li><strong>Campus:</strong> Northstar Training Campus</li>
+          <li><strong>Main Building:</strong> contains the MDF, edge router, main switch, server, AP, and admin PCs</li>
+          <li><strong>Annex Building:</strong> contains the IDF, access switch, and user PCs</li>
+          <li><strong>WAN side:</strong> represented with a Packet Tracer cloud device</li>
+        </ul>
+      </section>
+
+      <section id="concepts">
+        <h2>3. Chapter 2 Concepts Demonstrated</h2>
+        <table>
+          <thead><tr><th>Concept</th><th>How it appears in the demo</th></tr></thead>
+          <tbody>
+            <tr><td>Infrastructure documentation</td><td>Logical diagram, physical placement, cable map, and inventory table</td></tr>
+            <tr><td>MDF</td><td>Main Building central room containing the edge router, main switch, and server</td></tr>
+            <tr><td>IDF</td><td>Annex wiring closet containing an access switch uplinked to the MDF</td></tr>
+            <tr><td>Demarc / ISP edge</td><td>Cloud-to-router connection labeled as the WAN/ISP edge</td></tr>
+            <tr><td>Cable management</td><td>Uplinks and access links labeled by purpose</td></tr>
+            <tr><td>Asset management</td><td>Device names, model information, management IPs, and locations recorded</td></tr>
+            <tr><td>Operational documentation</td><td>Interface descriptions placed directly inside device configuration</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="devices">
+        <h2>4. Devices and Naming</h2>
+        <h3>Packet Tracer Devices</h3>
+        <table>
+          <thead><tr><th>Device Type</th><th>Packet Tracer Category</th><th>Suggested Model</th><th>Quantity</th></tr></thead>
+          <tbody>
+            <tr><td>Router</td><td>Network Devices &gt; Routers</td><td>2911 or 1941</td><td>1</td></tr>
+            <tr><td>Switch</td><td>Network Devices &gt; Switches</td><td>2960</td><td>2</td></tr>
+            <tr><td>Server</td><td>End Devices</td><td>Server-PT</td><td>1</td></tr>
+            <tr><td>PC</td><td>End Devices</td><td>PC-PT</td><td>4</td></tr>
+            <tr><td>Wireless AP</td><td>Network Devices &gt; Wireless Devices</td><td>Access Point-PT</td><td>1</td></tr>
+            <tr><td>Cloud</td><td>Network Devices &gt; WAN Emulation</td><td>Cloud-PT</td><td>1</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Naming Convention</h3>
+        <p>Use names that reveal role, location, and device number. Do not place passwords, user names, or sensitive business information in device names.</p>
+        <table>
+          <thead><tr><th>Device</th><th>Name</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>Router</td><td><code>RTR-HQ-EDGE-01</code></td><td>Headquarters edge router</td></tr>
+            <tr><td>Main switch</td><td><code>SW-HQ-MDF-01</code></td><td>Main Building MDF switch</td></tr>
+            <tr><td>Annex switch</td><td><code>SW-ANNEX-IDF-01</code></td><td>Annex Building IDF switch</td></tr>
+            <tr><td>Server</td><td><code>SRV-HQ-WEB-01</code></td><td>Headquarters server</td></tr>
+            <tr><td>Main PC 1</td><td><code>PC-HQ-ADMIN-01</code></td><td>Admin PC in Main Building</td></tr>
+            <tr><td>Main PC 2</td><td><code>PC-HQ-ADMIN-02</code></td><td>Admin PC in Main Building</td></tr>
+            <tr><td>Annex PC 1</td><td><code>PC-ANNEX-USER-01</code></td><td>Annex user PC</td></tr>
+            <tr><td>Annex PC 2</td><td><code>PC-ANNEX-USER-02</code></td><td>Annex user PC</td></tr>
+            <tr><td>Access Point</td><td><code>AP-HQ-LOBBY-01</code></td><td>Main Building lobby AP</td></tr>
+            <tr><td>Cloud</td><td><code>ISP-CLOUD-01</code></td><td>ISP / WAN cloud</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="addressing">
+        <h2>5. Addressing Plan</h2>
+        <p>Use one simple IPv4 network so the demo can focus on infrastructure and documentation:</p>
+        <pre><code>192.168.10.0/24</code></pre>
+        <table>
+          <thead><tr><th>Device</th><th>Interface</th><th>IP Address</th><th>Subnet Mask</th><th>Default Gateway</th></tr></thead>
+          <tbody>
+            <tr><td><code>RTR-HQ-EDGE-01</code></td><td>G0/0</td><td>192.168.10.1</td><td>255.255.255.0</td><td>N/A</td></tr>
+            <tr><td><code>SW-HQ-MDF-01</code></td><td>VLAN 1</td><td>192.168.10.2</td><td>255.255.255.0</td><td>192.168.10.1</td></tr>
+            <tr><td><code>SW-ANNEX-IDF-01</code></td><td>VLAN 1</td><td>192.168.10.3</td><td>255.255.255.0</td><td>192.168.10.1</td></tr>
+            <tr><td><code>SRV-HQ-WEB-01</code></td><td>FastEthernet0</td><td>192.168.10.10</td><td>255.255.255.0</td><td>192.168.10.1</td></tr>
+            <tr><td><code>PC-HQ-ADMIN-01</code></td><td>FastEthernet0</td><td>192.168.10.21</td><td>255.255.255.0</td><td>192.168.10.1</td></tr>
+            <tr><td><code>PC-HQ-ADMIN-02</code></td><td>FastEthernet0</td><td>192.168.10.22</td><td>255.255.255.0</td><td>192.168.10.1</td></tr>
+            <tr><td><code>PC-ANNEX-USER-01</code></td><td>FastEthernet0</td><td>192.168.10.31</td><td>255.255.255.0</td><td>192.168.10.1</td></tr>
+            <tr><td><code>PC-ANNEX-USER-02</code></td><td>FastEthernet0</td><td>192.168.10.32</td><td>255.255.255.0</td><td>192.168.10.1</td></tr>
+            <tr><td><code>AP-HQ-LOBBY-01</code></td><td>Port 0</td><td>192.168.10.40</td><td>255.255.255.0</td><td>192.168.10.1</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="topology">
+        <h2>6. Target Topologies</h2>
+        <h3>Logical Topology</h3>
+        <div class="topology">
+<pre><code>                         ISP-CLOUD-01
+                              |
+                              |
+                       RTR-HQ-EDGE-01
+                              |
+                              |
+                       SW-HQ-MDF-01
+                    /     |      |       \
+                   /      |      |        \
+        SRV-HQ-WEB-01  AP-HQ  PCs     SW-ANNEX-IDF-01
+                                      /              \
+                           PC-ANNEX-USER-01   PC-ANNEX-USER-02</code></pre>
+        </div>
+        <h3>Physical Topology</h3>
+        <div class="topology">
+<pre><code>Northstar City
+└── Northstar Training Campus
+    ├── Main Building
+    │   └── MDF - Main Telecom Room
+    │       ├── RTR-HQ-EDGE-01
+    │       ├── SW-HQ-MDF-01
+    │       ├── SRV-HQ-WEB-01
+    │       ├── AP-HQ-LOBBY-01
+    │       ├── PC-HQ-ADMIN-01
+    │       └── PC-HQ-ADMIN-02
+    └── Annex Building
+        └── IDF - Annex Wiring Closet
+            ├── SW-ANNEX-IDF-01
+            ├── PC-ANNEX-USER-01
+            └── PC-ANNEX-USER-02</code></pre>
+        </div>
+      </section>
+
+      <section id="build">
+        <h2>7. Build the Logical Network</h2>
+        <div class="step">
+          <h3><span class="tag">Step 1</span>Create the Packet Tracer project</h3>
+          <ol>
+            <li>Open Cisco Packet Tracer.</li>
+            <li>Start in <strong>Logical View</strong>.</li>
+            <li>Save the file as <code>Chapter2_Infrastructure_Documentation_Demo.pkt</code>.</li>
+            <li>Add a note in the upper-left corner: <code>Northstar Training Center — Chapter 2 Demo: Infrastructure and Documentation</code>.</li>
+          </ol>
+        </div>
+
+        <div class="step">
+          <h3><span class="tag">Step 2</span>Add and rename devices</h3>
+          <ol>
+            <li>Add one <strong>Cloud-PT</strong> and rename it <code>ISP-CLOUD-01</code>.</li>
+            <li>Add one <strong>2911</strong> or <strong>1941</strong> router and rename it <code>RTR-HQ-EDGE-01</code>.</li>
+            <li>Add two <strong>2960</strong> switches and rename them <code>SW-HQ-MDF-01</code> and <code>SW-ANNEX-IDF-01</code>.</li>
+            <li>Add one server and rename it <code>SRV-HQ-WEB-01</code>.</li>
+            <li>Add four PCs and rename them according to the naming table.</li>
+            <li>Add one wireless access point and rename it <code>AP-HQ-LOBBY-01</code>.</li>
+          </ol>
+        </div>
+
+        <div class="step">
+          <h3><span class="tag">Step 3</span>Cable the devices</h3>
+          <p>Use copper straight-through connections for Ethernet links unless Packet Tracer auto-selects a working cable.</p>
+          <table>
+            <thead><tr><th>From</th><th>Port</th><th>To</th><th>Port</th><th>Link Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><code>ISP-CLOUD-01</code></td><td>Ethernet6</td><td><code>RTR-HQ-EDGE-01</code></td><td>G0/1</td><td>WAN / ISP edge</td></tr>
+              <tr><td><code>RTR-HQ-EDGE-01</code></td><td>G0/0</td><td><code>SW-HQ-MDF-01</code></td><td>G0/1</td><td>Router-to-MDF uplink</td></tr>
+              <tr><td><code>SW-HQ-MDF-01</code></td><td>G0/2</td><td><code>SW-ANNEX-IDF-01</code></td><td>G0/1</td><td>MDF-to-IDF uplink</td></tr>
+              <tr><td><code>SW-HQ-MDF-01</code></td><td>Fa0/1</td><td><code>SRV-HQ-WEB-01</code></td><td>Fa0</td><td>Server access</td></tr>
+              <tr><td><code>SW-HQ-MDF-01</code></td><td>Fa0/2</td><td><code>PC-HQ-ADMIN-01</code></td><td>Fa0</td><td>Admin PC access</td></tr>
+              <tr><td><code>SW-HQ-MDF-01</code></td><td>Fa0/3</td><td><code>PC-HQ-ADMIN-02</code></td><td>Fa0</td><td>Admin PC access</td></tr>
+              <tr><td><code>SW-HQ-MDF-01</code></td><td>Fa0/4</td><td><code>AP-HQ-LOBBY-01</code></td><td>Port 0</td><td>Wireless AP access</td></tr>
+              <tr><td><code>SW-ANNEX-IDF-01</code></td><td>Fa0/1</td><td><code>PC-ANNEX-USER-01</code></td><td>Fa0</td><td>Annex user access</td></tr>
+              <tr><td><code>SW-ANNEX-IDF-01</code></td><td>Fa0/2</td><td><code>PC-ANNEX-USER-02</code></td><td>Fa0</td><td>Annex user access</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="labels">
+        <h2>8. Add Documentation Labels</h2>
+        <p>Use Packet Tracer notes to mark major spaces and link purposes. This demonstrates how a network diagram becomes operational documentation rather than only a picture.</p>
+        <table>
+          <thead><tr><th>Location</th><th>Suggested Note Text</th></tr></thead>
+          <tbody>
+            <tr><td>Near router and cloud</td><td><code>WAN / ISP Edge — represents service provider connection and demarc area.</code></td></tr>
+            <tr><td>Near main switch, router, and server</td><td><code>Main Building MDF — contains edge router, core/MDF switch, and server.</code></td></tr>
+            <tr><td>Near annex switch</td><td><code>Annex Building IDF — access switch uplinks to MDF.</code></td></tr>
+            <tr><td>Near bottom of workspace</td><td><code>Documentation: names, labels, management IPs, interface descriptions, inventory, cable map.</code></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="enddevices">
+        <h2>9. Configure End Devices</h2>
+        <p>For PCs and the server, use <strong>Desktop &gt; IP Configuration</strong>. For the AP, use the available <strong>Config</strong> options.</p>
+        <h3>Server</h3>
+<pre><code>IP Address:      192.168.10.10
+Subnet Mask:     255.255.255.0
+Default Gateway: 192.168.10.1</code></pre>
+        <p>Optionally enable HTTP on the server: <strong>Services &gt; HTTP &gt; On</strong>.</p>
+        <h3>Main Building PCs</h3>
+<pre><code>PC-HQ-ADMIN-01
+IP Address:      192.168.10.21
+Subnet Mask:     255.255.255.0
+Default Gateway: 192.168.10.1
+
+PC-HQ-ADMIN-02
+IP Address:      192.168.10.22
+Subnet Mask:     255.255.255.0
+Default Gateway: 192.168.10.1</code></pre>
+        <h3>Annex PCs</h3>
+<pre><code>PC-ANNEX-USER-01
+IP Address:      192.168.10.31
+Subnet Mask:     255.255.255.0
+Default Gateway: 192.168.10.1
+
+PC-ANNEX-USER-02
+IP Address:      192.168.10.32
+Subnet Mask:     255.255.255.0
+Default Gateway: 192.168.10.1</code></pre>
+        <h3>Wireless AP</h3>
+<pre><code>IP Address:      192.168.10.40
+Subnet Mask:     255.255.255.0
+Default Gateway: 192.168.10.1</code></pre>
+      </section>
+
+      <section id="router">
+        <h2>10. Configure the Router</h2>
+        <p>Open the router CLI. If the initial configuration dialog appears, answer <code>no</code>.</p>
+<pre><code>enable
+configure terminal
+hostname RTR-HQ-EDGE-01
+
+interface gigabitEthernet0/0
+ description Uplink to SW-HQ-MDF-01 in Main Building MDF
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+ exit
+
+interface gigabitEthernet0/1
+ description WAN edge link to ISP-CLOUD-01 / demarc
+ ip address 203.0.113.2 255.255.255.252
+ no shutdown
+ exit
+
+banner motd #Authorized access only. Northstar Training Center network device.#
+end
+copy running-config startup-config</code></pre>
+        <div class="callout">
+          <strong>Teaching point</strong>
+          Interface descriptions are documentation inside the device. They help the next technician identify the correct cable, switch, room, or provider connection.
+        </div>
+      </section>
+
+      <section id="switches">
+        <h2>11. Configure Switches</h2>
+        <h3>Main MDF Switch</h3>
+<pre><code>enable
+configure terminal
+hostname SW-HQ-MDF-01
+
+interface vlan 1
+ description Management SVI for Main Building MDF switch
+ ip address 192.168.10.2 255.255.255.0
+ no shutdown
+ exit
+
+ip default-gateway 192.168.10.1
+
+interface gigabitEthernet0/1
+ description Uplink to RTR-HQ-EDGE-01 G0/0
+ exit
+
+interface gigabitEthernet0/2
+ description Uplink to SW-ANNEX-IDF-01 G0/1
+ exit
+
+interface fastEthernet0/1
+ description Access link to SRV-HQ-WEB-01
+ exit
+
+interface fastEthernet0/2
+ description Access link to PC-HQ-ADMIN-01
+ exit
+
+interface fastEthernet0/3
+ description Access link to PC-HQ-ADMIN-02
+ exit
+
+interface fastEthernet0/4
+ description Access link to AP-HQ-LOBBY-01
+ exit
+
+banner motd #Authorized access only. Main Building MDF switch.#
+end
+copy running-config startup-config</code></pre>
+
+        <h3>Annex IDF Switch</h3>
+<pre><code>enable
+configure terminal
+hostname SW-ANNEX-IDF-01
+
+interface vlan 1
+ description Management SVI for Annex Building IDF switch
+ ip address 192.168.10.3 255.255.255.0
+ no shutdown
+ exit
+
+ip default-gateway 192.168.10.1
+
+interface gigabitEthernet0/1
+ description Uplink to SW-HQ-MDF-01 G0/2
+ exit
+
+interface fastEthernet0/1
+ description Access link to PC-ANNEX-USER-01
+ exit
+
+interface fastEthernet0/2
+ description Access link to PC-ANNEX-USER-02
+ exit
+
+banner motd #Authorized access only. Annex Building IDF switch.#
+end
+copy running-config startup-config</code></pre>
+      </section>
+
+      <section id="verify">
+        <h2>12. Verify Connectivity</h2>
+        <h3>Router verification</h3>
+<pre><code>show ip interface brief
+show interfaces description</code></pre>
+        <p>Expected highlights: G0/0 should be up/up with <code>192.168.10.1</code>, and G0/1 should be up/up with <code>203.0.113.2</code>.</p>
+
+        <h3>Switch verification</h3>
+<pre><code>show ip interface brief
+show interfaces description</code></pre>
+        <p>Expected highlights: VLAN 1 on the main switch should show <code>192.168.10.2</code>. VLAN 1 on the annex switch should show <code>192.168.10.3</code>.</p>
+
+        <h3>Ping tests</h3>
+        <p>From <code>PC-HQ-ADMIN-01</code>, open <strong>Desktop &gt; Command Prompt</strong> and run:</p>
+<pre><code>ping 192.168.10.1
+ping 192.168.10.2
+ping 192.168.10.3
+ping 192.168.10.10</code></pre>
+        <p>Then test the web server, if HTTP is enabled:</p>
+<pre><code>http://192.168.10.10</code></pre>
+      </section>
+
+      <section id="simulation">
+        <h2>13. Simulation Mode Demo</h2>
+        <ol>
+          <li>Switch from <strong>Real-Time</strong> to <strong>Simulation</strong>.</li>
+          <li>Clear the event list.</li>
+          <li>Filter events to <strong>ARP</strong> and <strong>ICMP</strong>.</li>
+          <li>From <code>PC-HQ-ADMIN-01</code>, ping the server: <code>ping 192.168.10.10</code>.</li>
+          <li>Click <strong>Capture / Forward</strong> to observe packet movement.</li>
+        </ol>
+        <div class="callout ok">
+          <strong>Explain while advancing packets</strong>
+          ARP discovers the local MAC address. ICMP carries the ping request and reply. The switch forwards frames based on MAC addresses. Good documentation helps identify which switch ports should be involved in the traffic path.
+        </div>
+      </section>
+
+      <section id="physical">
+        <h2>14. Physical View Demo</h2>
+        <p>Use Physical View to show where devices are located. The purpose is to connect abstract topology diagrams to real building spaces.</p>
+        <div class="step">
+          <h3><span class="tag">Step 1</span>Create or rename physical containers</h3>
+          <ul>
+            <li>City: <code>Northstar City</code></li>
+            <li>Campus: <code>Northstar Training Campus</code></li>
+            <li>Buildings: <code>Main Building</code> and <code>Annex Building</code></li>
+            <li>Main closet: <code>MDF - Main Telecom Room</code></li>
+            <li>Annex closet: <code>IDF - Annex Wiring Closet</code></li>
+          </ul>
+        </div>
+        <div class="step">
+          <h3><span class="tag">Step 2</span>Place devices by location</h3>
+          <table>
+            <thead><tr><th>Physical Location</th><th>Devices</th></tr></thead>
+            <tbody>
+              <tr><td>Main Building MDF</td><td><code>RTR-HQ-EDGE-01</code>, <code>SW-HQ-MDF-01</code>, <code>SRV-HQ-WEB-01</code>, <code>AP-HQ-LOBBY-01</code>, <code>PC-HQ-ADMIN-01</code>, <code>PC-HQ-ADMIN-02</code></td></tr>
+              <tr><td>Annex Building IDF</td><td><code>SW-ANNEX-IDF-01</code>, <code>PC-ANNEX-USER-01</code>, <code>PC-ANNEX-USER-02</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Physical terminology to explain</h3>
+        <table>
+          <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>City</td><td>Geographic area where the organization operates</td></tr>
+            <tr><td>Campus</td><td>Group of nearby buildings connected as one site</td></tr>
+            <tr><td>Building</td><td>Physical structure containing users and network equipment</td></tr>
+            <tr><td>Telecommunications room</td><td>Room containing cabling and network equipment</td></tr>
+            <tr><td>MDF</td><td>Main Distribution Frame; central wiring and equipment area</td></tr>
+            <tr><td>IDF</td><td>Intermediate Distribution Frame; smaller wiring area connected back to the MDF</td></tr>
+            <tr><td>Demarc</td><td>Boundary between service-provider responsibility and customer responsibility</td></tr>
+            <tr><td>Patch panel</td><td>Cabling termination point used to organize cable runs</td></tr>
+            <tr><td>Rack</td><td>Cabinet or frame used to mount network equipment</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="documentation">
+        <h2>15. Documentation Examples</h2>
+        <p>Use these tables as examples of what network documentation can contain. They are presented as instructor demonstration artifacts, not submission requirements.</p>
+        <h3>Device Inventory Example</h3>
+        <table>
+          <thead><tr><th>Device Name</th><th>Type</th><th>Model</th><th>Location</th><th>Management IP</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>RTR-HQ-EDGE-01</code></td><td>Router</td><td>2911/1941</td><td>Main Building MDF</td><td>192.168.10.1</td><td>LAN gateway / WAN edge</td></tr>
+            <tr><td><code>SW-HQ-MDF-01</code></td><td>Switch</td><td>2960</td><td>Main Building MDF</td><td>192.168.10.2</td><td>Main distribution switch</td></tr>
+            <tr><td><code>SW-ANNEX-IDF-01</code></td><td>Switch</td><td>2960</td><td>Annex Building IDF</td><td>192.168.10.3</td><td>Annex access switch</td></tr>
+            <tr><td><code>SRV-HQ-WEB-01</code></td><td>Server</td><td>Server-PT</td><td>Main Building MDF</td><td>192.168.10.10</td><td>Web/server services</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Cable and Port Map Example</h3>
+        <table>
+          <thead><tr><th>From Device</th><th>From Port</th><th>To Device</th><th>To Port</th><th>Link Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><code>ISP-CLOUD-01</code></td><td>Ethernet6</td><td><code>RTR-HQ-EDGE-01</code></td><td>G0/1</td><td>WAN / ISP edge</td></tr>
+            <tr><td><code>RTR-HQ-EDGE-01</code></td><td>G0/0</td><td><code>SW-HQ-MDF-01</code></td><td>G0/1</td><td>Router-to-MDF uplink</td></tr>
+            <tr><td><code>SW-HQ-MDF-01</code></td><td>G0/2</td><td><code>SW-ANNEX-IDF-01</code></td><td>G0/1</td><td>MDF-to-IDF uplink</td></tr>
+            <tr><td><code>SW-HQ-MDF-01</code></td><td>Fa0/1</td><td><code>SRV-HQ-WEB-01</code></td><td>Fa0</td><td>Server access</td></tr>
+            <tr><td><code>SW-HQ-MDF-01</code></td><td>Fa0/2</td><td><code>PC-HQ-ADMIN-01</code></td><td>Fa0</td><td>Admin access</td></tr>
+            <tr><td><code>SW-ANNEX-IDF-01</code></td><td>Fa0/1</td><td><code>PC-ANNEX-USER-01</code></td><td>Fa0</td><td>Annex user access</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Interface Description Example</h3>
+        <table>
+          <thead><tr><th>Device</th><th>Interface</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>RTR-HQ-EDGE-01</code></td><td>G0/0</td><td>Uplink to <code>SW-HQ-MDF-01</code> in Main Building MDF</td></tr>
+            <tr><td><code>RTR-HQ-EDGE-01</code></td><td>G0/1</td><td>WAN edge link to <code>ISP-CLOUD-01</code> / demarc</td></tr>
+            <tr><td><code>SW-HQ-MDF-01</code></td><td>G0/1</td><td>Uplink to <code>RTR-HQ-EDGE-01</code> G0/0</td></tr>
+            <tr><td><code>SW-HQ-MDF-01</code></td><td>G0/2</td><td>Uplink to <code>SW-ANNEX-IDF-01</code> G0/1</td></tr>
+            <tr><td><code>SW-ANNEX-IDF-01</code></td><td>G0/1</td><td>Uplink to <code>SW-HQ-MDF-01</code> G0/2</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="asset">
+        <h2>16. Asset Record Demo</h2>
+        <p>Packet Tracer device tabs can be used to discuss basic inventory fields. The exact available fields depend on the selected model.</p>
+        <table>
+          <thead><tr><th>Asset Field</th><th>Example Entry</th></tr></thead>
+          <tbody>
+            <tr><td>Device name</td><td><code>SW-HQ-MDF-01</code></td></tr>
+            <tr><td>Device type</td><td>Switch</td></tr>
+            <tr><td>Model</td><td>2960</td></tr>
+            <tr><td>Location</td><td>Main Building MDF</td></tr>
+            <tr><td>Role</td><td>Main distribution switch</td></tr>
+            <tr><td>Management IP</td><td>192.168.10.2</td></tr>
+            <tr><td>Connected uplinks</td><td>G0/1 to router; G0/2 to Annex switch</td></tr>
+            <tr><td>Important note</td><td>Main switching point for campus LAN</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="troubleshooting">
+        <h2>17. Troubleshooting Demonstrations</h2>
+        <p>These are optional live demonstrations to show why accurate documentation matters.</p>
+        <table>
+          <thead><tr><th>Problem to Create</th><th>Symptom</th><th>Documentation Lesson</th><th>Fix</th></tr></thead>
+          <tbody>
+            <tr><td>Shut down router G0/0</td><td>PCs cannot ping the gateway</td><td>Interface descriptions help identify the LAN uplink quickly</td><td><code>interface g0/0</code>, then <code>no shutdown</code></td></tr>
+            <tr><td>Remove switch management IP</td><td>Switch cannot be pinged by management IP</td><td>Inventory should list management addresses</td><td>Restore <code>interface vlan 1</code> IP address</td></tr>
+            <tr><td>Disconnect Annex uplink</td><td>Annex PCs cannot reach server</td><td>Cable maps reveal which port connects the IDF to the MDF</td><td>Reconnect <code>SW-HQ-MDF-01 G0/2</code> to <code>SW-ANNEX-IDF-01 G0/1</code></td></tr>
+            <tr><td>Use a wrong link label</td><td>Diagram points to the wrong device</td><td>Incorrect documentation can slow or mislead troubleshooting</td><td>Correct the diagram and cable map</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="timing">
+        <h2>18. Two-Hour Demo Timing</h2>
+        <table>
+          <thead><tr><th>Time</th><th>Instructor Activity</th></tr></thead>
+          <tbody>
+            <tr><td>0–10 min</td><td>Introduce infrastructure documentation, MDF, IDF, and demarc concepts</td></tr>
+            <tr><td>10–25 min</td><td>Create the project, add devices, and explain naming conventions</td></tr>
+            <tr><td>25–40 min</td><td>Cable the logical topology and label major links</td></tr>
+            <tr><td>40–60 min</td><td>Configure router and end-device IP addresses</td></tr>
+            <tr><td>60–80 min</td><td>Configure switch management IPs and interface descriptions</td></tr>
+            <tr><td>80–95 min</td><td>Verify connectivity using <code>ping</code> and show commands</td></tr>
+            <tr><td>95–105 min</td><td>Use Simulation Mode to show ARP and ICMP</td></tr>
+            <tr><td>105–115 min</td><td>Use Physical View to organize city, campus, buildings, MDF, and IDF</td></tr>
+            <tr><td>115–120 min</td><td>Summarize how documentation supports troubleshooting and security</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="extensions">
+        <h2>19. Optional Extensions</h2>
+        <h3>Add a printer</h3>
+        <p>Add <code>PRN-ANNEX-01</code> to the Annex Building and connect it to <code>SW-ANNEX-IDF-01 Fa0/3</code>.</p>
+<pre><code>PRN-ANNEX-01
+IP Address:      192.168.10.50
+Subnet Mask:     255.255.255.0
+Default Gateway: 192.168.10.1</code></pre>
+        <p>Add this interface description on the Annex switch:</p>
+<pre><code>interface fastEthernet0/3
+ description Access link to PRN-ANNEX-01
+ exit</code></pre>
+
+        <h3>Add a change record</h3>
+        <table>
+          <thead><tr><th>Field</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>Change ID</td><td>CHG-CH2-001</td></tr>
+            <tr><td>Date</td><td>Current class date</td></tr>
+            <tr><td>Technician</td><td>Instructor demo</td></tr>
+            <tr><td>Change Type</td><td>New documented training network</td></tr>
+            <tr><td>Devices Affected</td><td>Router, switches, server, PCs, AP</td></tr>
+            <tr><td>Verification</td><td>Ping tests successful</td></tr>
+            <tr><td>Backout Plan</td><td>Restore previous Packet Tracer file</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <footer>
+        <p><strong>Instructor note:</strong> This demo keeps all devices in <code>192.168.10.0/24</code> so attention stays on infrastructure, physical organization, cabling, naming, labeling, documentation, inventory, and management access. Subnetting, VLANs, and advanced routing can be introduced in later labs.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
