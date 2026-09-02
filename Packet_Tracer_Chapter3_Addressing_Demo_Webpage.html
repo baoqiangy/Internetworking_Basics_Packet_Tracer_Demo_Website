@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Packet Tracer Demo Lab: Chapter 3 Addressing</title>
+  <style>
+    :root{
+      --bg:#f6f8fb;
+      --page:#ffffff;
+      --ink:#1f2937;
+      --muted:#5f6b7a;
+      --line:#d9e2ec;
+      --accent:#1e5aa8;
+      --accent2:#eef5ff;
+      --code:#f3f5f7;
+      --table:#fbfdff;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial, Helvetica, sans-serif;line-height:1.55}
+    .page{max-width:1100px;margin:0 auto;background:var(--page);min-height:100vh;box-shadow:0 10px 35px rgba(15,23,42,.08)}
+    header{padding:42px 52px 28px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,#ffffff 0%,#eef5ff 100%)}
+    header .kicker{font-weight:700;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;font-size:.82rem;margin-bottom:10px}
+    h1{font-size:2.2rem;line-height:1.15;margin:0 0 12px;color:#10243f}
+    header p{max-width:850px;margin:8px 0;color:var(--muted);font-size:1.05rem}
+    .meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+    .pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:#24364b;font-size:.92rem}
+    main{padding:34px 52px 56px}
+    h2{font-size:1.55rem;margin:38px 0 12px;color:#17375e;border-bottom:2px solid var(--line);padding-bottom:8px}
+    h3{font-size:1.18rem;margin:26px 0 8px;color:#25415f}
+    p{margin:10px 0}
+    ul,ol{padding-left:24px}
+    li{margin:5px 0}
+    .note{background:var(--accent2);border-left:5px solid var(--accent);padding:14px 18px;margin:18px 0;border-radius:8px}
+    .callout{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin:18px 0}
+    code{background:var(--code);border:1px solid #e1e6eb;border-radius:5px;padding:1px 5px;font-family:Consolas, Monaco, monospace;font-size:.95em}
+    pre{background:var(--code);border:1px solid #dce3ea;border-radius:10px;padding:14px 16px;overflow:auto;font-family:Consolas, Monaco, monospace;font-size:.94rem;line-height:1.45;margin:14px 0}
+    table{width:100%;border-collapse:collapse;margin:14px 0 22px;background:var(--table);font-size:.94rem}
+    th,td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+    th{background:#eaf2fc;color:#183553;font-weight:700}
+    .topology{font-size:.95rem}
+    .toc{background:#fbfdff;border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin:24px 0}
+    .toc a{color:var(--accent);text-decoration:none}
+    .toc a:hover{text-decoration:underline}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:18px 0}
+    .card{border:1px solid var(--line);border-radius:10px;padding:15px;background:#fff}
+    .card h3{margin-top:0}
+    footer{padding:22px 52px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem;background:#fbfdff}
+    @media print{body{background:#fff}.page{box-shadow:none}.toc{break-inside:avoid}h2{break-after:avoid}pre,table{break-inside:avoid}}
+    @media (max-width:700px){header,main,footer{padding-left:24px;padding-right:24px}h1{font-size:1.75rem}}
+  </style>
+</head>
+<body>
+<div class="page">
+<header>
+  <div class="kicker">Internetworking Basics</div>
+  <h1>Packet Tracer Demo Lab: Chapter 3 — Addressing</h1>
+  <p>Instructor-led demonstration lab aligned with Chapter 3 of West’s <em>CompTIA Network+ Guide to Networks</em>, 10th Edition.</p>
+  <p>This webpage is designed as teaching material, not as an assignment sheet. It contains no submission requirements, grading rubric, required screenshots, or student deliverables.</p>
+  <div class="meta">
+    <span class="pill">Estimated time: 2 hours</span>
+    <span class="pill">Tool: Cisco Packet Tracer</span>
+    <span class="pill">Focus: MAC, IPv4, DHCP, DNS, ports, troubleshooting</span>
+  </div>
+</header>
+<main>
+<section class="toc">
+  <strong>Page Sections</strong>
+  <ol>
+    <li><a href="#purpose">Purpose and scenario</a></li>
+    <li><a href="#objectives">Learning objectives and topic alignment</a></li>
+    <li><a href="#devices">Devices, names, addressing, and DNS plan</a></li>
+    <li><a href="#build">Build and configure the topology</a></li>
+    <li><a href="#macarp">MAC addresses, ARP, and switch table</a></li>
+    <li><a href="#dhcpdns">DHCP, DNS, HTTP, and browser testing</a></li>
+    <li><a href="#simulation">Simulation Mode demonstrations</a></li>
+    <li><a href="#troubleshooting">Troubleshooting demonstrations</a></li>
+    <li><a href="#summary">Instructor summary</a></li>
+  </ol>
+</section>
+
+<section id="purpose">
+<h2>1. Lab Purpose</h2>
+<p>The purpose of this demo lab is to help students understand how devices are identified and located on a network.</p>
+<p>In Chapter 2, the focus was infrastructure and documentation. In Chapter 3, the focus moves to <strong>addressing</strong>.</p>
+<p>Students should see that communication on a network depends on several different types of addresses:</p>
+<ul>
+  <li><strong>MAC addresses</strong> identify network interfaces at the Data Link layer.</li>
+  <li><strong>IPv4 addresses</strong> identify hosts and networks at the Network layer.</li>
+  <li><strong>Port numbers</strong> identify services and applications at the Transport layer.</li>
+  <li><strong>Domain names</strong> provide human-readable names for network resources.</li>
+  <li><strong>DNS</strong> translates names into IP addresses.</li>
+  <li><strong>DHCP</strong> automatically assigns IP settings to clients.</li>
+</ul>
+
+<h2>2. Lab Scenario</h2>
+<p>You are demonstrating the network for <strong>Northstar Training Center</strong>.</p>
+<p>The organization has one small office network with:</p>
+<ul>
+  <li>One router</li>
+  <li>One switch</li>
+  <li>One server</li>
+  <li>Three wired PCs</li>
+  <li>One local DNS and DHCP server</li>
+</ul>
+<p>The demo shows how addressing works inside the LAN:</p>
+<ol>
+  <li>How to view MAC addresses.</li>
+  <li>How a switch learns MAC addresses.</li>
+  <li>How to configure static IPv4 addresses.</li>
+  <li>How DHCP assigns addresses automatically.</li>
+  <li>How DNS resolves a domain name to an IP address.</li>
+  <li>How port numbers identify services.</li>
+  <li>How to troubleshoot addressing problems using common commands.</li>
+</ol>
+</section>
+
+<section id="objectives">
+<h2>3. Learning Objectives</h2>
+<p>By the end of this instructor-led demo, students should be able to:</p>
+<ol>
+  <li>Explain the difference between a MAC address and an IP address.</li>
+  <li>Locate a MAC address on a PC and switch.</li>
+  <li>Explain how ARP helps devices communicate on a LAN.</li>
+  <li>Configure static IPv4 settings on a Packet Tracer PC.</li>
+  <li>Configure DHCP service on a Packet Tracer server.</li>
+  <li>Configure DNS service on a Packet Tracer server.</li>
+  <li>Use a domain name to reach a local web server.</li>
+  <li>Explain how port numbers relate to network services.</li>
+  <li>Use <code>ping</code>, <code>ipconfig</code>, <code>nslookup</code>, and Packet Tracer Simulation Mode.</li>
+  <li>Diagnose simple addressing problems.</li>
+</ol>
+
+<h2>4. Chapter 3 Concept Alignment</h2>
+<table>
+  <tr><th>Chapter 3 Topic</th><th>Demo Lab Activity</th></tr>
+  <tr><td>MAC addresses</td><td>View PC MAC addresses and switch MAC address table.</td></tr>
+  <tr><td>IPv4 addressing</td><td>Configure static IPv4 settings on server, router, and a client.</td></tr>
+  <tr><td>Static vs. dynamic addressing</td><td>Compare a manually configured PC with DHCP-configured PCs.</td></tr>
+  <tr><td>DHCP</td><td>Configure a DHCP pool on the server.</td></tr>
+  <tr><td>DNS</td><td>Create DNS A records and test name resolution.</td></tr>
+  <tr><td>Ports and sockets</td><td>Access HTTP service using a browser and discuss port 80.</td></tr>
+  <tr><td>Address troubleshooting</td><td>Break IP, gateway, DNS, DHCP, and duplicate-address settings.</td></tr>
+  <tr><td>Command-line tools</td><td>Use <code>ipconfig</code>, <code>ping</code>, and <code>nslookup</code>.</td></tr>
+</table>
+</section>
+
+<section id="devices">
+<h2>5. Devices Used in This Demo</h2>
+<table>
+  <tr><th>Device Type</th><th>Packet Tracer Category</th><th>Suggested Model</th><th>Quantity</th></tr>
+  <tr><td>Router</td><td>Network Devices &gt; Routers</td><td>2911 or 1941</td><td>1</td></tr>
+  <tr><td>Switch</td><td>Network Devices &gt; Switches</td><td>2960</td><td>1</td></tr>
+  <tr><td>Server</td><td>End Devices</td><td>Server-PT</td><td>1</td></tr>
+  <tr><td>PCs</td><td>End Devices</td><td>PC-PT</td><td>3</td></tr>
+</table>
+
+<h2>6. Device Naming Plan</h2>
+<table>
+  <tr><th>Device</th><th>Packet Tracer Name</th><th>Purpose</th></tr>
+  <tr><td>Router</td><td><code>RTR-HQ-EDGE-01</code></td><td>Default gateway for LAN</td></tr>
+  <tr><td>Switch</td><td><code>SW-HQ-ACCESS-01</code></td><td>Connects LAN devices</td></tr>
+  <tr><td>Server</td><td><code>SRV-HQ-SERVICES-01</code></td><td>DHCP, DNS, and web server</td></tr>
+  <tr><td>PC 1</td><td><code>PC-HQ-STATIC-01</code></td><td>Static IP client</td></tr>
+  <tr><td>PC 2</td><td><code>PC-HQ-DHCP-01</code></td><td>DHCP client</td></tr>
+  <tr><td>PC 3</td><td><code>PC-HQ-DHCP-02</code></td><td>DHCP client</td></tr>
+</table>
+
+<h2>7. Addressing Plan</h2>
+<p>Use one LAN subnet:</p>
+<pre>192.168.30.0/24</pre>
+
+<h3>Static Infrastructure Addresses</h3>
+<table>
+  <tr><th>Device</th><th>Interface</th><th>IP Address</th><th>Subnet Mask</th><th>Default Gateway</th></tr>
+  <tr><td><code>RTR-HQ-EDGE-01</code></td><td>G0/0</td><td>192.168.30.1</td><td>255.255.255.0</td><td>N/A</td></tr>
+  <tr><td><code>SRV-HQ-SERVICES-01</code></td><td>Fa0</td><td>192.168.30.10</td><td>255.255.255.0</td><td>192.168.30.1</td></tr>
+  <tr><td><code>PC-HQ-STATIC-01</code></td><td>Fa0</td><td>192.168.30.21</td><td>255.255.255.0</td><td>192.168.30.1</td></tr>
+</table>
+
+<h3>DHCP Client Range</h3>
+<table>
+  <tr><th>DHCP Setting</th><th>Value</th></tr>
+  <tr><td>DHCP Pool Name</td><td><code>HQ-LAN-POOL</code></td></tr>
+  <tr><td>Default Gateway</td><td>192.168.30.1</td></tr>
+  <tr><td>DNS Server</td><td>192.168.30.10</td></tr>
+  <tr><td>Start IP Address</td><td>192.168.30.100</td></tr>
+  <tr><td>Subnet Mask</td><td>255.255.255.0</td></tr>
+  <tr><td>Maximum Users</td><td>50</td></tr>
+</table>
+
+<h2>8. DNS Plan</h2>
+<table>
+  <tr><th>Domain Name</th><th>Record Type</th><th>IP Address</th><th>Purpose</th></tr>
+  <tr><td><code>www.northstar.local</code></td><td>A</td><td>192.168.30.10</td><td>Local web server</td></tr>
+  <tr><td><code>services.northstar.local</code></td><td>A</td><td>192.168.30.10</td><td>Local service server</td></tr>
+  <tr><td><code>gateway.northstar.local</code></td><td>A</td><td>192.168.30.1</td><td>Router/default gateway</td></tr>
+</table>
+
+<h2>9. Target Logical Topology</h2>
+<pre class="topology">                    RTR-HQ-EDGE-01
+                         G0/0
+                          |
+                          |
+                    SW-HQ-ACCESS-01
+          Fa0/1      Fa0/2      Fa0/3      Fa0/4
+            |          |          |          |
+            |          |          |          |
+  SRV-HQ-SERVICES  PC-STATIC   PC-DHCP-01  PC-DHCP-02</pre>
+
+<div class="note"><strong>Instructor emphasis:</strong> The router is the default gateway, the switch provides LAN connectivity, and the server provides DHCP, DNS, and HTTP services.</div>
+</section>
+
+<section id="build">
+<h2>10. Instructor Demo Flow</h2>
+<ol>
+  <li>Build the topology.</li>
+  <li>Configure router and server static addresses.</li>
+  <li>Configure one static PC.</li>
+  <li>Test basic IP connectivity.</li>
+  <li>Observe MAC addresses and ARP.</li>
+  <li>Configure DHCP.</li>
+  <li>Configure DNS.</li>
+  <li>Test domain-name access.</li>
+  <li>Demonstrate port/service concepts.</li>
+  <li>Break addressing settings and troubleshoot.</li>
+</ol>
+
+<h2>11. Create the Packet Tracer Project</h2>
+<h3>Step A1: Open Packet Tracer</h3>
+<p>Open Cisco Packet Tracer and create a new file. Save the file as:</p>
+<pre>Chapter3_Addressing_Demo.pkt</pre>
+
+<h3>Step A2: Add a Project Note</h3>
+<p>Use the <strong>Place Note</strong> tool and add:</p>
+<pre>Northstar Training Center
+Chapter 3 Demo Lab: Addressing
+
+Focus:
+- MAC addresses
+- IPv4 addressing
+- DHCP
+- DNS
+- Ports
+- Address troubleshooting</pre>
+
+<h2>12. Add and Rename Devices</h2>
+<h3>Add the router</h3>
+<ol>
+  <li>Go to <strong>Network Devices &gt; Routers</strong>.</li>
+  <li>Drag one <strong>2911</strong> or <strong>1941</strong> router into the workspace.</li>
+  <li>Rename it <code>RTR-HQ-EDGE-01</code>.</li>
+</ol>
+
+<h3>Add the switch</h3>
+<ol>
+  <li>Go to <strong>Network Devices &gt; Switches</strong>.</li>
+  <li>Drag one <strong>2960</strong> switch into the workspace.</li>
+  <li>Rename it <code>SW-HQ-ACCESS-01</code>.</li>
+</ol>
+
+<h3>Add the server and PCs</h3>
+<ol>
+  <li>Add one <strong>Server-PT</strong> and rename it <code>SRV-HQ-SERVICES-01</code>.</li>
+  <li>Add three <strong>PC-PT</strong> devices.</li>
+  <li>Rename them <code>PC-HQ-STATIC-01</code>, <code>PC-HQ-DHCP-01</code>, and <code>PC-HQ-DHCP-02</code>.</li>
+</ol>
+
+<h2>13. Cable the Topology</h2>
+<p>Use <strong>Copper Straight-Through</strong> cables.</p>
+<table>
+  <tr><th>Connection</th><th>Label</th></tr>
+  <tr><td><code>RTR-HQ-EDGE-01 G0/0</code> to <code>SW-HQ-ACCESS-01 Fa0/1</code></td><td>Default Gateway Link</td></tr>
+  <tr><td><code>SRV-HQ-SERVICES-01 Fa0</code> to <code>SW-HQ-ACCESS-01 Fa0/2</code></td><td>Server: DHCP / DNS / HTTP</td></tr>
+  <tr><td><code>PC-HQ-STATIC-01 Fa0</code> to <code>SW-HQ-ACCESS-01 Fa0/3</code></td><td>Static IP Client</td></tr>
+  <tr><td><code>PC-HQ-DHCP-01 Fa0</code> to <code>SW-HQ-ACCESS-01 Fa0/4</code></td><td>DHCP Client 1</td></tr>
+  <tr><td><code>PC-HQ-DHCP-02 Fa0</code> to <code>SW-HQ-ACCESS-01 Fa0/5</code></td><td>DHCP Client 2</td></tr>
+</table>
+
+<h2>14. Configure the Router</h2>
+<p>Click <code>RTR-HQ-EDGE-01</code> and open the <strong>CLI</strong> tab. If prompted to enter the initial configuration dialog, type <code>no</code>.</p>
+<pre>enable
+configure terminal
+hostname RTR-HQ-EDGE-01
+interface gigabitEthernet0/0
+description LAN default gateway for 192.168.30.0/24
+ip address 192.168.30.1 255.255.255.0
+no shutdown
+exit
+banner motd #Authorized access only. Northstar Training Center gateway router.#
+end
+copy running-config startup-config</pre>
+<p>Verify the router interface:</p>
+<pre>show ip interface brief</pre>
+<p>Expected key result:</p>
+<pre>GigabitEthernet0/0     192.168.30.1    YES manual up     up</pre>
+
+<div class="callout"><strong>Instructor explanation:</strong> The router interface <code>192.168.30.1</code> is the default gateway for the LAN. Devices use it when they need to reach another network.</div>
+
+<h2>15. Configure the Server Static Address</h2>
+<p>Click <code>SRV-HQ-SERVICES-01</code> and go to <strong>Desktop &gt; IP Configuration</strong>.</p>
+<pre>IP Address:       192.168.30.10
+Subnet Mask:      255.255.255.0
+Default Gateway:  192.168.30.1
+DNS Server:       192.168.30.10</pre>
+<p>Servers commonly use static addresses because other devices must be able to find them consistently.</p>
+
+<h2>16. Configure the Static PC</h2>
+<p>Click <code>PC-HQ-STATIC-01</code> and go to <strong>Desktop &gt; IP Configuration</strong>.</p>
+<pre>IP Address:       192.168.30.21
+Subnet Mask:      255.255.255.0
+Default Gateway:  192.168.30.1
+DNS Server:       192.168.30.10</pre>
+
+<h2>17. Test Basic Connectivity</h2>
+<p>On <code>PC-HQ-STATIC-01</code>, open <strong>Desktop &gt; Command Prompt</strong>.</p>
+<pre>ipconfig
+ping 192.168.30.1
+ping 192.168.30.10</pre>
+<p>Expected result: replies from the router and server.</p>
+<p>This confirms that the cable is connected, the switch is forwarding frames, the PC settings are valid, the router interface is up, and the server IP settings are valid.</p>
+</section>
+
+<section id="macarp">
+<h2>18. View MAC Addresses</h2>
+<h3>View the PC MAC address</h3>
+<p>On <code>PC-HQ-STATIC-01</code>, open <strong>Desktop &gt; Command Prompt</strong> and run:</p>
+<pre>ipconfig /all</pre>
+<p>Look for the physical address, for example:</p>
+<pre>Physical Address................: 00D0.BA12.3456</pre>
+
+<h3>View the server MAC address</h3>
+<p>Click <code>SRV-HQ-SERVICES-01</code>, then go to <strong>Config &gt; FastEthernet0</strong> and look for the MAC address.</p>
+<p>A MAC address is used for local Ethernet delivery inside the LAN.</p>
+
+<h2>19. View the Switch MAC Address Table</h2>
+<p>Click <code>SW-HQ-ACCESS-01</code>, open <strong>CLI</strong>, and run:</p>
+<pre>enable
+show mac address-table</pre>
+<p>At first, the table may be empty or may show only a few entries.</p>
+<p>Return to <code>PC-HQ-STATIC-01</code> and ping the server:</p>
+<pre>ping 192.168.30.10</pre>
+<p>Return to the switch and run:</p>
+<pre>show mac address-table</pre>
+<p>The switch should now know MAC addresses on ports such as <code>Fa0/2</code> and <code>Fa0/3</code>.</p>
+<div class="callout"><strong>Instructor explanation:</strong> A switch learns MAC addresses by reading the source MAC address of frames entering its ports. This is why switches are Layer 2 devices.</div>
+
+<h2>20. Observe ARP and ICMP in Simulation Mode</h2>
+<ol>
+  <li>Click <strong>Simulation</strong> in the lower-right corner.</li>
+  <li>Clear the existing event list.</li>
+  <li>Set event filters to show <code>ARP</code> and <code>ICMP</code>.</li>
+</ol>
+<p>On <code>PC-HQ-STATIC-01</code>, run:</p>
+<pre>arp -d
+ping 192.168.30.10</pre>
+<p>If Packet Tracer does not support <code>arp -d</code> in your version, use a newly opened file or power-cycle the PC.</p>
+<p>Click <strong>Capture / Forward</strong> and observe:</p>
+<ol>
+  <li>ARP request from PC.</li>
+  <li>ARP reply from server.</li>
+  <li>ICMP echo request.</li>
+  <li>ICMP echo reply.</li>
+</ol>
+<p>Before the PC can send the ICMP packet to the server, it needs the server’s MAC address. Ethernet delivery requires a destination MAC address.</p>
+</section>
+
+<section id="dhcpdns">
+<h2>21. Configure DHCP on the Server</h2>
+<p>Click <code>SRV-HQ-SERVICES-01</code>, then go to <strong>Services &gt; DHCP</strong>.</p>
+<p>Turn DHCP service <strong>On</strong> and configure the pool:</p>
+<pre>Pool Name:        HQ-LAN-POOL
+Default Gateway:  192.168.30.1
+DNS Server:       192.168.30.10
+Start IP Address: 192.168.30.100
+Subnet Mask:      255.255.255.0
+Maximum Users:    50</pre>
+<p>Click <strong>Add</strong> or <strong>Save</strong>, depending on the Packet Tracer version.</p>
+<div class="callout"><strong>Instructor explanation:</strong> DHCP provides IP address, subnet mask, default gateway, DNS server, and lease information automatically.</div>
+
+<h2>22. Configure DHCP Clients</h2>
+<p>On <code>PC-HQ-DHCP-01</code> and <code>PC-HQ-DHCP-02</code>, go to <strong>Desktop &gt; IP Configuration</strong> and select <strong>DHCP</strong>.</p>
+<p>Expected examples:</p>
+<pre>PC-HQ-DHCP-01:
+IP Address:       192.168.30.100
+Subnet Mask:      255.255.255.0
+Default Gateway:  192.168.30.1
+DNS Server:       192.168.30.10
+
+PC-HQ-DHCP-02:
+IP Address:       192.168.30.101
+Subnet Mask:      255.255.255.0
+Default Gateway:  192.168.30.1
+DNS Server:       192.168.30.10</pre>
+<p>On each DHCP PC, run:</p>
+<pre>ipconfig</pre>
+
+<h2>23. Test DHCP Client Connectivity</h2>
+<p>From <code>PC-HQ-DHCP-01</code>, run:</p>
+<pre>ping 192.168.30.1
+ping 192.168.30.10</pre>
+<p>From <code>PC-HQ-DHCP-02</code>, run:</p>
+<pre>ping 192.168.30.21</pre>
+<p>All devices are in the same subnet, <code>192.168.30.0/24</code>, so local forwarding happens through the switch.</p>
+
+<h2>24. Configure DNS on the Server</h2>
+<p>Click <code>SRV-HQ-SERVICES-01</code>, then go to <strong>Services &gt; DNS</strong>. Turn DNS service <strong>On</strong>.</p>
+<p>Add these A records:</p>
+<table>
+  <tr><th>Name</th><th>Type</th><th>Address</th></tr>
+  <tr><td><code>www.northstar.local</code></td><td>A Record</td><td>192.168.30.10</td></tr>
+  <tr><td><code>services.northstar.local</code></td><td>A Record</td><td>192.168.30.10</td></tr>
+  <tr><td><code>gateway.northstar.local</code></td><td>A Record</td><td>192.168.30.1</td></tr>
+</table>
+
+<h2>25. Enable HTTP on the Server</h2>
+<p>Click <code>SRV-HQ-SERVICES-01</code>, then go to <strong>Services &gt; HTTP</strong>. Turn HTTP <strong>On</strong>.</p>
+<p>Optional index page text:</p>
+<pre>Welcome to Northstar Training Center.
+This page is hosted on SRV-HQ-SERVICES-01.</pre>
+<p>HTTP is an application-layer service. Clients access HTTP using TCP port 80.</p>
+
+<h2>26. Test DNS Name Resolution</h2>
+<p>On <code>PC-HQ-STATIC-01</code>, open <strong>Desktop &gt; Command Prompt</strong> and run:</p>
+<pre>nslookup www.northstar.local
+nslookup gateway.northstar.local</pre>
+<p>Expected results should map <code>www.northstar.local</code> to <code>192.168.30.10</code> and <code>gateway.northstar.local</code> to <code>192.168.30.1</code>.</p>
+
+<h2>27. Test Web Access by IP Address</h2>
+<p>Open <strong>Desktop &gt; Web Browser</strong> on <code>PC-HQ-STATIC-01</code>.</p>
+<pre>http://192.168.30.10</pre>
+<p>The server web page should open. DNS is not required for this test.</p>
+
+<h2>28. Test Web Access by Domain Name</h2>
+<p>In the browser, type:</p>
+<pre>http://www.northstar.local</pre>
+<p>The same web page should open. This test requires DNS.</p>
+<div class="callout"><strong>Instructor explanation:</strong> If access by IP address works but access by name fails, the likely issue is DNS: service off, missing record, incorrect DNS client setting, or typo in the name.</div>
+
+<h2>29. Explain Ports and Sockets</h2>
+<p>Use these examples:</p>
+<pre>192.168.30.10:80
+192.168.30.10:53</pre>
+<table>
+  <tr><th>Protocol</th><th>Common Port</th><th>Purpose</th></tr>
+  <tr><td>DNS</td><td>53</td><td>Name resolution</td></tr>
+  <tr><td>HTTP</td><td>80</td><td>Web traffic</td></tr>
+  <tr><td>HTTPS</td><td>443</td><td>Encrypted web traffic</td></tr>
+  <tr><td>DHCP Server</td><td>67</td><td>DHCP server communication</td></tr>
+  <tr><td>DHCP Client</td><td>68</td><td>DHCP client communication</td></tr>
+  <tr><td>SSH</td><td>22</td><td>Secure remote command-line access</td></tr>
+  <tr><td>FTP</td><td>20/21</td><td>File transfer</td></tr>
+  <tr><td>SMTP</td><td>25</td><td>Email transfer</td></tr>
+  <tr><td>RDP</td><td>3389</td><td>Remote desktop</td></tr>
+</table>
+<p>An IP address identifies the host. A port number identifies the service on that host.</p>
+</section>
+
+<section id="simulation">
+<h2>30. Observe DNS and HTTP in Simulation Mode</h2>
+<ol>
+  <li>Click <strong>Simulation</strong>.</li>
+  <li>Clear the event list.</li>
+  <li>Set filters to <code>DNS</code>, <code>TCP</code>, <code>HTTP</code>, <code>ARP</code>, and <code>ICMP</code>.</li>
+</ol>
+<p>From <code>PC-HQ-STATIC-01</code>, open the web browser and type:</p>
+<pre>http://www.northstar.local</pre>
+<p>Click <strong>Capture / Forward</strong> and observe a packet sequence such as:</p>
+<ol>
+  <li>ARP</li>
+  <li>DNS query</li>
+  <li>DNS response</li>
+  <li>TCP connection setup</li>
+  <li>HTTP request</li>
+  <li>HTTP response</li>
+</ol>
+<p>A simple webpage request involves multiple protocols. The user sees a domain name, but the network performs several steps behind the scenes.</p>
+</section>
+
+<section id="troubleshooting">
+<h2>31. Troubleshooting Demo 1: Wrong IP Address</h2>
+<p>On <code>PC-HQ-STATIC-01</code>, go to <strong>Desktop &gt; IP Configuration</strong> and change the IP address to:</p>
+<pre>IP Address:       192.168.40.21
+Subnet Mask:      255.255.255.0
+Default Gateway:  192.168.30.1</pre>
+<p>Then test:</p>
+<pre>ping 192.168.30.10
+ipconfig</pre>
+<p>The PC is now in <code>192.168.40.0/24</code>, but the server is in <code>192.168.30.0/24</code>. The fix is to restore the PC to:</p>
+<pre>IP Address:       192.168.30.21
+Subnet Mask:      255.255.255.0
+Default Gateway:  192.168.30.1
+DNS Server:       192.168.30.10</pre>
+
+<h2>32. Troubleshooting Demo 2: Wrong DNS Server</h2>
+<p>On <code>PC-HQ-STATIC-01</code>, change the DNS server to:</p>
+<pre>8.8.8.8</pre>
+<p>In this simulated lab, <code>8.8.8.8</code> is not available unless separately configured.</p>
+<p>Test by IP address:</p>
+<pre>http://192.168.30.10</pre>
+<p>Then test by name:</p>
+<pre>http://www.northstar.local
+nslookup www.northstar.local</pre>
+<p>The IP test should still work, but the name test should fail. Restore the DNS server to:</p>
+<pre>192.168.30.10</pre>
+
+<h2>33. Troubleshooting Demo 3: DHCP Failure</h2>
+<p>On <code>SRV-HQ-SERVICES-01</code>, go to <strong>Services &gt; DHCP</strong> and turn DHCP <strong>Off</strong>.</p>
+<p>On <code>PC-HQ-DHCP-01</code>, go to <strong>Desktop &gt; IP Configuration</strong>, switch to <strong>Static</strong>, then switch back to <strong>DHCP</strong>. If supported, try:</p>
+<pre>ipconfig /renew</pre>
+<p>If DHCP is unavailable, a client may fail to receive a valid address, keep an old address temporarily, or show other addressing problems. Turn DHCP back <strong>On</strong> and request DHCP again.</p>
+
+<h2>34. Troubleshooting Demo 4: Duplicate IP Address</h2>
+<p>On <code>PC-HQ-DHCP-02</code>, temporarily change from DHCP to Static and enter the same address used by <code>PC-HQ-STATIC-01</code>:</p>
+<pre>IP Address:       192.168.30.21
+Subnet Mask:      255.255.255.0
+Default Gateway:  192.168.30.1
+DNS Server:       192.168.30.10</pre>
+<p>Test connectivity from both PCs. Packet Tracer may show inconsistent behavior, conflict warnings, or confusing results.</p>
+<p>Two devices should not use the same IP address on the same network. Duplicate IP addresses can cause intermittent connectivity, ARP confusion, wrong-device delivery, and difficult troubleshooting.</p>
+<p>Fix the problem by returning <code>PC-HQ-DHCP-02</code> to DHCP and confirming it receives a unique address.</p>
+
+<h2>35. Common Addressing Problems</h2>
+<table>
+  <tr><th>Problem</th><th>Symptom</th><th>Likely Fix</th></tr>
+  <tr><td>Wrong IP address</td><td>Cannot reach local devices</td><td>Correct the IP address</td></tr>
+  <tr><td>Wrong subnet mask</td><td>Some local or remote traffic fails</td><td>Correct the subnet mask</td></tr>
+  <tr><td>Wrong default gateway</td><td>Local traffic works, remote traffic fails</td><td>Correct the gateway</td></tr>
+  <tr><td>Wrong DNS server</td><td>IP works, names fail</td><td>Correct the DNS setting</td></tr>
+  <tr><td>DHCP service off</td><td>Clients cannot obtain automatic addresses</td><td>Restart DHCP service</td></tr>
+  <tr><td>Duplicate IP address</td><td>Intermittent or confusing connectivity</td><td>Assign unique addresses</td></tr>
+  <tr><td>Missing DNS record</td><td>One name fails but others work</td><td>Add or correct DNS record</td></tr>
+  <tr><td>HTTP service off</td><td>Ping works but website fails</td><td>Turn HTTP service on</td></tr>
+</table>
+</section>
+
+<section id="summary">
+<h2>36. Instructor Explanation: Addressing Layers</h2>
+<table>
+  <tr><th>Layer</th><th>Address Type</th><th>Example</th><th>Purpose</th></tr>
+  <tr><td>Data Link</td><td>MAC address</td><td><code>00D0.BA12.3456</code></td><td>Local frame delivery</td></tr>
+  <tr><td>Network</td><td>IP address</td><td><code>192.168.30.10</code></td><td>Host/network identification</td></tr>
+  <tr><td>Transport</td><td>Port number</td><td><code>80</code></td><td>Service/application identification</td></tr>
+  <tr><td>Application</td><td>Domain name</td><td><code>www.northstar.local</code></td><td>Human-friendly resource name</td></tr>
+</table>
+
+<h2>37. Same-Subnet Communication</h2>
+<p>When <code>PC-HQ-STATIC-01</code> sends traffic to <code>SRV-HQ-SERVICES-01</code>:</p>
+<pre>PC:     192.168.30.21/24
+Server: 192.168.30.10/24</pre>
+<p>Both devices are in:</p>
+<pre>192.168.30.0/24</pre>
+<p>So the PC sends traffic directly to the server’s MAC address. The switch forwards the Ethernet frame inside the LAN. The router is not needed for same-subnet communication.</p>
+
+<h2>38. DHCP vs. Static IP</h2>
+<div class="grid">
+  <div class="card">
+    <h3>Static IP Addressing</h3>
+    <p><strong>Advantages:</strong> predictable, good for servers and infrastructure, easier to document.</p>
+    <p><strong>Disadvantages:</strong> more manual work, more chance of typing errors, possible duplicate addresses.</p>
+  </div>
+  <div class="card">
+    <h3>DHCP Addressing</h3>
+    <p><strong>Advantages:</strong> automatic, scalable, reduces manual configuration, good for clients.</p>
+    <p><strong>Disadvantages:</strong> depends on DHCP availability, requires scope planning, addresses may change.</p>
+  </div>
+</div>
+
+<h2>39. DNS Troubleshooting Logic</h2>
+<pre>Can the client ping the server by IP address?
+
+If no:
+  Check IP address, subnet mask, cable, switch, and server status.
+
+If yes:
+  Can the client access the server by domain name?
+
+If no:
+  Check DNS server setting, DNS service status, and DNS records.</pre>
+
+<h2>40. Optional Mini-Demo: Address Translation Concept</h2>
+<p>NAT/PAT can be saved for a later routing chapter, but the concept can be introduced briefly:</p>
+<pre>Inside private address:
+192.168.30.21
+
+Public-facing router address:
+203.0.113.2
+
+When the inside PC accesses the Internet,
+the router can translate the private address
+to the public-facing address.</pre>
+
+<h2>41. Suggested 2-Hour Timing Plan</h2>
+<table>
+  <tr><th>Time</th><th>Activity</th></tr>
+  <tr><td>0–10 min</td><td>Introduce addressing layers: MAC, IP, port, DNS</td></tr>
+  <tr><td>10–25 min</td><td>Build Packet Tracer topology</td></tr>
+  <tr><td>25–40 min</td><td>Configure router, server, and static PC</td></tr>
+  <tr><td>40–55 min</td><td>Test IP connectivity</td></tr>
+  <tr><td>55–70 min</td><td>View MAC addresses, ARP, and switch MAC table</td></tr>
+  <tr><td>70–85 min</td><td>Configure DHCP and DHCP clients</td></tr>
+  <tr><td>85–100 min</td><td>Configure DNS and HTTP</td></tr>
+  <tr><td>100–110 min</td><td>Use browser, <code>nslookup</code>, and Simulation Mode</td></tr>
+  <tr><td>110–120 min</td><td>Demonstrate addressing troubleshooting problems</td></tr>
+</table>
+
+<h2>42. Final Demo Summary</h2>
+<p>At the end of the demo, summarize the addressing process like this:</p>
+<p>When a user accesses:</p>
+<pre>http://www.northstar.local</pre>
+<p>the network uses several addressing systems:</p>
+<ol>
+  <li>The domain name identifies the resource in human-friendly form.</li>
+  <li>DNS translates the name to an IP address.</li>
+  <li>The IP address identifies the destination host.</li>
+  <li>TCP port 80 identifies the HTTP service.</li>
+  <li>ARP finds the destination MAC address for local delivery.</li>
+  <li>The switch uses MAC addresses to forward frames.</li>
+  <li>The server responds to the client.</li>
+</ol>
+<div class="note"><strong>Most important lesson:</strong> Network communication works only when each layer has the correct addressing information.</div>
+</section>
+</main>
+<footer>
+  Packet Tracer Demo Lab: Chapter 3 — Addressing. Prepared for Internetworking Basics.
+</footer>
+</div>
+</body>
+</html>
