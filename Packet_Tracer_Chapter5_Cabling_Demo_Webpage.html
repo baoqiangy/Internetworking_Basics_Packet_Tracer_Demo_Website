@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Packet Tracer Demo Lab - Chapter 5: Cabling</title>
+
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --ink: #1f2937;
+      --muted: #5b6472;
+      --accent: #2457c5;
+      --accent-light: #e8efff;
+      --border: #d8deea;
+      --code-bg: #111827;
+      --code-ink: #f9fafb;
+      --table-head: #eef3ff;
+      --warning-bg: #fff7e6;
+      --warning-border: #f2c46d;
+      --success-bg: #edf9f1;
+      --success-border: #82c994;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.58; }
+    header { background: linear-gradient(135deg, #102a60, #2457c5); color: white; padding: 42px 28px; }
+    header .wrap { max-width: 1120px; margin: 0 auto; }
+    header h1 { margin: 0 0 10px; font-size: 2.3rem; line-height: 1.15; }
+    header p { margin: 6px 0; color: #eaf0ff; font-size: 1.05rem; }
+    nav { background: #ffffff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+    nav .wrap { max-width: 1120px; margin: 0 auto; display: flex; gap: 16px; overflow-x: auto; padding: 10px 20px; white-space: nowrap; }
+    nav a { color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.93rem; }
+    main { max-width: 1120px; margin: 26px auto 60px; padding: 0 20px; }
+    section { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 26px; margin: 20px 0; box-shadow: 0 5px 18px rgba(31, 41, 55, 0.05); }
+    h2 { color: #14336f; margin-top: 0; border-bottom: 2px solid var(--accent-light); padding-bottom: 8px; }
+    h3 { color: #1e429f; margin-top: 24px; }
+    h4 { color: #23324a; margin-bottom: 6px; }
+    .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 22px; }
+    .meta div { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); padding: 12px; border-radius: 10px; }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+    .card { background: #fbfcff; border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .callout { border-left: 5px solid var(--accent); background: var(--accent-light); padding: 14px 16px; border-radius: 10px; margin: 16px 0; }
+    .warning { border-left: 5px solid var(--warning-border); background: var(--warning-bg); padding: 14px 16px; border-radius: 10px; margin: 16px 0; }
+    .success { border-left: 5px solid var(--success-border); background: var(--success-bg); padding: 14px 16px; border-radius: 10px; margin: 16px 0; }
+    table { width: 100%; border-collapse: collapse; margin: 14px 0 20px; overflow: hidden; border-radius: 10px; font-size: 0.95rem; }
+    th, td { border: 1px solid var(--border); padding: 10px 12px; vertical-align: top; }
+    th { background: var(--table-head); text-align: left; color: #19376d; }
+    pre { background: var(--code-bg); color: var(--code-ink); padding: 16px; border-radius: 12px; overflow-x: auto; font-size: 0.93rem; line-height: 1.42; }
+    code { background: #eef2f7; color: #16315e; padding: 2px 5px; border-radius: 5px; font-family: Consolas, Monaco, monospace; }
+    pre code { background: transparent; color: inherit; padding: 0; }
+    .topology { font-family: Consolas, Monaco, monospace; background: #0f172a; color: #f8fafc; border-radius: 12px; padding: 18px; overflow-x: auto; white-space: pre; }
+    .step { border-left: 3px solid #c8d7ff; padding-left: 16px; margin: 18px 0; }
+    .small { color: var(--muted); font-size: 0.93rem; }
+    footer { text-align: center; color: var(--muted); padding: 30px; }
+    @media print { nav { display:none; } body { background:#fff; } section { box-shadow:none; break-inside:avoid; } header { background:#14336f !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; } }
+  </style>
+
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>Packet Tracer Demo Lab<br>Chapter 5: Cabling</h1>
+    <p>Based on West's <em>CompTIA Network+ Guide to Networks</em>, 10th Edition</p>
+    <div class="meta">
+      <div><strong>Course</strong><br>Internetworking Basics</div>
+      <div><strong>Estimated Time</strong><br>2 hours</div>
+      <div><strong>Format</strong><br>Instructor-led demo with guided practice</div>
+      <div><strong>Tool</strong><br>Cisco Packet Tracer</div>
+    </div>
+  </div>
+</header>
+<nav>
+  <div class="wrap">
+    <a href="#purpose">Purpose</a>
+    <a href="#topology">Topology</a>
+    <a href="#devices">Devices</a>
+    <a href="#cabling">Cabling</a>
+    <a href="#configs">Configuration</a>
+    <a href="#physical">Physical View</a>
+    <a href="#troubleshooting">Troubleshooting</a>
+    <a href="#summary">Summary</a>
+  </div>
+</nav>
+<main>
+<section id="purpose">
+  <h2>1. Demo Purpose</h2>
+  <p>This demo lab introduces the practical cabling ideas students need before they troubleshoot or build larger internetworks. The focus is not advanced routing. The focus is how devices are physically and logically connected, which cable types are used, how ports are selected, and how cabling problems affect connectivity.</p>
+  <div class="callout"><strong>Instructor framing:</strong> A network can have correct IP addresses and correct device configurations, but communication still fails if the wrong cable, wrong port, disabled interface, or bad physical path is used.</div>
+  <h3>Key Concepts Demonstrated</h3>
+  <div class="card-grid">
+    <div class="card"><strong>Copper Ethernet cabling</strong><br>Use straight-through and crossover cable concepts in Packet Tracer.</div>
+    <div class="card"><strong>Fiber uplink concept</strong><br>Show why fiber is used between buildings or closets, even if the simulation is simplified.</div>
+    <div class="card"><strong>Console cable</strong><br>Use a rollover/console connection to manage a router locally.</div>
+    <div class="card"><strong>Interface status</strong><br>Use show commands to check whether ports are up, down, or administratively down.</div>
+    <div class="card"><strong>Physical workspace</strong><br>Represent MDF, IDF, cable runs, racks, and telecom spaces.</div>
+    <div class="card"><strong>Cable documentation</strong><br>Label ports, uplinks, access links, and backbone connections.</div>
+  </div>
+</section>
+
+<section id="scenario">
+  <h2>2. Demo Scenario</h2>
+  <p>Northstar Training Center has a Main Building and an Annex Building. The Main Building contains the MDF. The Annex Building contains an IDF. The organization wants to connect PCs, a server, a printer, a router, and two switches using correct cabling practices and clear cable documentation.</p>
+  <p>The instructor will build a small network and demonstrate how cabling choices affect connectivity.</p>
+</section>
+
+<section id="objectives">
+  <h2>3. Learning Objectives</h2>
+  <p>By the end of this demo, students should be able to explain and observe the following:</p>
+  <ul>
+    <li>What straight-through Ethernet cables are commonly used for.</li>
+    <li>What crossover cable historically means and when it may be discussed.</li>
+    <li>Why a console cable is different from a network data cable.</li>
+    <li>How switches, routers, PCs, servers, printers, and access points connect physically.</li>
+    <li>How to identify interface status using Packet Tracer lights and CLI commands.</li>
+    <li>How to document cable runs using labels and a port map.</li>
+    <li>How a disconnected cable or shutdown interface causes network failure.</li>
+    <li>Why backbone/uplink cabling between closets is documented separately from user access cabling.</li>
+  </ul>
+</section>
+
+<section id="alignment">
+  <h2>4. Chapter 5 Concept Alignment</h2>
+  <table>
+    <tr><th>Chapter 5 Cabling Concept</th><th>Packet Tracer Demo Activity</th></tr>
+    <tr><td>Transmission media</td><td>Compare copper Ethernet, fiber uplink concept, wireless, and WAN/serial cabling.</td></tr>
+    <tr><td>Cable types and connectors</td><td>Use copper straight-through, crossover, console, and serial connections in Packet Tracer.</td></tr>
+    <tr><td>Structured cabling</td><td>Represent MDF-to-IDF uplinks and user access cabling.</td></tr>
+    <tr><td>Patch panels and cable management</td><td>Use labels and physical view notes to represent organized cabling.</td></tr>
+    <tr><td>Troubleshooting physical connectivity</td><td>Break links, shut down ports, check LEDs, and use <code>show interfaces</code>.</td></tr>
+    <tr><td>Documentation</td><td>Create a cable map and label link purposes in the topology.</td></tr>
+  </table>
+</section>
+
+<section id="devices">
+  <h2>5. Devices Used in This Demo</h2>
+  <table>
+    <tr><th>Device Type</th><th>Packet Tracer Category</th><th>Suggested Model</th><th>Quantity</th></tr>
+    <tr><td>Router</td><td>Network Devices &gt; Routers</td><td>2911 or 1941</td><td>2</td></tr>
+    <tr><td>Switch</td><td>Network Devices &gt; Switches</td><td>2960</td><td>2</td></tr>
+    <tr><td>Server</td><td>End Devices</td><td>Server-PT</td><td>1</td></tr>
+    <tr><td>PCs</td><td>End Devices</td><td>PC-PT</td><td>3</td></tr>
+    <tr><td>Printer</td><td>End Devices</td><td>Printer-PT</td><td>1</td></tr>
+    <tr><td>Laptop</td><td>End Devices</td><td>Laptop-PT</td><td>1</td></tr>
+    <tr><td>Cloud</td><td>Network Devices &gt; WAN Emulation</td><td>Cloud-PT</td><td>1</td></tr>
+  </table>
+
+  <h3>Device Names</h3>
+  <table>
+    <tr><th>Device</th><th>Name</th><th>Role</th></tr>
+    <tr><td>Main router</td><td><code>RTR-HQ-EDGE-01</code></td><td>LAN gateway and WAN edge device</td></tr>
+    <tr><td>Branch/WAN demo router</td><td><code>RTR-WAN-DEMO-01</code></td><td>Remote endpoint for serial/WAN cabling concept</td></tr>
+    <tr><td>Main switch</td><td><code>SW-HQ-MDF-01</code></td><td>Main distribution switch in MDF</td></tr>
+    <tr><td>Annex switch</td><td><code>SW-ANNEX-IDF-01</code></td><td>Access switch in IDF</td></tr>
+    <tr><td>Server</td><td><code>SRV-HQ-FILE-01</code></td><td>Local file/web server</td></tr>
+    <tr><td>Main PC</td><td><code>PC-HQ-ADMIN-01</code></td><td>Main building user device</td></tr>
+    <tr><td>Annex PC</td><td><code>PC-ANNEX-USER-01</code></td><td>Annex user device</td></tr>
+    <tr><td>Printer</td><td><code>PRN-ANNEX-01</code></td><td>Annex printer</td></tr>
+    <tr><td>Technician laptop</td><td><code>LAPTOP-TECH-01</code></td><td>Console access demonstration</td></tr>
+    <tr><td>Cloud</td><td><code>ISP-CLOUD-01</code></td><td>Service provider/WAN representation</td></tr>
+  </table>
+</section>
+
+<section id="topology">
+  <h2>6. Target Logical Topology</h2>
+  <div class="topology">                    ISP-CLOUD-01
+                         |
+                         |  WAN / provider link concept
+                         |
+                 RTR-HQ-EDGE-01
+                    G0/0 |
+                         |  Copper straight-through
+                    G0/1 |
+                 SW-HQ-MDF-01
+             Fa0/1 |  Fa0/2 |   G0/2 backbone/uplink
+                   |        |--------------------------
+                   |                                   |
+          SRV-HQ-FILE-01                         SW-ANNEX-IDF-01
+                   |                             Fa0/1 |     Fa0/2 |
+             PC-HQ-ADMIN-01                            |           |
+                                                 PC-ANNEX      PRN-ANNEX
+                                                  USER-01          01
+
+Console demo:
+LAPTOP-TECH-01 RS-232  -------- Console cable --------  RTR-HQ-EDGE-01 Console
+
+Optional serial/WAN cable demo:
+RTR-HQ-EDGE-01 Serial0/0/0 ---- DCE/DTE Serial ---- RTR-WAN-DEMO-01 Serial0/0/0</div>
+  <div class="warning"><strong>Packet Tracer note:</strong> Some Packet Tracer devices support auto-MDIX behavior or simplified cabling behavior. The instructor should use this demo to teach the concept, then show interface status and packet flow to confirm what Packet Tracer accepts.</div>
+</section>
+
+<section id="addressing">
+  <h2>7. Addressing Plan</h2>
+  <p>The addressing is simple because Chapter 5 focuses on cabling. The network uses one LAN subnet so that cabling and interface status are easier to isolate.</p>
+  <table>
+    <tr><th>Device</th><th>Interface</th><th>IP Address</th><th>Subnet Mask</th><th>Default Gateway</th></tr>
+    <tr><td><code>RTR-HQ-EDGE-01</code></td><td>G0/0</td><td>192.168.50.1</td><td>255.255.255.0</td><td>N/A</td></tr>
+    <tr><td><code>SW-HQ-MDF-01</code></td><td>VLAN 1</td><td>192.168.50.2</td><td>255.255.255.0</td><td>192.168.50.1</td></tr>
+    <tr><td><code>SW-ANNEX-IDF-01</code></td><td>VLAN 1</td><td>192.168.50.3</td><td>255.255.255.0</td><td>192.168.50.1</td></tr>
+    <tr><td><code>SRV-HQ-FILE-01</code></td><td>Fa0</td><td>192.168.50.10</td><td>255.255.255.0</td><td>192.168.50.1</td></tr>
+    <tr><td><code>PC-HQ-ADMIN-01</code></td><td>Fa0</td><td>192.168.50.21</td><td>255.255.255.0</td><td>192.168.50.1</td></tr>
+    <tr><td><code>PC-ANNEX-USER-01</code></td><td>Fa0</td><td>192.168.50.31</td><td>255.255.255.0</td><td>192.168.50.1</td></tr>
+    <tr><td><code>PRN-ANNEX-01</code></td><td>Fa0</td><td>192.168.50.40</td><td>255.255.255.0</td><td>192.168.50.1</td></tr>
+  </table>
+</section>
+
+<section id="cabling">
+  <h2>8. Cable Selection Plan</h2>
+  <table>
+    <tr><th>Connection</th><th>Recommended Packet Tracer Cable</th><th>Teaching Point</th></tr>
+    <tr><td>PC to switch</td><td>Copper straight-through</td><td>End device to switch access link</td></tr>
+    <tr><td>Server to switch</td><td>Copper straight-through</td><td>Server access link</td></tr>
+    <tr><td>Printer to switch</td><td>Copper straight-through</td><td>Peripheral access link</td></tr>
+    <tr><td>Router to switch</td><td>Copper straight-through</td><td>Different device types commonly use straight-through</td></tr>
+    <tr><td>Switch to switch</td><td>Copper crossover or fiber concept</td><td>Uplink/backbone link; modern devices may auto-correct</td></tr>
+    <tr><td>Laptop to router console</td><td>Console cable</td><td>Local device management, not normal network traffic</td></tr>
+    <tr><td>Router to router WAN</td><td>Serial DCE/DTE cable, optional</td><td>WAN link concept and clocking</td></tr>
+  </table>
+
+  <h3>Instructor Explanation: Cable Categories</h3>
+  <table>
+    <tr><th>Cable/Medium</th><th>Simple Explanation</th><th>Common Use</th></tr>
+    <tr><td>Twisted-pair copper</td><td>Common Ethernet cabling using RJ-45 connectors</td><td>PCs, printers, APs, switches</td></tr>
+    <tr><td>Fiber optic</td><td>Uses light instead of electrical signals</td><td>Longer distance, building uplinks, high-speed backbone links</td></tr>
+    <tr><td>Coaxial</td><td>Older LAN medium and still common in cable Internet service</td><td>Cable modem/ISP service entrance</td></tr>
+    <tr><td>Console cable</td><td>Management cable for direct CLI access</td><td>Initial router or switch setup</td></tr>
+    <tr><td>Serial WAN cable</td><td>Legacy WAN concept shown in labs</td><td>Router-to-router WAN demonstrations</td></tr>
+  </table>
+</section>
+
+<section id="build">
+  <h2>9. Part A — Create the Packet Tracer Project</h2>
+  <div class="step">
+    <h3>Step A1: Open Packet Tracer</h3>
+    <p>Open Cisco Packet Tracer and create a new blank file.</p>
+    <p>Save the file as:</p>
+    <pre><code>Chapter5_Cabling_Demo.pkt</code></pre>
+  </div>
+  <div class="step">
+    <h3>Step A2: Add a Project Note</h3>
+    <p>Use the <strong>Place Note</strong> tool and add:</p>
+    <pre><code>Northstar Training Center
+Chapter 5 Demo Lab: Cabling
+Focus: Ethernet cabling, uplinks, console access, interface status, and cable documentation.</code></pre>
+  </div>
+</section>
+
+<section id="devices-add">
+  <h2>10. Part B — Add and Rename Devices</h2>
+  <div class="step"><h3>Step B1: Add routers</h3><p>Add two routers, preferably 2911 or 1941. Rename them:</p><pre><code>RTR-HQ-EDGE-01
+RTR-WAN-DEMO-01</code></pre></div>
+  <div class="step"><h3>Step B2: Add switches</h3><p>Add two 2960 switches. Rename them:</p><pre><code>SW-HQ-MDF-01
+SW-ANNEX-IDF-01</code></pre></div>
+  <div class="step"><h3>Step B3: Add end devices</h3><p>Add one server, two PCs, one printer, and one laptop. Rename them:</p><pre><code>SRV-HQ-FILE-01
+PC-HQ-ADMIN-01
+PC-ANNEX-USER-01
+PRN-ANNEX-01
+LAPTOP-TECH-01</code></pre></div>
+  <div class="step"><h3>Step B4: Add optional cloud</h3><p>Add one Cloud-PT and rename it:</p><pre><code>ISP-CLOUD-01</code></pre></div>
+</section>
+
+<section id="connect">
+  <h2>11. Part C — Connect the Devices</h2>
+  <div class="step">
+    <h3>Step C1: Router to Main Switch</h3>
+    <p>Use a <strong>Copper Straight-Through</strong> cable:</p>
+    <pre><code>RTR-HQ-EDGE-01 G0/0  -->  SW-HQ-MDF-01 G0/1</code></pre>
+    <p>Add label:</p><pre><code>LAN Gateway Uplink - Copper Straight-Through</code></pre>
+  </div>
+  <div class="step">
+    <h3>Step C2: Server to Main Switch</h3>
+    <pre><code>SRV-HQ-FILE-01 Fa0  -->  SW-HQ-MDF-01 Fa0/1</code></pre>
+    <p>Add label:</p><pre><code>Server Access Link - Copper Straight-Through</code></pre>
+  </div>
+  <div class="step">
+    <h3>Step C3: Main PC to Main Switch</h3>
+    <pre><code>PC-HQ-ADMIN-01 Fa0  -->  SW-HQ-MDF-01 Fa0/2</code></pre>
+    <p>Add label:</p><pre><code>User Access Link - Copper Straight-Through</code></pre>
+  </div>
+  <div class="step">
+    <h3>Step C4: Main Switch to Annex Switch</h3>
+    <p>Use a <strong>Copper Crossover</strong> cable if available, or use automatic cable selection if the instructor wants Packet Tracer to choose the connection.</p>
+    <pre><code>SW-HQ-MDF-01 G0/2  -->  SW-ANNEX-IDF-01 G0/1</code></pre>
+    <p>Add label:</p><pre><code>MDF-to-IDF Backbone/Uplink - Building Interconnect</code></pre>
+    <div class="callout">Use this link to explain that real networks often use fiber between wiring closets or between buildings because of distance, bandwidth, and electrical isolation concerns.</div>
+  </div>
+  <div class="step">
+    <h3>Step C5: Annex End Devices</h3>
+    <pre><code>PC-ANNEX-USER-01 Fa0  -->  SW-ANNEX-IDF-01 Fa0/1
+PRN-ANNEX-01 Fa0       -->  SW-ANNEX-IDF-01 Fa0/2</code></pre>
+    <p>Add labels:</p><pre><code>Annex User Access Link
+Annex Printer Access Link</code></pre>
+  </div>
+  <div class="step">
+    <h3>Step C6: Console Cable Demo</h3>
+    <p>Use the <strong>Console</strong> cable:</p>
+    <pre><code>LAPTOP-TECH-01 RS-232  -->  RTR-HQ-EDGE-01 Console</code></pre>
+    <p>Add label:</p><pre><code>Local Console Management Cable - Not an Ethernet Data Link</code></pre>
+  </div>
+</section>
+
+<section id="configs">
+  <h2>12. Part D — Configure Basic Connectivity</h2>
+  <h3>Router Configuration</h3>
+  <p>Open <code>RTR-HQ-EDGE-01</code> CLI. If prompted for the setup dialog, type <code>no</code>.</p>
+  <pre><code>enable
+configure terminal
+hostname RTR-HQ-EDGE-01
+
+interface gigabitEthernet0/0
+description Copper uplink to SW-HQ-MDF-01 G0/1
+ip address 192.168.50.1 255.255.255.0
+no shutdown
+exit
+
+banner motd #Authorized access only. Northstar Training Center edge router.#
+end
+copy running-config startup-config</code></pre>
+  <h3>Main Switch Configuration</h3>
+  <pre><code>enable
+configure terminal
+hostname SW-HQ-MDF-01
+
+interface vlan 1
+description Management SVI for Main Building MDF switch
+ip address 192.168.50.2 255.255.255.0
+no shutdown
+exit
+
+ip default-gateway 192.168.50.1
+
+interface gigabitEthernet0/1
+description Copper uplink to RTR-HQ-EDGE-01 G0/0
+exit
+interface gigabitEthernet0/2
+description MDF-to-IDF backbone uplink to SW-ANNEX-IDF-01 G0/1
+exit
+interface fastEthernet0/1
+description Access link to SRV-HQ-FILE-01
+exit
+interface fastEthernet0/2
+description Access link to PC-HQ-ADMIN-01
+exit
+end
+copy running-config startup-config</code></pre>
+  <h3>Annex Switch Configuration</h3>
+  <pre><code>enable
+configure terminal
+hostname SW-ANNEX-IDF-01
+
+interface vlan 1
+description Management SVI for Annex IDF switch
+ip address 192.168.50.3 255.255.255.0
+no shutdown
+exit
+
+ip default-gateway 192.168.50.1
+
+interface gigabitEthernet0/1
+description MDF-to-IDF backbone uplink to SW-HQ-MDF-01 G0/2
+exit
+interface fastEthernet0/1
+description Access link to PC-ANNEX-USER-01
+exit
+interface fastEthernet0/2
+description Access link to PRN-ANNEX-01
+exit
+end
+copy running-config startup-config</code></pre>
+</section>
+
+<section id="enddevices">
+  <h2>13. Part E — Configure End Devices</h2>
+  <p>For each end device, go to <strong>Desktop &gt; IP Configuration</strong>.</p>
+  <table>
+    <tr><th>Device</th><th>IP Address</th><th>Subnet Mask</th><th>Gateway</th></tr>
+    <tr><td><code>SRV-HQ-FILE-01</code></td><td>192.168.50.10</td><td>255.255.255.0</td><td>192.168.50.1</td></tr>
+    <tr><td><code>PC-HQ-ADMIN-01</code></td><td>192.168.50.21</td><td>255.255.255.0</td><td>192.168.50.1</td></tr>
+    <tr><td><code>PC-ANNEX-USER-01</code></td><td>192.168.50.31</td><td>255.255.255.0</td><td>192.168.50.1</td></tr>
+    <tr><td><code>PRN-ANNEX-01</code></td><td>192.168.50.40</td><td>255.255.255.0</td><td>192.168.50.1</td></tr>
+  </table>
+  <p>Optional server service: On the server, go to <strong>Services &gt; HTTP</strong> and turn HTTP <strong>On</strong>. This provides a simple service to test after the cabling is complete.</p>
+</section>
+
+<section id="verify">
+  <h2>14. Part F — Verify Cabling and Interfaces</h2>
+  <h3>Visual Link Status</h3>
+  <p>In Packet Tracer, observe the link lights. Green usually indicates the link is up. Amber may appear while spanning tree or interface negotiation is occurring. Red indicates a disconnected or down link.</p>
+  <h3>Router Checks</h3>
+  <pre><code>show ip interface brief
+show interfaces description
+show interfaces gigabitEthernet0/0</code></pre>
+  <p>Expected idea:</p>
+  <pre><code>GigabitEthernet0/0     192.168.50.1     YES manual up     up</code></pre>
+  <h3>Switch Checks</h3>
+  <p>On each switch, use:</p>
+  <pre><code>show interfaces status
+show interfaces description
+show mac address-table</code></pre>
+  <p>Instructor explanation:</p>
+  <ul>
+    <li><code>show interfaces status</code> helps identify connected ports.</li>
+    <li><code>show interfaces description</code> confirms that documentation exists inside the configuration.</li>
+    <li><code>show mac address-table</code> confirms that the switch is learning devices on active ports.</li>
+  </ul>
+  <h3>Ping Tests</h3>
+  <p>From <code>PC-HQ-ADMIN-01</code>, open Command Prompt and run:</p>
+  <pre><code>ping 192.168.50.1
+ping 192.168.50.2
+ping 192.168.50.3
+ping 192.168.50.10
+ping 192.168.50.31
+ping 192.168.50.40</code></pre>
+  <div class="success">When these pings work, the basic LAN cabling, switch forwarding, router LAN interface, and end-device IP settings are all functioning.</div>
+</section>
+
+<section id="physical">
+  <h2>15. Part G — Demonstrate Physical View and Structured Cabling</h2>
+  <p>Switch to <strong>Physical View</strong> and arrange the devices to represent a real site.</p>
+  <h3>Suggested Physical Layout</h3>
+  <div class="topology">Northstar City
+  └── Northstar Training Campus
+      ├── Main Building
+      │   └── MDF - Main Telecom Room
+      │       ├── RTR-HQ-EDGE-01
+      │       ├── SW-HQ-MDF-01
+      │       ├── SRV-HQ-FILE-01
+      │       ├── PC-HQ-ADMIN-01
+      │       └── LAPTOP-TECH-01
+      └── Annex Building
+          └── IDF - Annex Wiring Closet
+              ├── SW-ANNEX-IDF-01
+              ├── PC-ANNEX-USER-01
+              └── PRN-ANNEX-01</div>
+  <h3>Instructor Talking Points</h3>
+  <ul>
+    <li>The MDF is the main cabling and equipment room.</li>
+    <li>The IDF is a smaller distribution point connected back to the MDF.</li>
+    <li>User access cables usually run from wall jacks or patch panels to switch ports.</li>
+    <li>Uplinks between closets should be clearly labeled and protected.</li>
+    <li>Backbone cabling is often more critical than a single user access cable because it can affect many users.</li>
+  </ul>
+</section>
+
+<section id="console">
+  <h2>16. Part H — Console Cable Demonstration</h2>
+  <p>The console cable is not used for normal network traffic. It is used for local device management when network access is unavailable or not yet configured.</p>
+  <div class="step">
+    <h3>Step H1: Connect laptop to router console</h3>
+    <pre><code>LAPTOP-TECH-01 RS-232  -->  RTR-HQ-EDGE-01 Console</code></pre>
+  </div>
+  <div class="step">
+    <h3>Step H2: Open terminal</h3>
+    <p>Click <code>LAPTOP-TECH-01</code>, then go to:</p>
+    <pre><code>Desktop > Terminal</code></pre>
+    <p>Accept the default terminal settings, then click <strong>OK</strong>.</p>
+  </div>
+  <div class="step">
+    <h3>Step H3: Manage the router</h3>
+    <p>The router CLI should appear through the console session. Run:</p>
+    <pre><code>enable
+show running-config</code></pre>
+  </div>
+  <div class="callout"><strong>Teaching point:</strong> Console access works even before the router has an IP address. That makes it important for initial setup and recovery.</div>
+</section>
+
+<section id="serial">
+  <h2>17. Optional Part I — Serial WAN Cable Demonstration</h2>
+  <p>This section is optional. It is useful when the instructor wants to show that different network environments may use different cable and interface types.</p>
+  <h3>Add Serial Interfaces if Needed</h3>
+  <p>Some Packet Tracer routers may need a serial module added in the <strong>Physical</strong> tab. Power off the router, insert a serial module such as WIC/HWIC serial if available, then power the router back on.</p>
+  <h3>Connect the Routers</h3>
+  <pre><code>RTR-HQ-EDGE-01 Serial0/0/0  -->  RTR-WAN-DEMO-01 Serial0/0/0</code></pre>
+  <p>Use the serial DCE/DTE cable. One side acts as the DCE side and may require a clock rate.</p>
+  <h3>Example Configuration</h3>
+  <p>On <code>RTR-HQ-EDGE-01</code>:</p>
+  <pre><code>configure terminal
+interface serial0/0/0
+description Serial WAN demo link to RTR-WAN-DEMO-01
+ip address 10.10.10.1 255.255.255.252
+clock rate 64000
+no shutdown
+end</code></pre>
+  <p>On <code>RTR-WAN-DEMO-01</code>:</p>
+  <pre><code>enable
+configure terminal
+hostname RTR-WAN-DEMO-01
+interface serial0/0/0
+description Serial WAN demo link to RTR-HQ-EDGE-01
+ip address 10.10.10.2 255.255.255.252
+no shutdown
+end</code></pre>
+  <p>Verify:</p>
+  <pre><code>show ip interface brief
+ping 10.10.10.2</code></pre>
+  <div class="warning">If <code>clock rate</code> is rejected, the selected router interface is not the DCE side. Apply the clock rate on the other router serial interface, or use this as a teaching moment about DCE/DTE roles.</div>
+</section>
+
+<section id="documentation">
+  <h2>18. Part J — Cable Documentation Demo</h2>
+  <p>The instructor can show these tables as examples of professional cable documentation.</p>
+  <h3>Cable and Port Map</h3>
+  <table>
+    <tr><th>Cable ID</th><th>From Device</th><th>From Port</th><th>To Device</th><th>To Port</th><th>Cable Type</th><th>Purpose</th></tr>
+    <tr><td>CAB-001</td><td>RTR-HQ-EDGE-01</td><td>G0/0</td><td>SW-HQ-MDF-01</td><td>G0/1</td><td>Copper straight-through</td><td>LAN gateway uplink</td></tr>
+    <tr><td>CAB-002</td><td>SW-HQ-MDF-01</td><td>Fa0/1</td><td>SRV-HQ-FILE-01</td><td>Fa0</td><td>Copper straight-through</td><td>Server access</td></tr>
+    <tr><td>CAB-003</td><td>SW-HQ-MDF-01</td><td>Fa0/2</td><td>PC-HQ-ADMIN-01</td><td>Fa0</td><td>Copper straight-through</td><td>User access</td></tr>
+    <tr><td>CAB-004</td><td>SW-HQ-MDF-01</td><td>G0/2</td><td>SW-ANNEX-IDF-01</td><td>G0/1</td><td>Crossover/fiber concept</td><td>MDF-to-IDF backbone</td></tr>
+    <tr><td>CAB-005</td><td>SW-ANNEX-IDF-01</td><td>Fa0/1</td><td>PC-ANNEX-USER-01</td><td>Fa0</td><td>Copper straight-through</td><td>Annex user access</td></tr>
+    <tr><td>CAB-006</td><td>SW-ANNEX-IDF-01</td><td>Fa0/2</td><td>PRN-ANNEX-01</td><td>Fa0</td><td>Copper straight-through</td><td>Annex printer access</td></tr>
+    <tr><td>CAB-007</td><td>LAPTOP-TECH-01</td><td>RS-232</td><td>RTR-HQ-EDGE-01</td><td>Console</td><td>Console cable</td><td>Local management</td></tr>
+  </table>
+  <h3>Cable Labeling Examples</h3>
+  <pre><code>CAB-001: RTR-HQ-EDGE-01 G0/0 to SW-HQ-MDF-01 G0/1
+CAB-004: SW-HQ-MDF-01 G0/2 to SW-ANNEX-IDF-01 G0/1
+CAB-007: LAPTOP-TECH-01 RS-232 to RTR-HQ-EDGE-01 Console</code></pre>
+  <p>Explain that labels should be clear, consistent, and durable. In real environments, both ends of a cable should be labeled.</p>
+</section>
+
+<section id="troubleshooting">
+  <h2>19. Part K — Cabling Troubleshooting Demonstrations</h2>
+  <h3>Demo 1: Disconnected Access Cable</h3>
+  <div class="step">
+    <p>Delete or disconnect the cable between:</p>
+    <pre><code>PC-ANNEX-USER-01 Fa0  -->  SW-ANNEX-IDF-01 Fa0/1</code></pre>
+    <p>From <code>PC-ANNEX-USER-01</code>, try:</p>
+    <pre><code>ping 192.168.50.1
+ping 192.168.50.10</code></pre>
+    <p>Both tests should fail because the PC is physically disconnected.</p>
+  </div>
+  <p>Instructor explanation: If one user is down, check that user's cable, wall jack, patch panel path, and switch port first.</p>
+
+  <h3>Demo 2: Disconnected Backbone/Uplink Cable</h3>
+  <div class="step">
+    <p>Reconnect the access cable. Then disconnect the uplink between:</p>
+    <pre><code>SW-HQ-MDF-01 G0/2  -->  SW-ANNEX-IDF-01 G0/1</code></pre>
+    <p>Now test from <code>PC-ANNEX-USER-01</code>:</p>
+    <pre><code>ping 192.168.50.1
+ping 192.168.50.10</code></pre>
+    <p>The Annex devices lose access to the Main Building network.</p>
+  </div>
+  <p>Instructor explanation: A backbone/uplink failure can affect many devices behind the downstream switch.</p>
+
+  <h3>Demo 3: Administratively Shutdown Port</h3>
+  <p>On <code>SW-ANNEX-IDF-01</code>, shut down the port connected to the annex PC:</p>
+  <pre><code>enable
+configure terminal
+interface fastEthernet0/1
+shutdown
+end</code></pre>
+  <p>Verify:</p>
+  <pre><code>show interfaces status
+show ip interface brief</code></pre>
+  <p>Fix:</p>
+  <pre><code>configure terminal
+interface fastEthernet0/1
+no shutdown
+end</code></pre>
+  <p>Instructor explanation: A cable may be physically connected, but the port may still be disabled in software.</p>
+
+  <h3>Demo 4: Wrong Port Documentation</h3>
+  <p>Move <code>PC-HQ-ADMIN-01</code> from <code>Fa0/2</code> to <code>Fa0/10</code> without updating the label.</p>
+  <p>Run:</p>
+  <pre><code>show mac address-table
+show interfaces status</code></pre>
+  <p>Instructor explanation: The network may still work, but documentation is now wrong. Incorrect documentation can cause technicians to troubleshoot the wrong port or unplug the wrong device.</p>
+</section>
+
+<section id="simulation">
+  <h2>20. Part L — Use Simulation Mode to Connect Physical Cabling to Traffic Flow</h2>
+  <p>Switch to <strong>Simulation Mode</strong>. Filter for ARP and ICMP.</p>
+  <p>From <code>PC-HQ-ADMIN-01</code>, ping the server:</p>
+  <pre><code>ping 192.168.50.10</code></pre>
+  <p>Click <strong>Capture / Forward</strong> and observe traffic moving through the cable path.</p>
+  <p>Explain:</p>
+  <ul>
+    <li>The user sees a simple ping.</li>
+    <li>Packet Tracer shows frames moving across cables.</li>
+    <li>The switch forwards frames through specific ports.</li>
+    <li>If a cable or port fails, the packet cannot complete the path.</li>
+  </ul>
+</section>
+
+<section id="talkingpoints">
+  <h2>21. Instructor Talking Points</h2>
+  <h3>Straight-Through vs. Crossover</h3>
+  <p>Traditionally, straight-through cables connect different device types, such as PC-to-switch or router-to-switch. Crossover cables historically connected similar device types, such as switch-to-switch or PC-to-PC. Modern network interfaces often support auto-MDIX, so the device may automatically adjust. Packet Tracer may also simplify this behavior.</p>
+  <h3>Copper vs. Fiber</h3>
+  <p>Copper cabling is common for short access runs inside an office. Fiber is often preferred for longer distances, building-to-building uplinks, high-speed backbone links, and areas where electromagnetic interference or electrical grounding issues are a concern.</p>
+  <h3>Console vs. Ethernet</h3>
+  <p>A console cable provides management access to the command-line interface. It does not provide normal IP connectivity between devices. This is why a technician can use a console connection even when the network interface has no IP address.</p>
+  <h3>Physical Layer Troubleshooting Comes First</h3>
+  <p>Before changing IP settings or routing tables, check whether the cable is connected, the link light is active, the correct port is used, and the interface is enabled.</p>
+</section>
+
+<section id="timing">
+  <h2>22. Suggested 2-Hour Demo Timing</h2>
+  <table>
+    <tr><th>Time</th><th>Activity</th></tr>
+    <tr><td>0–10 min</td><td>Introduce cabling, media, connectors, and structured cabling purpose.</td></tr>
+    <tr><td>10–25 min</td><td>Add devices and explain roles.</td></tr>
+    <tr><td>25–45 min</td><td>Connect the topology and label each cable.</td></tr>
+    <tr><td>45–65 min</td><td>Configure router, switches, and end-device IP settings.</td></tr>
+    <tr><td>65–80 min</td><td>Verify interface status and successful pings.</td></tr>
+    <tr><td>80–95 min</td><td>Show Physical View, MDF, IDF, uplinks, and cable documentation.</td></tr>
+    <tr><td>95–110 min</td><td>Demonstrate console cable and optional serial WAN cable.</td></tr>
+    <tr><td>110–120 min</td><td>Demonstrate cabling failures and summarize troubleshooting logic.</td></tr>
+  </table>
+</section>
+
+<section id="summary">
+  <h2>23. Final Demo Summary</h2>
+  <p>End the demo with this summary:</p>
+  <div class="success"><strong>Main lesson:</strong> Cabling is the foundation of network communication. If the physical path is wrong, missing, disabled, mislabeled, or poorly documented, higher-layer services cannot work reliably.</div>
+  <h3>Key Takeaways</h3>
+  <ul>
+    <li>Use appropriate cable types for the connection being demonstrated.</li>
+    <li>Label links clearly in the logical topology.</li>
+    <li>Use Physical View to show MDF, IDF, and device placement.</li>
+    <li>Use CLI commands to verify port status and interface descriptions.</li>
+    <li>Use ping and Simulation Mode to connect cabling concepts to actual packet movement.</li>
+    <li>Document backbone/uplink cables carefully because they affect multiple downstream devices.</li>
+  </ul>
+  <h3>Simple Troubleshooting Order</h3>
+  <pre><code>1. Check the cable.
+2. Check the link light.
+3. Check the correct port.
+4. Check whether the interface is shut down.
+5. Check IP configuration.
+6. Check higher-layer services.</code></pre>
+</section>
+</main>
+<footer>
+  Packet Tracer Demo Lab — Chapter 5: Cabling — Internetworking Basics
+</footer>
+</body>
+</html>
