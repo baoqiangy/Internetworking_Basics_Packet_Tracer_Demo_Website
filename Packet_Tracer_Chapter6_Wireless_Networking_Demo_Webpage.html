@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Packet Tracer Demo Lab - Chapter 6: Wireless Networking</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --paper: #ffffff;
+      --ink: #182230;
+      --muted: #5d6b82;
+      --line: #d9e0ea;
+      --accent: #2457c5;
+      --accent-soft: #eaf0ff;
+      --code-bg: #111827;
+      --code-ink: #f3f4f6;
+      --table-head: #eef3fb;
+      --note: #fff7df;
+      --success: #e9f8ef;
+      --warn: #fff1f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.58;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 18px 64px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #173b88, #2f75ff);
+      color: white;
+      border-radius: 18px;
+      padding: 34px 36px;
+      box-shadow: 0 12px 32px rgba(24, 34, 48, 0.18);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 2.1rem;
+      line-height: 1.15;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 500;
+      opacity: 0.95;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .meta div {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 12px 14px;
+      border-radius: 12px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 26px;
+      margin: 18px 0;
+      box-shadow: 0 6px 18px rgba(24, 34, 48, 0.06);
+    }
+
+    h2 {
+      color: #173b88;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 8px;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #24446f;
+      margin-top: 24px;
+    }
+
+    h4 {
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    p { margin: 10px 0; }
+
+    ul, ol { padding-left: 24px; }
+
+    li { margin: 5px 0; }
+
+    .note {
+      background: var(--note);
+      border-left: 5px solid #e6a700;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .success {
+      background: var(--success);
+      border-left: 5px solid #229954;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .warning {
+      background: var(--warn);
+      border-left: 5px solid #d33c32;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 22px;
+      overflow-wrap: anywhere;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: var(--table-head);
+      color: #173b88;
+      font-weight: 700;
+    }
+
+    code {
+      background: #eef2f7;
+      padding: 2px 5px;
+      border-radius: 5px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 0.95em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-ink);
+      padding: 16px 18px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      margin: 12px 0 18px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .topology {
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 14px 0;
+    }
+
+    .toc {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .toc a:hover { text-decoration: underline; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .mini {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { max-width: none; padding: 0; }
+      .hero, .card { box-shadow: none; }
+      .card { break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>Packet Tracer Demo Lab</h1>
+      <h2>Chapter 6: Wireless Networking</h2>
+      <p>Original instructor/demo lab aligned with <em>CompTIA Network+ Guide to Networks</em>, 10th Edition by Jill West.</p>
+      <div class="meta">
+        <div><strong>Course:</strong><br>Internetworking Basics</div>
+        <div><strong>Estimated Time:</strong><br>2 hours</div>
+        <div><strong>Lab Type:</strong><br>Instructor-led demo with guided practice</div>
+        <div><strong>Tool:</strong><br>Cisco Packet Tracer</div>
+      </div>
+    </section>
+
+    <section class="toc">
+      <strong>Page Sections:</strong>
+      <ol>
+        <li><a href="#purpose">Lab Purpose</a></li>
+        <li><a href="#scenario">Scenario and Objectives</a></li>
+        <li><a href="#topology">Topology and Addressing</a></li>
+        <li><a href="#build">Build the Packet Tracer Network</a></li>
+        <li><a href="#configure">Configure Router, Server, Wireless Router, and Clients</a></li>
+        <li><a href="#verify">Verify Wireless Connectivity</a></li>
+        <li><a href="#security">Wireless Security Demo</a></li>
+        <li><a href="#troubleshooting">Troubleshooting Demonstrations</a></li>
+        <li><a href="#timing">2-Hour Instructor Timing Plan</a></li>
+      </ol>
+    </section>
+
+    <section id="purpose" class="card">
+      <h2>1. Lab Purpose</h2>
+      <p>
+        The purpose of this demo lab is to help students understand how wireless networks are built, secured, documented, and tested.
+        Students will see that wireless networking is not just “Wi-Fi.” A working wireless network requires correct physical placement,
+        SSID configuration, security settings, addressing, DHCP, DNS, and troubleshooting.
+      </p>
+      <p>This lab demonstrates:</p>
+      <ul>
+        <li>Basic wireless infrastructure using a wireless router and wireless clients.</li>
+        <li>SSID naming and wireless association.</li>
+        <li>WPA2-Personal security configuration.</li>
+        <li>DHCP addressing for wireless clients.</li>
+        <li>DNS and HTTP testing over Wi-Fi.</li>
+        <li>Wireless troubleshooting for wrong password, wrong SSID, DHCP failure, and coverage issues.</li>
+        <li>The difference between wired infrastructure and wireless access.</li>
+      </ul>
+
+      <div class="note">
+        <strong>Instructor note:</strong> This is a demo lab, not an assignment lab. It is designed for live teaching, step-by-step explanation,
+        and classroom discussion. It does not include submission requirements, grading, or required screenshots.
+      </div>
+    </section>
+
+    <section id="scenario" class="card">
+      <h2>2. Lab Scenario</h2>
+      <p>
+        You are expanding the network for <strong>Northstar Training Center</strong>. The wired LAN already has a router, switch, and server.
+        The organization now wants to add wireless access for instructors, staff, and guests.
+      </p>
+      <p>The network administrator wants to demonstrate:</p>
+      <ol>
+        <li>How a wireless access point or wireless router connects wireless devices to the LAN.</li>
+        <li>How SSID and security settings affect client connectivity.</li>
+        <li>How DHCP provides IP configuration to wireless devices.</li>
+        <li>How DNS and web services can be accessed over Wi-Fi.</li>
+        <li>How common wireless problems are diagnosed.</li>
+      </ol>
+
+      <h3>Learning Objectives</h3>
+      <ul>
+        <li>Explain the purpose of an SSID.</li>
+        <li>Configure a basic wireless network in Packet Tracer.</li>
+        <li>Configure WPA2-Personal security.</li>
+        <li>Connect laptops and smartphones to a wireless network.</li>
+        <li>Verify IP address assignment using DHCP.</li>
+        <li>Test connectivity using <code>ping</code>, browser access, and DNS names.</li>
+        <li>Explain how channel selection and physical placement affect wireless performance.</li>
+        <li>Troubleshoot common wireless connectivity problems.</li>
+      </ul>
+
+      <h3>Chapter 6 Concept Alignment</h3>
+      <table>
+        <thead>
+          <tr><th>Wireless Networking Topic</th><th>Demo Lab Activity</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Wireless LAN infrastructure</td><td>Add wireless router/AP and connect it to the wired LAN</td></tr>
+          <tr><td>SSID</td><td>Create a named wireless network: <code>Northstar-Staff</code></td></tr>
+          <tr><td>Wireless security</td><td>Configure WPA2-Personal and a pre-shared key</td></tr>
+          <tr><td>Client association</td><td>Connect laptop and smartphone to the SSID</td></tr>
+          <tr><td>DHCP</td><td>Provide wireless clients with automatic IP settings</td></tr>
+          <tr><td>DNS and services</td><td>Access a local web server by IP address and domain name</td></tr>
+          <tr><td>Channel and interference concepts</td><td>Compare channel choices and discuss overlap</td></tr>
+          <tr><td>Wireless troubleshooting</td><td>Demonstrate wrong SSID, wrong password, DHCP failure, and weak coverage</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="topology" class="card">
+      <h2>3. Devices, Topology, and Addressing</h2>
+
+      <h3>Devices Used</h3>
+      <table>
+        <thead>
+          <tr><th>Device Type</th><th>Packet Tracer Category</th><th>Suggested Device</th><th>Quantity</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Router</td><td>Network Devices &gt; Routers</td><td>2911 or 1941</td><td>1</td></tr>
+          <tr><td>Switch</td><td>Network Devices &gt; Switches</td><td>2960</td><td>1</td></tr>
+          <tr><td>Server</td><td>End Devices</td><td>Server-PT</td><td>1</td></tr>
+          <tr><td>Wireless Router</td><td>Network Devices &gt; Wireless Devices</td><td>WRT300N or Wireless Router</td><td>1</td></tr>
+          <tr><td>Wired PC</td><td>End Devices</td><td>PC-PT</td><td>1</td></tr>
+          <tr><td>Wireless Laptop</td><td>End Devices</td><td>Laptop-PT</td><td>2</td></tr>
+          <tr><td>Smartphone/Tablet</td><td>End Devices</td><td>Smartphone or Tablet</td><td>1</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Device Naming Plan</h3>
+      <table>
+        <thead>
+          <tr><th>Device</th><th>Packet Tracer Name</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Router</td><td><code>RTR-HQ-EDGE-01</code></td><td>Default gateway for the wired LAN</td></tr>
+          <tr><td>Switch</td><td><code>SW-HQ-ACCESS-01</code></td><td>Wired access switch</td></tr>
+          <tr><td>Server</td><td><code>SRV-HQ-SERVICES-01</code></td><td>DNS and web services</td></tr>
+          <tr><td>Wireless Router</td><td><code>WRT-HQ-WIFI-01</code></td><td>Wireless network for staff devices</td></tr>
+          <tr><td>Wired PC</td><td><code>PC-HQ-WIRED-01</code></td><td>Wired testing client</td></tr>
+          <tr><td>Wireless Laptop 1</td><td><code>LAP-HQ-STAFF-01</code></td><td>Wireless staff client</td></tr>
+          <tr><td>Wireless Laptop 2</td><td><code>LAP-HQ-STAFF-02</code></td><td>Wireless staff client</td></tr>
+          <tr><td>Smartphone</td><td><code>PHONE-HQ-GUEST-01</code></td><td>Wireless mobile client</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Target Logical Topology</h3>
+      <div class="topology">                         SRV-HQ-SERVICES-01
+                                |
+                                |
+RTR-HQ-EDGE-01 ---- SW-HQ-ACCESS-01 ---- PC-HQ-WIRED-01
+                                |
+                                |
+                         WRT-HQ-WIFI-01
+                         )))       )))       )))
+                          |         |         |
+                  LAP-HQ-STAFF-01  LAP-HQ-STAFF-02  PHONE-HQ-GUEST-01</div>
+
+      <h3>Addressing Plan</h3>
+      <p>Use two simple networks so students can see the difference between the wired LAN and the wireless client network.</p>
+
+      <h4>Wired LAN</h4>
+      <table>
+        <thead>
+          <tr><th>Device</th><th>Interface</th><th>IP Address</th><th>Subnet Mask</th><th>Default Gateway</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>RTR-HQ-EDGE-01</code></td><td>G0/0</td><td>192.168.60.1</td><td>255.255.255.0</td><td>N/A</td></tr>
+          <tr><td><code>SRV-HQ-SERVICES-01</code></td><td>Fa0</td><td>192.168.60.10</td><td>255.255.255.0</td><td>192.168.60.1</td></tr>
+          <tr><td><code>PC-HQ-WIRED-01</code></td><td>Fa0</td><td>192.168.60.21</td><td>255.255.255.0</td><td>192.168.60.1</td></tr>
+          <tr><td><code>WRT-HQ-WIFI-01</code></td><td>Internet/WAN</td><td>192.168.60.50</td><td>255.255.255.0</td><td>192.168.60.1</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Wireless Client Network</h4>
+      <table>
+        <thead>
+          <tr><th>Setting</th><th>Value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Wireless router LAN IP</td><td>192.168.61.1</td></tr>
+          <tr><td>Wireless DHCP range</td><td>192.168.61.100 to 192.168.61.149</td></tr>
+          <tr><td>Subnet mask</td><td>255.255.255.0</td></tr>
+          <tr><td>Wireless default gateway</td><td>192.168.61.1</td></tr>
+          <tr><td>DNS server</td><td>192.168.60.10</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Wireless Settings</h4>
+      <table>
+        <thead>
+          <tr><th>Wireless Setting</th><th>Recommended Value</th><th>Teaching Point</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>SSID</td><td><code>Northstar-Staff</code></td><td>Wireless network name</td></tr>
+          <tr><td>Security mode</td><td>WPA2-Personal</td><td>Protects Wi-Fi access using a shared key</td></tr>
+          <tr><td>Passphrase</td><td><code>N0rthstar-WiFi!</code></td><td>Demo password; change for real use</td></tr>
+          <tr><td>Band/channel concept</td><td>2.4 GHz channel 1, 6, or 11</td><td>Non-overlapping channel planning concept</td></tr>
+          <tr><td>Broadcast SSID</td><td>Enabled</td><td>Easy discovery for demo purposes</td></tr>
+        </tbody>
+      </table>
+
+      <div class="warning">
+        <strong>Password note:</strong> The passphrase above is for a classroom simulation only. Do not reuse classroom demo passwords on real networks.
+      </div>
+    </section>
+
+    <section id="build" class="card">
+      <h2>4. Build the Packet Tracer Network</h2>
+
+      <h3>Part A — Create the Project</h3>
+      <ol>
+        <li>Open Cisco Packet Tracer.</li>
+        <li>Create a new file.</li>
+        <li>Save the file as <code>Chapter6_Wireless_Networking_Demo.pkt</code>.</li>
+        <li>Add a workspace note with the lab title and focus topics.</li>
+      </ol>
+
+      <pre><code>Northstar Training Center
+Chapter 6 Demo Lab: Wireless Networking
+
+Focus:
+- SSID
+- WPA2-Personal
+- Wireless client association
+- DHCP addressing
+- DNS and HTTP testing
+- Wireless troubleshooting</code></pre>
+
+      <h3>Part B — Add Devices</h3>
+      <ol>
+        <li>Add one router and rename it <code>RTR-HQ-EDGE-01</code>.</li>
+        <li>Add one 2960 switch and rename it <code>SW-HQ-ACCESS-01</code>.</li>
+        <li>Add one server and rename it <code>SRV-HQ-SERVICES-01</code>.</li>
+        <li>Add one PC and rename it <code>PC-HQ-WIRED-01</code>.</li>
+        <li>Add one wireless router and rename it <code>WRT-HQ-WIFI-01</code>.</li>
+        <li>Add two laptops and rename them <code>LAP-HQ-STAFF-01</code> and <code>LAP-HQ-STAFF-02</code>.</li>
+        <li>Add one smartphone or tablet and rename it <code>PHONE-HQ-GUEST-01</code>.</li>
+      </ol>
+
+      <h3>Part C — Cable the Wired Side</h3>
+      <p>Use copper straight-through cables for wired connections.</p>
+
+      <table>
+        <thead>
+          <tr><th>From Device</th><th>From Port</th><th>To Device</th><th>To Port</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>RTR-HQ-EDGE-01</code></td><td>G0/0</td><td><code>SW-HQ-ACCESS-01</code></td><td>Fa0/1</td><td>LAN gateway link</td></tr>
+          <tr><td><code>SRV-HQ-SERVICES-01</code></td><td>Fa0</td><td><code>SW-HQ-ACCESS-01</code></td><td>Fa0/2</td><td>Server access link</td></tr>
+          <tr><td><code>PC-HQ-WIRED-01</code></td><td>Fa0</td><td><code>SW-HQ-ACCESS-01</code></td><td>Fa0/3</td><td>Wired client access link</td></tr>
+          <tr><td><code>WRT-HQ-WIFI-01</code></td><td>Internet/WAN</td><td><code>SW-HQ-ACCESS-01</code></td><td>Fa0/4</td><td>Wireless router uplink</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>Instructor explanation:</strong> The wireless router has a WAN/Internet side and a LAN/wireless side. In this demo,
+        its WAN side connects to the existing wired LAN, while its wireless side creates a separate Wi-Fi client network.
+      </div>
+    </section>
+
+    <section id="configure" class="card">
+      <h2>5. Configure Router, Server, Wireless Router, and Clients</h2>
+
+      <h3>Part D — Configure the Router</h3>
+      <p>Click <code>RTR-HQ-EDGE-01</code>, open the CLI, and enter the following:</p>
+
+      <pre><code>enable
+configure terminal
+hostname RTR-HQ-EDGE-01
+
+interface gigabitEthernet0/0
+description LAN gateway for Northstar wired network
+ip address 192.168.60.1 255.255.255.0
+no shutdown
+exit
+
+banner motd #Authorized access only. Northstar gateway router.#
+
+end
+copy running-config startup-config</code></pre>
+
+      <p>Verify:</p>
+
+      <pre><code>show ip interface brief</code></pre>
+
+      <p>Expected result:</p>
+
+      <pre><code>GigabitEthernet0/0     192.168.60.1     YES manual up     up</code></pre>
+
+      <h3>Part E — Configure the Server</h3>
+      <p>Click <code>SRV-HQ-SERVICES-01</code> and go to <strong>Desktop &gt; IP Configuration</strong>.</p>
+
+      <pre><code>IP Address:       192.168.60.10
+Subnet Mask:      255.255.255.0
+Default Gateway:  192.168.60.1
+DNS Server:       192.168.60.10</code></pre>
+
+      <h4>Enable DNS</h4>
+      <p>Go to <strong>Services &gt; DNS</strong> and turn DNS <strong>On</strong>. Add these records:</p>
+
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Type</th><th>Address</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>www.northstar.local</code></td><td>A</td><td>192.168.60.10</td></tr>
+          <tr><td><code>wifi.northstar.local</code></td><td>A</td><td>192.168.61.1</td></tr>
+          <tr><td><code>gateway.northstar.local</code></td><td>A</td><td>192.168.60.1</td></tr>
+        </tbody>
+      </table>
+
+      <h4>Enable HTTP</h4>
+      <p>Go to <strong>Services &gt; HTTP</strong> and turn HTTP <strong>On</strong>.</p>
+
+      <p>Optional homepage text:</p>
+
+      <pre><code>Welcome to Northstar Training Center.
+This page is hosted on SRV-HQ-SERVICES-01.
+Wireless clients should be able to reach this page after Wi-Fi and addressing are configured.</code></pre>
+
+      <h3>Part F — Configure the Wired PC</h3>
+      <p>Click <code>PC-HQ-WIRED-01</code> and go to <strong>Desktop &gt; IP Configuration</strong>.</p>
+
+      <pre><code>IP Address:       192.168.60.21
+Subnet Mask:      255.255.255.0
+Default Gateway:  192.168.60.1
+DNS Server:       192.168.60.10</code></pre>
+
+      <h3>Part G — Configure the Wireless Router</h3>
+      <p>Click <code>WRT-HQ-WIFI-01</code>. Packet Tracer wireless-router menus may vary slightly by version.</p>
+
+      <h4>Internet/WAN Settings</h4>
+      <p>Configure the Internet-facing side:</p>
+
+      <pre><code>Internet IP Address: 192.168.60.50
+Subnet Mask:         255.255.255.0
+Default Gateway:     192.168.60.1
+DNS Server:          192.168.60.10</code></pre>
+
+      <h4>LAN Settings</h4>
+      <p>Configure the wireless-router LAN side:</p>
+
+      <pre><code>Router/LAN IP Address: 192.168.61.1
+Subnet Mask:           255.255.255.0
+DHCP Server:           Enabled
+DHCP Start Address:    192.168.61.100
+Maximum Users:         50
+DNS Server:            192.168.60.10</code></pre>
+
+      <h4>Wireless Settings</h4>
+      <p>Configure the SSID:</p>
+
+      <pre><code>SSID: Northstar-Staff
+SSID Broadcast: Enabled
+Wireless Mode: Mixed or default
+Channel: 6</code></pre>
+
+      <h4>Wireless Security</h4>
+      <p>Configure security:</p>
+
+      <pre><code>Security Mode: WPA2-Personal
+Encryption: AES, if available
+Passphrase: N0rthstar-WiFi!</code></pre>
+
+      <div class="success">
+        <strong>Teaching point:</strong> WPA2-Personal uses a pre-shared key. Everyone who connects to this Wi-Fi network uses the same Wi-Fi password.
+        In larger organizations, WPA2/WPA3-Enterprise with 802.1X is often preferred.
+      </div>
+
+      <h3>Part H — Configure Wireless Clients</h3>
+
+      <h4>Laptop wireless adapter note</h4>
+      <p>
+        Some Packet Tracer laptops may need a wireless module installed before they can connect wirelessly.
+        If the laptop does not show a wireless interface, open the laptop’s physical tab, power it off,
+        remove the wired Ethernet module if needed, insert a wireless module, and power it back on.
+      </p>
+
+      <h4>Connect LAP-HQ-STAFF-01</h4>
+      <ol>
+        <li>Click <code>LAP-HQ-STAFF-01</code>.</li>
+        <li>Go to <strong>Desktop &gt; PC Wireless</strong>.</li>
+        <li>Select the SSID <code>Northstar-Staff</code>.</li>
+        <li>Enter the passphrase <code>N0rthstar-WiFi!</code>.</li>
+        <li>Connect.</li>
+        <li>Go to <strong>Desktop &gt; IP Configuration</strong> and select DHCP if needed.</li>
+      </ol>
+
+      <h4>Connect LAP-HQ-STAFF-02</h4>
+      <p>Repeat the same wireless connection process for <code>LAP-HQ-STAFF-02</code>.</p>
+
+      <h4>Connect PHONE-HQ-GUEST-01</h4>
+      <p>Use the smartphone/tablet wireless configuration screen to connect to the same SSID.</p>
+
+      <p>Expected client addresses:</p>
+
+      <pre><code>LAP-HQ-STAFF-01:   192.168.61.100 or similar
+LAP-HQ-STAFF-02:   192.168.61.101 or similar
+PHONE-HQ-GUEST-01: 192.168.61.102 or similar</code></pre>
+    </section>
+
+    <section id="verify" class="card">
+      <h2>6. Verify Wireless Connectivity</h2>
+
+      <h3>Part I — Check IP Configuration</h3>
+      <p>On each wireless laptop, open <strong>Desktop &gt; Command Prompt</strong> and run:</p>
+
+      <pre><code>ipconfig</code></pre>
+
+      <p>Expected values:</p>
+
+      <table>
+        <thead>
+          <tr><th>Field</th><th>Expected Result</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>IP address</td><td>192.168.61.100 or higher</td></tr>
+          <tr><td>Subnet mask</td><td>255.255.255.0</td></tr>
+          <tr><td>Default gateway</td><td>192.168.61.1</td></tr>
+          <tr><td>DNS server</td><td>192.168.60.10</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Part J — Ping the Wireless Gateway</h3>
+      <p>From <code>LAP-HQ-STAFF-01</code>, run:</p>
+
+      <pre><code>ping 192.168.61.1</code></pre>
+
+      <p>This confirms that the wireless client can reach the wireless router’s LAN interface.</p>
+
+      <h3>Part K — Ping the Server</h3>
+      <p>From <code>LAP-HQ-STAFF-01</code>, run:</p>
+
+      <pre><code>ping 192.168.60.10</code></pre>
+
+      <p>If this works, the wireless client can reach a service on the wired LAN.</p>
+
+      <h3>Part L — Test DNS</h3>
+      <p>From <code>LAP-HQ-STAFF-01</code>, run:</p>
+
+      <pre><code>nslookup www.northstar.local</code></pre>
+
+      <p>Expected result:</p>
+
+      <pre><code>Name:    www.northstar.local
+Address: 192.168.60.10</code></pre>
+
+      <h3>Part M — Test Web Access</h3>
+      <p>On <code>LAP-HQ-STAFF-01</code>, open the web browser and test:</p>
+
+      <pre><code>http://192.168.60.10</code></pre>
+
+      <p>Then test:</p>
+
+      <pre><code>http://www.northstar.local</code></pre>
+
+      <div class="success">
+        <strong>Instructor explanation:</strong> If the IP address works but the domain name fails, wireless connectivity is working but DNS is probably misconfigured.
+      </div>
+
+      <h3>Part N — Simulation Mode</h3>
+      <ol>
+        <li>Switch Packet Tracer to <strong>Simulation</strong> mode.</li>
+        <li>Clear the event list.</li>
+        <li>Filter for <code>ARP</code>, <code>ICMP</code>, <code>DNS</code>, <code>TCP</code>, and <code>HTTP</code>.</li>
+        <li>From a wireless laptop, open <code>http://www.northstar.local</code>.</li>
+        <li>Use <strong>Capture / Forward</strong> to step through traffic.</li>
+      </ol>
+
+      <p>Discuss the sequence:</p>
+      <ol>
+        <li>The wireless client associates to the SSID.</li>
+        <li>The client receives DHCP addressing.</li>
+        <li>The client asks DNS to resolve the website name.</li>
+        <li>The client sends web traffic to the server.</li>
+        <li>The wireless router forwards traffic between the wireless side and wired side.</li>
+      </ol>
+    </section>
+
+    <section id="security" class="card">
+      <h2>7. Wireless Security Demo</h2>
+
+      <h3>Part O — Demonstrate Open vs. Secured Wi-Fi</h3>
+      <p>Show the class the difference between two wireless security designs:</p>
+
+      <table>
+        <thead>
+          <tr><th>Design</th><th>Security Level</th><th>Problem</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Open SSID</td><td>Low</td><td>Anyone nearby may connect if no other controls exist</td></tr>
+          <tr><td>WPA2-Personal</td><td>Better for small networks</td><td>Shared password must be protected and changed when needed</td></tr>
+          <tr><td>WPA2/WPA3-Enterprise</td><td>Better for organizations</td><td>Requires authentication infrastructure, such as RADIUS/802.1X</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Part P — Discuss SSID Naming</h3>
+      <p>Good SSID names are clear but not overly sensitive.</p>
+
+      <table>
+        <thead>
+          <tr><th>SSID Example</th><th>Better or Worse?</th><th>Reason</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Northstar-Staff</code></td><td>Better</td><td>Clear and professional</td></tr>
+          <tr><td><code>Router123</code></td><td>Worse</td><td>Unclear and generic</td></tr>
+          <tr><td><code>CEO-Private-Network</code></td><td>Worse</td><td>Reveals sensitive role information</td></tr>
+          <tr><td><code>Free-WiFi</code></td><td>Risky</td><td>May confuse users or invite unauthorized access</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Part Q — Channel Planning Concept</h3>
+      <p>
+        In a 2.4 GHz Wi-Fi discussion, introduce the idea that channels overlap. Channels 1, 6, and 11 are commonly used
+        because they are spaced apart to reduce overlap. Packet Tracer may not simulate all real-world interference behavior,
+        but it is useful for explaining the concept.
+      </p>
+
+      <div class="topology">2.4 GHz example:
+
+AP 1: Channel 1
+AP 2: Channel 6
+AP 3: Channel 11
+
+Goal: Reduce co-channel and adjacent-channel interference.</div>
+
+      <h3>Part R — Guest Network Concept</h3>
+      <p>
+        Explain that a real organization often separates staff and guest Wi-Fi. Guest devices should not automatically have the same access
+        as internal staff devices.
+      </p>
+
+      <table>
+        <thead>
+          <tr><th>Network</th><th>Purpose</th><th>Typical Access</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Staff Wi-Fi</td><td>Employees and trusted users</td><td>Internal resources, printers, applications</td></tr>
+          <tr><td>Guest Wi-Fi</td><td>Visitors</td><td>Internet only, usually isolated from internal LAN</td></tr>
+          <tr><td>IoT Wi-Fi</td><td>Cameras, sensors, smart devices</td><td>Restricted access based on device need</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="troubleshooting" class="card">
+      <h2>8. Wireless Troubleshooting Demonstrations</h2>
+
+      <h3>Demo 1 — Wrong Wi-Fi Password</h3>
+      <ol>
+        <li>On <code>LAP-HQ-STAFF-02</code>, attempt to connect to <code>Northstar-Staff</code>.</li>
+        <li>Enter the wrong passphrase, such as <code>wrongpassword</code>.</li>
+        <li>Observe that the client cannot connect.</li>
+        <li>Enter the correct passphrase: <code>N0rthstar-WiFi!</code>.</li>
+        <li>Confirm the client connects successfully.</li>
+      </ol>
+      <p><strong>Teaching point:</strong> A wrong Wi-Fi password prevents wireless association or authentication.</p>
+
+      <h3>Demo 2 — Wrong SSID</h3>
+      <ol>
+        <li>Change the wireless router SSID from <code>Northstar-Staff</code> to <code>Northstar-Staff-New</code>.</li>
+        <li>Show that existing clients may lose connectivity or fail to reconnect.</li>
+        <li>Update the client profile to the new SSID.</li>
+        <li>Reconnect and test again.</li>
+      </ol>
+      <p><strong>Teaching point:</strong> The SSID on the client must match the wireless network name.</p>
+
+      <h3>Demo 3 — DHCP Failure</h3>
+      <ol>
+        <li>Temporarily disable DHCP on the wireless router.</li>
+        <li>Set one wireless laptop to request DHCP.</li>
+        <li>Observe that it cannot receive the expected <code>192.168.61.x</code> address.</li>
+        <li>Re-enable DHCP.</li>
+        <li>Reconnect or renew the client.</li>
+      </ol>
+      <p><strong>Teaching point:</strong> Association to Wi-Fi is not enough. The client also needs valid IP settings.</p>
+
+      <h3>Demo 4 — Wrong DNS Server</h3>
+      <ol>
+        <li>On <code>LAP-HQ-STAFF-01</code>, manually set DNS to an unavailable address such as <code>8.8.8.8</code>.</li>
+        <li>Test <code>http://192.168.60.10</code>. It should still work.</li>
+        <li>Test <code>http://www.northstar.local</code>. It should fail.</li>
+        <li>Set DNS back to <code>192.168.60.10</code>.</li>
+        <li>Retest the domain name.</li>
+      </ol>
+      <p><strong>Teaching point:</strong> If IP works but names fail, troubleshoot DNS.</p>
+
+      <h3>Demo 5 — Wireless Coverage Concept</h3>
+      <p>
+        Packet Tracer allows devices to be moved around the workspace. Move a wireless client farther away from the wireless router and
+        discuss signal strength, distance, walls, interference, antenna placement, and AP density.
+      </p>
+
+      <div class="note">
+        <strong>Instructor explanation:</strong> Packet Tracer is a simulator, so it may not perfectly represent real RF behavior.
+        Use this portion mainly to introduce the idea that physical placement matters in wireless design.
+      </div>
+
+      <h3>Troubleshooting Decision Table</h3>
+      <table>
+        <thead>
+          <tr><th>Symptom</th><th>Likely Cause</th><th>What to Check</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Client cannot see Wi-Fi network</td><td>SSID broadcast off, AP off, out of range</td><td>SSID, AP power, client wireless adapter, distance</td></tr>
+          <tr><td>Client sees SSID but cannot connect</td><td>Wrong password or security mismatch</td><td>WPA mode, passphrase, saved profile</td></tr>
+          <tr><td>Client connects but has no IP</td><td>DHCP problem</td><td>DHCP enabled, address pool, router LAN settings</td></tr>
+          <tr><td>Client has IP but cannot reach server</td><td>Gateway/routing problem or service issue</td><td>Gateway, ping tests, server status</td></tr>
+          <tr><td>Client reaches IP but not domain name</td><td>DNS problem</td><td>DNS server setting and DNS records</td></tr>
+          <tr><td>Connection is weak or unstable</td><td>Coverage or interference</td><td>AP placement, channel, distance, obstacles</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>9. Instructor Explanation Blocks</h2>
+
+      <h3>SSID</h3>
+      <p>
+        The SSID is the wireless network name. Clients use the SSID to identify which wireless network they want to join.
+        A site may have multiple SSIDs, such as staff, guest, and IoT networks.
+      </p>
+
+      <h3>Authentication and Encryption</h3>
+      <p>
+        Wireless authentication controls who can connect. Wireless encryption protects traffic over the air.
+        WPA2-Personal is simple and useful for small networks, but enterprise networks often use stronger identity-based authentication.
+      </p>
+
+      <h3>Wireless Is Shared Media</h3>
+      <p>
+        Wired Ethernet switches give each device a dedicated switch port. Wi-Fi clients share airtime on the wireless channel.
+        More clients, interference, distance, and weak signal can reduce performance.
+      </p>
+
+      <h3>AP Placement</h3>
+      <p>
+        Access points should be placed to provide good coverage without creating unnecessary overlap or interference.
+        In real buildings, walls, metal, glass, distance, and neighboring networks can affect signal quality.
+      </p>
+
+      <h3>Wireless Security Design</h3>
+      <p>
+        A secure wireless design should consider SSID naming, encryption, password management, guest isolation, management interface security,
+        firmware updates, and monitoring for unauthorized access points.
+      </p>
+    </section>
+
+    <section id="timing" class="card">
+      <h2>10. Suggested 2-Hour Instructor Timing Plan</h2>
+      <table>
+        <thead>
+          <tr><th>Time</th><th>Activity</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0–10 min</td><td>Introduce wireless concepts: SSID, AP, security, clients, DHCP, DNS</td></tr>
+          <tr><td>10–25 min</td><td>Build the wired and wireless topology</td></tr>
+          <tr><td>25–40 min</td><td>Configure router, server, DNS, and HTTP</td></tr>
+          <tr><td>40–60 min</td><td>Configure wireless router WAN, LAN, DHCP, SSID, and WPA2</td></tr>
+          <tr><td>60–75 min</td><td>Connect wireless clients and verify DHCP addressing</td></tr>
+          <tr><td>75–90 min</td><td>Test ping, DNS, and web access over Wi-Fi</td></tr>
+          <tr><td>90–105 min</td><td>Use Simulation Mode to observe DNS, ARP, ICMP, TCP, and HTTP</td></tr>
+          <tr><td>105–120 min</td><td>Demonstrate troubleshooting: wrong password, wrong SSID, DHCP failure, DNS failure, coverage discussion</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>11. Final Demo Summary</h2>
+      <p>End the demo with this explanation:</p>
+
+      <div class="topology">When a wireless user opens:
+
+http://www.northstar.local
+
+the network uses:
+
+1. SSID association to join the wireless network
+2. WPA2 authentication to prove the user has the correct key
+3. DHCP to receive IP settings
+4. DNS to resolve the website name
+5. IP routing/NAT behavior through the wireless router
+6. TCP port 80 for HTTP
+7. Wireless and wired forwarding to reach the server</div>
+
+      <p>The most important lesson:</p>
+
+      <div class="success">
+        Wireless networking requires both radio-layer access and correct network-layer configuration. A client may connect to Wi-Fi but still fail
+        if DHCP, DNS, gateway, or security settings are wrong.
+      </div>
+    </section>
+
+    <p class="footer">
+      Generated as an original instructor/demo webpage for Internetworking Basics. No textbook content is reproduced.
+    </p>
+  </main>
+</body>
+</html>
