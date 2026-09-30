@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Packet Tracer Demo Lab - Chapter 7: Network Architecture</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --paper: #ffffff;
+      --ink: #182230;
+      --muted: #5d6b82;
+      --line: #d9e0ea;
+      --accent: #2457c5;
+      --accent-soft: #eaf0ff;
+      --code-bg: #111827;
+      --code-ink: #f3f4f6;
+      --table-head: #eef3fb;
+      --note: #fff7df;
+      --success: #e9f8ef;
+      --warn: #fff1f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.58;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 18px 64px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #173b88, #2f75ff);
+      color: white;
+      border-radius: 18px;
+      padding: 34px 36px;
+      box-shadow: 0 12px 32px rgba(24, 34, 48, 0.18);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 2.1rem;
+      line-height: 1.15;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 500;
+      opacity: 0.95;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .meta div {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 12px 14px;
+      border-radius: 12px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 26px;
+      margin: 18px 0;
+      box-shadow: 0 6px 18px rgba(24, 34, 48, 0.06);
+    }
+
+    h2 {
+      color: #173b88;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 8px;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #24446f;
+      margin-top: 24px;
+    }
+
+    h4 {
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    p { margin: 10px 0; }
+
+    ul, ol { padding-left: 24px; }
+
+    li { margin: 5px 0; }
+
+    .note {
+      background: var(--note);
+      border-left: 5px solid #e6a700;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .success {
+      background: var(--success);
+      border-left: 5px solid #229954;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .warning {
+      background: var(--warn);
+      border-left: 5px solid #d33c32;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 22px;
+      overflow-wrap: anywhere;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: var(--table-head);
+      color: #173b88;
+      font-weight: 700;
+    }
+
+    code {
+      background: #eef2f7;
+      padding: 2px 5px;
+      border-radius: 5px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 0.95em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-ink);
+      padding: 16px 18px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      margin: 12px 0 18px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .topology {
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 14px 0;
+    }
+
+    .toc {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .toc a:hover { text-decoration: underline; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .mini {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { max-width: none; padding: 0; }
+      .hero, .card { box-shadow: none; }
+      .card { break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body><main class="page"><section class="hero">
+<h1>Packet Tracer Demo Lab</h1><h2>Chapter 7: Network Architecture</h2>
+<p>Original instructor/demo lab aligned with <em>CompTIA Network+ Guide to Networks</em>, 10th Edition by Jill West.</p>
+<div class="meta"><div><strong>Course:</strong><br>Internetworking Basics</div><div><strong>Estimated Time:</strong><br>2 hours</div><div><strong>Lab Type:</strong><br>Instructor-led demo with guided practice</div><div><strong>Tool:</strong><br>Cisco Packet Tracer</div></div>
+</section>
+<nav class="toc" aria-label="Page sections"><strong>Page Sections:</strong><ol>
+<li><a href="#purpose">Lab Purpose</a></li><li><a href="#scenario">Scenario and Objectives</a></li><li><a href="#topology">Topology and Addressing</a></li><li><a href="#build">Build the Packet Tracer Network</a></li><li><a href="#configure">Configure Routers, Servers, and Clients</a></li><li><a href="#verify">Verify Connectivity and Service Paths</a></li><li><a href="#architecture">Network Architecture Demonstrations</a></li><li><a href="#troubleshooting">Troubleshooting Demonstrations</a></li><li><a href="#explanations">Instructor Explanation Blocks</a></li><li><a href="#timing">2-Hour Instructor Timing Plan</a></li><li><a href="#summary">Final Demo Summary</a></li></ol></nav>
+<section id="purpose" class="card"><h2>1. Lab Purpose</h2>
+<p>Show how the placement of clients, servers, switches, and routers affects the path to an application and the impact of a failure. Students build a small headquarters network and a simulated remote service network, then compare local and remote service access.</p>
+<ul><li>Identify physical and logical topology, access switching, and routing boundaries.</li><li>Demonstrate a client/server application across two networks.</li><li>Compare a local service with a remotely hosted service.</li><li>Relate the model to hierarchical design, virtualization, and cloud architecture.</li><li>Use controlled failures to distinguish network availability from application availability.</li></ul>
+<div class="note"><strong>Instructor note:</strong> This is a live demonstration with guided practice, not a graded assignment. The procedures are an original teaching exercise, not a reproduction of the textbook's projects.</div>
+<div class="warning"><strong>Simulation scope:</strong> Server-PT devices represent service endpoints. This exercise does not deploy a hypervisor, virtual machines, containers, or an actual public cloud. The remote network is a teaching stand-in for hosted infrastructure; its Ethernet transit link is not a complete ISP or Internet model. No Internet access or cloud account is required.</div>
+</section>
+<section id="scenario" class="card"><h2>2. Lab Scenario</h2>
+<p><strong>Northstar Training Center</strong> maintains a local staff portal and is evaluating a remotely hosted learning portal. Two staff computers must reach both services. Students document dependencies and explain which services remain usable when the remote connection fails.</p>
+<h3>Learning Objectives</h3><ul><li>Label client, service, access, gateway, and transit roles.</li><li>Explain why an off-subnet destination requires a default gateway.</li><li>Configure and verify a forward route and a return route.</li><li>Test local and remote HTTP services by address and DNS name.</li><li>Trace ARP, ICMP, DNS, TCP, and HTTP in Simulation Mode.</li><li>Compare peer-to-peer and client/server models, two-tier and three-tier designs, and cloud service models.</li><li>Explain why two server icons alone do not provide failover.</li></ul>
+<h3>Chapter 7 Concept Alignment</h3>
+<table><thead><tr><th>Architecture Topic</th><th>Demo Lab Activity</th><th>Scope</th></tr></thead><tbody>
+<tr><td>Physical and logical topology</td><td>Draw two switched stars joined by a routed transit network</td><td>Build and inspect</td></tr>
+<tr><td>Client/server architecture</td><td>Two clients request pages from local and remote servers</td><td>Configure and test</td></tr>
+<tr><td>Hierarchical network design</td><td>Identify access and gateway functions; sketch growth into distribution/core layers</td><td>Label and discuss</td></tr>
+<tr><td>Remote service placement</td><td>Compare local and remote dependencies during a link failure</td><td>Demonstrate</td></tr>
+<tr><td>Virtualization and virtual networking</td><td>Map server, NIC, and switch roles to VM, virtual NIC, and virtual switch roles</td><td>Conceptual discussion</td></tr>
+<tr><td>Cloud models</td><td>Compare SaaS, PaaS, IaaS and public/private/hybrid deployments</td><td>Conceptual discussion</td></tr>
+<tr><td>Availability and scalability</td><td>Identify single points of failure and propose redundant paths</td><td>Observe and discuss</td></tr></tbody></table>
+<p>Chapter title verified against the <a href="https://www.cengageasia.com/title/default/detail?isbn=9798214405902">publisher's 10th-edition table of contents</a>. Activities selectively support the chapter theme rather than covering every chapter objective.</p>
+</section>
+<section id="topology" class="card"><h2>3. Devices, Topology, and Addressing</h2>
+<h3>Devices Used and Naming Plan</h3><table><thead><tr><th>Category / Suggested Device</th><th>Quantity</th><th>Names and Roles</th></tr></thead><tbody>
+<tr><td>Network Devices &gt; Routers &gt; 2911</td><td>2</td><td><code>RTR-HQ-01</code>: HQ gateway; <code>RTR-REMOTE-01</code>: remote gateway</td></tr><tr><td>Network Devices &gt; Switches &gt; 2960</td><td>2</td><td><code>SW-HQ-ACCESS-01</code>, <code>SW-REMOTE-01</code>: endpoint access</td></tr><tr><td>End Devices &gt; Server-PT</td><td>2</td><td><code>SRV-HQ-01</code>: DNS and local HTTP; <code>SRV-REMOTE-01</code>: remote HTTP</td></tr><tr><td>End Devices &gt; PC-PT</td><td>2</td><td><code>PC-HQ-01</code>, <code>PC-HQ-02</code>: staff clients</td></tr></tbody></table>
+<h3>Target Logical Topology</h3><div class="topology" role="img" aria-label="Two headquarters PCs and a local server connect through the HQ switch to the HQ router, then the remote router, remote switch, and remote web server.">HQ LAN: 192.168.70.0/24
+
+PC-HQ-01 ----\
+PC-HQ-02 ----- SW-HQ-ACCESS-01 ---- G0/0 RTR-HQ-01
+SRV-HQ-01 ---/                               G0/1
+                                              |
+                                  Transit: 10.7.0.0/30
+                                              |
+                                            G0/1
+                                      RTR-REMOTE-01
+                                            G0/0
+                                              |
+                                        SW-REMOTE-01
+                                              |
+                                        SRV-REMOTE-01
+
+Remote service LAN: 192.168.71.0/24</div>
+<h3>Addressing Plan</h3><table><thead><tr><th>Device / Interface</th><th>IP Address</th><th>Subnet Mask</th><th>Default Gateway</th></tr></thead><tbody>
+<tr><td>RTR-HQ-01 G0/0</td><td>192.168.70.1</td><td>255.255.255.0</td><td>Uses routing table</td></tr><tr><td>RTR-HQ-01 G0/1</td><td>10.7.0.1</td><td>255.255.255.252</td><td>Uses routing table</td></tr><tr><td>RTR-REMOTE-01 G0/1</td><td>10.7.0.2</td><td>255.255.255.252</td><td>Uses routing table</td></tr><tr><td>RTR-REMOTE-01 G0/0</td><td>192.168.71.1</td><td>255.255.255.0</td><td>Uses routing table</td></tr><tr><td>SRV-HQ-01 Fa0</td><td>192.168.70.10</td><td>255.255.255.0</td><td>192.168.70.1</td></tr><tr><td>SRV-REMOTE-01 Fa0</td><td>192.168.71.10</td><td>255.255.255.0</td><td>192.168.71.1</td></tr><tr><td>PC-HQ-01 Fa0</td><td>192.168.70.21</td><td>255.255.255.0</td><td>192.168.70.1</td></tr><tr><td>PC-HQ-02 Fa0</td><td>192.168.70.22</td><td>255.255.255.0</td><td>192.168.70.1</td></tr></tbody></table>
+<p>Use <code>192.168.70.10</code> as DNS on both PCs and both servers. Switches use their default access VLAN and need no management IP for this exercise. All endpoint addresses are static; DHCP is outside this demo.</p>
+<div class="note"><strong>Addressing explanation:</strong> The transit /30 has network address 10.7.0.0, usable addresses 10.7.0.1 and 10.7.0.2, and broadcast address 10.7.0.3. These private networks are confined to the simulation. No NAT is needed because both routers have explicit routes.</div>
+</section>
+<section id="build" class="card"><h2>4. Build the Packet Tracer Network</h2>
+<h3>Part A — Create the Project</h3><ol><li>Open a new Packet Tracer file and save it as <code>Chapter7_Network_Architecture_Demo.pkt</code>.</li><li>Add and rename the eight devices from the naming plan.</li><li>Place HQ on the left and the remote service network on the right. Use workspace notes to label both LANs and the transit subnet.</li></ol>
+<pre><code>Northstar Training Center
+Chapter 7 Demo: Network Architecture
+Local portal + simulated remote learning portal
+Focus: device roles, service placement, routing, dependencies, resilience</code></pre>
+<h3>Part B — Cable the Network</h3><table><thead><tr><th>From</th><th>To</th><th>Cable</th></tr></thead><tbody>
+<tr><td>PC-HQ-01 Fa0</td><td>SW-HQ-ACCESS-01 Fa0/1</td><td>Copper straight-through</td></tr><tr><td>PC-HQ-02 Fa0</td><td>SW-HQ-ACCESS-01 Fa0/2</td><td>Copper straight-through</td></tr><tr><td>SRV-HQ-01 Fa0</td><td>SW-HQ-ACCESS-01 Fa0/3</td><td>Copper straight-through</td></tr><tr><td>RTR-HQ-01 G0/0</td><td>SW-HQ-ACCESS-01 G0/1</td><td>Copper straight-through</td></tr><tr><td>RTR-HQ-01 G0/1</td><td>RTR-REMOTE-01 G0/1</td><td>Copper crossover or automatic connection</td></tr><tr><td>RTR-REMOTE-01 G0/0</td><td>SW-REMOTE-01 G0/1</td><td>Copper straight-through</td></tr><tr><td>SRV-REMOTE-01 Fa0</td><td>SW-REMOTE-01 Fa0/1</td><td>Copper straight-through</td></tr></tbody></table>
+<div class="note"><strong>Before class:</strong> Use 2911 routers so the interface names match the commands. Other models may use names such as G0/0/0; check <code>show ip interface brief</code> and adapt consistently. Allow switch links time to turn green. Router links remain down until configured and enabled.</div>
+</section>
+<section id="configure" class="card"><h2>5. Configure Routers, Servers, and Clients</h2>
+<h3>Part C — Configure the HQ Router</h3><p>Open the router CLI. If asked to enter the initial configuration dialog, answer <code>no</code> and press Enter.</p>
+<pre><code>enable
+configure terminal
+hostname RTR-HQ-01
+interface gigabitEthernet0/0
+ description HQ LAN gateway
+ ip address 192.168.70.1 255.255.255.0
+ no shutdown
+ exit
+interface gigabitEthernet0/1
+ description Transit to RTR-REMOTE-01
+ ip address 10.7.0.1 255.255.255.252
+ no shutdown
+ exit
+ip route 192.168.71.0 255.255.255.0 10.7.0.2
+end
+copy running-config startup-config</code></pre>
+<p>Accept the default destination filename by pressing Enter.</p>
+<h3>Part D — Configure the Remote Router</h3><pre><code>enable
+configure terminal
+hostname RTR-REMOTE-01
+interface gigabitEthernet0/0
+ description Remote service LAN gateway
+ ip address 192.168.71.1 255.255.255.0
+ no shutdown
+ exit
+interface gigabitEthernet0/1
+ description Transit to RTR-HQ-01
+ ip address 10.7.0.2 255.255.255.252
+ no shutdown
+ exit
+ip route 192.168.70.0 255.255.255.0 10.7.0.1
+end
+copy running-config startup-config</code></pre>
+<h4>Verify Both Routers</h4><pre><code>show ip interface brief
+show ip route</code></pre><p>Both used interfaces should be <code>up/up</code>. HQ should show a static route to <code>192.168.71.0/24</code> via <code>10.7.0.2</code>; the remote router should show a static return route to <code>192.168.70.0/24</code> via <code>10.7.0.1</code>. Connected routes should also appear for each router's LAN and the transit subnet.</p>
+<h3>Part E — Configure the Local Server</h3><p>On <code>SRV-HQ-01</code>, open <strong>Desktop &gt; IP Configuration</strong>, select Static, and enter its address, mask, gateway, and DNS from the plan.</p><p>Open <strong>Services &gt; DNS</strong>, switch DNS On, and add these A records using the Add button:</p>
+<table><thead><tr><th>Name</th><th>Type</th><th>Address</th></tr></thead><tbody><tr><td>intranet.northstar.com</td><td>A</td><td>192.168.70.10</td></tr><tr><td>learn.northstar.com</td><td>A</td><td>192.168.71.10</td></tr></tbody></table>
+<p>Open <strong>Services &gt; HTTP</strong>, enable HTTP, edit <code>index.html</code>, and save the following page:</p><pre><code>&lt;html&gt;&lt;body&gt;
+&lt;h1&gt;Northstar Local Staff Portal&lt;/h1&gt;
+&lt;p&gt;Hosted on the HQ LAN: 192.168.70.10&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</code></pre>
+<h3>Part F — Configure the Remote Server</h3><p>Set <code>SRV-REMOTE-01</code> to <code>192.168.71.10</code>, mask <code>255.255.255.0</code>, gateway <code>192.168.71.1</code>, and DNS <code>192.168.70.10</code>. Enable HTTP and save this as its <code>index.html</code>:</p><pre><code>&lt;html&gt;&lt;body&gt;
+&lt;h1&gt;Northstar Remote Learning Portal&lt;/h1&gt;
+&lt;p&gt;Simulated hosted service: 192.168.71.10&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</code></pre><p>Leave DNS off on the remote server; the local server handles name resolution.</p>
+<h3>Part G — Configure the Clients</h3><p>On each PC, open <strong>Desktop &gt; IP Configuration</strong> and select Static. Use .21 for PC-HQ-01 and .22 for PC-HQ-02, with mask 255.255.255.0, gateway 192.168.70.1, and DNS 192.168.70.10.</p>
+<div class="success"><strong>Checkpoint:</strong> Save the project as <code>Chapter7_Network_Architecture_Baseline.pkt</code> after verification succeeds. Use a separate working copy for the failure demonstrations.</div>
+</section>
+<section id="verify" class="card"><h2>6. Verify Connectivity and Service Paths</h2>
+<h3>Part H — Verify from PC-HQ-01</h3><p>Open <strong>Desktop &gt; Command Prompt</strong> and run:</p><pre><code>ipconfig
+ping 192.168.70.22
+ping 192.168.70.10
+ping 192.168.70.1
+ping 10.7.0.2
+ping 192.168.71.10
+ping learn.northstar.com
+tracert 192.168.71.10</code></pre>
+<table><thead><tr><th>Test</th><th>Expected Observation</th></tr></thead><tbody><tr><td>Local PC and server pings</td><td>Replies through the HQ switch; no router needed for the same subnet</td></tr><tr><td>Gateway and transit pings</td><td>Replies confirm progress toward the remote network</td></tr><tr><td>Remote server ping</td><td>Replies demonstrate working routes in both directions</td></tr><tr><td>DNS name ping</td><td>Name resolves to 192.168.71.10 and receives replies</td></tr><tr><td>Trace</td><td>Path normally includes HQ gateway 192.168.70.1, remote router 10.7.0.2, and destination 192.168.71.10</td></tr></tbody></table>
+<p>The first ping may lose a packet during ARP resolution. Repeat once before diagnosing a persistent failure. Trace formatting and timing can vary by Packet Tracer version.</p>
+<h3>Part I — Test the Applications</h3><p>On each PC, use <strong>Desktop &gt; Web Browser</strong> to open all four URLs. Confirm the page text distinguishes the two servers.</p><pre><code>http://192.168.70.10
+http://intranet.northstar.com
+http://192.168.71.10
+http://learn.northstar.com</code></pre>
+<h3>Part J — Observe Simulation Mode</h3><ol><li>Switch to <strong>Simulation</strong>. In Edit Filters, select ARP, DNS, ICMP, TCP, and HTTP.</li><li>Generate a new ping or browser request. Use <strong>Capture/Forward</strong> to advance through events.</li><li>Open event envelopes and inspect OSI Model and inbound/outbound PDU details.</li><li>Compare a request to the local server with one to the remote server. For a remote destination, the PC sends the Ethernet frame toward its gateway's MAC address.</li><li>Notice that routers forward toward the destination IP while Ethernet addressing changes on each routed link. This lab does not translate IP addresses.</li><li>Return to Realtime before troubleshooting.</li></ol>
+<div class="note"><strong>Cache note:</strong> Cached ARP or DNS entries can hide lookup steps on repeat requests. Clearing the event list does not necessarily clear caches. To demonstrate fresh lookups, save the baseline, reopen a fresh copy or restart the client, and issue a new request.</div>
+</section>
+<section id="architecture" class="card"><h2>7. Network Architecture Demonstrations</h2>
+<h3>Part K — Client/Server and Peer-to-Peer</h3><p>Have both PCs open the same portal. The PCs request a service and the server supplies it. In a peer-to-peer design, endpoints can both provide and consume resources. A successful PC-to-PC ping shows reachability, not a peer-to-peer application.</p>
+<h3>Part L — Local vs. Remote Dependencies</h3><p>Ask students to predict what happens when the transit link fails. On RTR-HQ-01, enter:</p><pre><code>enable
+configure terminal
+interface gigabitEthernet0/1
+ shutdown
+end</code></pre><p>From a PC, ping both server IP addresses and request their pages. The local service should remain reachable, while the remote service fails. Local DNS can still resolve the remote name even though the remote application is unreachable.</p><p>Restore the link immediately:</p><pre><code>configure terminal
+interface gigabitEthernet0/1
+ no shutdown
+end</code></pre><p>Wait for the link to recover and repeat both tests. Do not use a previously displayed browser page as evidence of live connectivity; issue a new request and confirm with ping or Simulation Mode.</p>
+<h3>Part M — Hierarchical Design and Growth</h3><div class="grid"><div class="mini"><strong>Access</strong><p>The HQ switch connects users and local services.</p></div><div class="mini"><strong>Distribution</strong><p>In a larger campus, this layer aggregates access networks and applies routing or policy.</p></div><div class="mini"><strong>Core</strong><p>A larger design may use a separate high-speed backbone between distribution blocks.</p></div></div><p>This small topology has access switches and edge routers; it is not a full three-tier campus. Sketch two access switches beneath a combined core/distribution pair to explain a collapsed-core design. Then separate the core and distribution roles to illustrate a three-tier design.</p>
+<h3>Part N — Virtualization and Cloud Discussion</h3><table><thead><tr><th>Concept</th><th>Teaching Explanation</th><th>Connection to This Demo</th></tr></thead><tbody><tr><td>Hypervisor / VM</td><td>A hypervisor provides virtual hardware for guest operating systems. Multiple VMs can share a physical host.</td><td>A server role could run inside a VM; no guest OS is installed here.</td></tr><tr><td>Virtual NIC / virtual switch</td><td>A VM uses a virtual NIC; a virtual switch connects VM traffic to other VMs or an uplink.</td><td>Compare with the NIC and switch functions students can see.</td></tr><tr><td>Containers</td><td>Isolate application environments while sharing a host kernel.</td><td>Discuss as another hosting option; no containers run in this lab.</td></tr><tr><td>IaaS</td><td>Provider supplies infrastructure; the customer manages guest systems and applications.</td><td>Imagine renting compute to host the portal.</td></tr><tr><td>PaaS</td><td>Provider manages the application platform; the customer deploys application code and data.</td><td>Imagine deploying portal code to a managed platform.</td></tr><tr><td>SaaS</td><td>Provider operates an application consumed by users.</td><td>Imagine subscribing to a hosted learning application.</td></tr><tr><td>Public / private / hybrid cloud</td><td>Distinguish shared provider offerings, cloud infrastructure dedicated to an organization, and integrated combinations of cloud environments.</td><td>Local and remote servers alone do not establish a hybrid cloud; cloud characteristics and integration matter.</td></tr></tbody></table>
+<h3>Part O — Resilience and Scale</h3><p>Identify the HQ switch, each router, the transit link, and the local DNS server as dependencies. Propose redundant equipment, independent links, and replicated services. Explain that additional paths require suitable routing and loop prevention; a second server needs application replication and traffic steering to provide failover. Scaling adds capacity; redundancy addresses failure. Neither is automatically achieved by copying icons.</p>
+</section>
+<section id="troubleshooting" class="card"><h2>8. Troubleshooting Demonstrations</h2><div class="warning"><strong>One fault at a time:</strong> Begin from the working baseline, introduce one change, record the symptom, repair it, and repeat the affected test. Keep the saved baseline intact.</div>
+<h3>Demo 1 — Wrong Client Gateway</h3><p>Change PC-HQ-01's gateway to <code>192.168.70.254</code>. Local server access should work; remote server access should fail. Inspect <code>ipconfig</code> and restore <code>192.168.70.1</code>. Explain why local delivery does not use the gateway.</p>
+<h3>Demo 2 — Missing Return Route</h3><p>On RTR-REMOTE-01 remove the HQ route:</p><pre><code>enable
+configure terminal
+no ip route 192.168.70.0 255.255.255.0 10.7.0.1
+end
+show ip route</code></pre><p>From PC-HQ-01, ping 192.168.71.10. The request can reach the server, but its reply cannot be routed back to the HQ LAN. Follow the return traffic in Simulation Mode. Restore:</p><pre><code>configure terminal
+ip route 192.168.70.0 255.255.255.0 10.7.0.1
+end</code></pre><p>Retest from the PC. A router-originated ping may use a different source subnet and can succeed despite the missing HQ route, so the client test matters.</p>
+<h3>Demo 3 — DNS Failure</h3><p>Set PC-HQ-01's DNS to <code>192.168.70.99</code>. Direct-IP page requests should still work. To avoid a cached-name result, add a previously unused A record <code>check.northstar.com</code> → <code>192.168.71.10</code> on SRV-HQ-01, then request that name from the PC. It should fail with the wrong DNS setting. Restore DNS to 192.168.70.10 and retry.</p>
+<h3>Demo 4 — Application Service Stopped</h3><p>On SRV-REMOTE-01, turn <strong>Services &gt; HTTP</strong> Off. Ping 192.168.71.10 should still succeed, while a new HTTP request fails. Turn HTTP On and request the page again. Reachability alone does not prove application health.</p>
+<h3>Demo 5 — Access-Link Failure</h3><p>Disconnect PC-HQ-02's cable. That PC loses connectivity while PC-HQ-01 can still reach both servers. Reconnect PC-HQ-02 Fa0 to SW-HQ-ACCESS-01 Fa0/2 with a straight-through cable and wait for the link to recover.</p>
+<h3>Troubleshooting Decision Table</h3><table><thead><tr><th>Symptom</th><th>First Checks</th><th>Likely Layer / Dependency</th></tr></thead><tbody><tr><td>One client cannot reach anything</td><td>Cable, link status, client IP and mask</td><td>Endpoint or access connection</td></tr><tr><td>Local works; remote fails</td><td>Gateway, transit interfaces, both routing tables</td><td>Routed path</td></tr><tr><td>IP works; a fresh name fails</td><td>Client DNS setting, DNS service, A record</td><td>Name resolution</td></tr><tr><td>Ping works; HTTP fails</td><td>HTTP service state and requested URL</td><td>Application service</td></tr><tr><td>All clients lose remote access</td><td>Shared router, transit link, remote gateway/service</td><td>Shared infrastructure dependency</td></tr></tbody></table>
+<p>Finish with both PCs reaching both server IP addresses and both original DNS names. Save the repaired working copy.</p>
+</section>
+<section id="explanations" class="card"><h2>9. Instructor Explanation Blocks</h2>
+<h3>Physical vs. Logical Topology</h3><p>The cable drawing shows physical connections. The addressing plan and routing table explain logical delivery. Two devices can be physically connected through switches yet require routing if they belong to different IP networks.</p>
+<h3>Service Placement Changes Dependencies</h3><p>The local portal needs the local access network. The remote portal additionally depends on gateways, transit connectivity, and the remote network. Centralization can simplify administration while increasing dependence on shared services.</p>
+<h3>Virtualization Is Not Simulation</h3><p>A VM runs a guest operating system on virtualized resources. Packet Tracer models selected networking behavior. Its Server-PT icon does not demonstrate CPU allocation, live migration, hypervisor operation, or production application performance.</p>
+<h3>Security Boundaries Need Policy</h3><p>Different subnets make routing boundaries visible, but the configured routers permit traffic between these networks. This demo implements no firewall or access-control policy. Discuss where those controls would belong in a larger design.</p>
+<h3>Discussion Prompts and Expected Answers</h3><ul><li><strong>Does same-LAN traffic need a router?</strong> No; it uses local switching when endpoints are in the same subnet.</li><li><strong>Can DNS succeed while a website fails?</strong> Yes; name resolution and application reachability are separate dependencies.</li><li><strong>Does a remote server automatically constitute cloud computing?</strong> No; hosting location alone does not establish a cloud service model.</li><li><strong>What does a successful ping prove?</strong> ICMP reachability at that moment, not HTTP health or available capacity.</li><li><strong>What would improve remote availability?</strong> Independent paths and devices plus service resilience, with appropriate failover mechanisms.</li></ul>
+</section>
+<section id="timing" class="card"><h2>10. Suggested 2-Hour Instructor Timing Plan</h2><table><thead><tr><th>Time</th><th>Activity</th></tr></thead><tbody><tr><td>0–10 min</td><td>Introduce architecture, device roles, and service dependencies</td></tr><tr><td>10–25 min</td><td>Build, name, cable, and label the topology</td></tr><tr><td>25–45 min</td><td>Configure router interfaces and routes in both directions</td></tr><tr><td>45–60 min</td><td>Configure static endpoints, DNS, and two distinguishable web pages</td></tr><tr><td>60–75 min</td><td>Verify ping, routes, DNS, and HTTP; save a working baseline</td></tr><tr><td>75–90 min</td><td>Trace local/remote traffic and demonstrate transit failure and restoration</td></tr><tr><td>90–105 min</td><td>Discuss hierarchy, virtualization, cloud models, and resilience</td></tr><tr><td>105–120 min</td><td>Demonstrate selected faults, restore service, and review dependencies</td></tr></tbody></table><div class="note"><strong>Pacing:</strong> Prepare a working baseline before class. Within the final 15 minutes, prioritize the missing return route and HTTP failure; use the remaining faults as guided practice or extensions.</div></section>
+<section id="summary" class="card"><h2>11. Final Demo Summary</h2><p>End the demonstration by tracing a fresh request:</p><div class="topology">User opens http://learn.northstar.com
+
+1. The client asks the local DNS server for the destination address.
+2. DNS returns 192.168.71.10.
+3. The client identifies an off-subnet destination and uses its gateway.
+4. HQ routes toward 10.7.0.2 across the transit network.
+5. The remote router forwards traffic onto the remote service LAN.
+6. TCP and HTTP carry the request and response.
+7. The return route carries the response back to the HQ client.</div><div class="success"><strong>Key lesson:</strong> Network architecture determines where services live, how users reach them, and which failures affect them. A working application depends on both the network path and the services at its endpoints.</div>
+<h3>Instructor References</h3><ul><li><a href="https://www.cengageasia.com/title/default/detail?isbn=9798214405902">Cengage: 10th-edition chapter sequence</a></li><li><a href="https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_pi/configuration/15-mt/iri-15-mt-book/iri-iprouting.html">Cisco IOS: Basic IP Routing</a></li><li><a href="https://tutorials.ptnetacad.net/help/default/intro.htm">Cisco Packet Tracer: simulation scope and supported protocols</a></li><li><a href="https://tutorials.ptnetacad.net/help/default/mode_simulation.htm">Cisco Packet Tracer: Simulation Mode</a></li></ul><p>Configuration examples are designed for the listed Packet Tracer devices. Instructor preflight: run the full baseline and chosen faults in the installed version before class.</p></section>
+<p class="footer">Original instructor/demo webpage for Internetworking Basics. Styled from the Chapter 6 demo; saved separately as Chapter 7. No textbook content is reproduced.</p>
+</main></body></html>

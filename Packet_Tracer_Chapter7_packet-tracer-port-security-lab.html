@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cisco Packet Tracer Lab — Switch Port Security</title>
+<style>
+:root{color-scheme:light;--ink:#172b42;--muted:#516278;--blue:#075e89;--line:#d8e3eb}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:#edf3f7;color:var(--ink);font:17px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
+.banner{background:#102d45;color:white;padding:34px max(24px,calc((100vw - 1180px)/2));border-bottom:5px solid #26b4b1}
+.eyebrow{font-size:12px;letter-spacing:.18em;font-weight:750;text-transform:uppercase;color:#96e3df}.banner p{margin:8px 0 0;color:#d9e5ee}
+.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:30px;max-width:1230px;margin:32px auto;padding:0 24px}
+aside{font-size:13px}nav{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow:auto;padding:6px 12px 18px 0}
+nav strong{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 12px}nav a{display:block;text-decoration:none;color:var(--muted);padding:6px 8px;border-left:2px solid var(--line)}nav a:hover,nav a:focus{background:#dcebf3;color:var(--blue);border-color:var(--blue)}
+main{background:white;border:1px solid var(--line);border-radius:12px;padding:38px 46px;min-width:0;box-shadow:0 5px 24px #15365008}
+h1{font-size:36px;line-height:1.2;letter-spacing:-.035em;margin:0 0 24px}
+h2{font-size:25px;line-height:1.3;margin:46px 0 18px;padding-top:24px;border-top:1px solid var(--line);letter-spacing:-.02em}
+h3{font-size:19px;margin:26px 0 12px}p{margin:12px 0}li{margin:6px 0}ul{padding-left:24px}
+code{font-family:Consolas,"Courier New",monospace;font-size:.9em;background:#eaf1f6;padding:2px 5px;border-radius:4px}
+pre{background:#10293e;color:#e6f5ff;padding:19px 22px;border-radius:8px;overflow:auto;line-height:1.55;font-size:14px;tab-size:4}
+pre code{background:none;padding:0;font-size:inherit;border-radius:0}
+.table-wrap{overflow:auto;margin:20px 0}table{width:100%;border-collapse:collapse;font-size:15px}th{text-align:left;background:#e7f2f6;color:#11435c}th,td{padding:12px 14px;border:1px solid var(--line);vertical-align:top}tbody tr:nth-child(even){background:#f7fafc}
+blockquote{border-left:4px solid #159c99;margin:20px 0;padding:12px 20px;background:#ecf8f7}
+.note{padding:14px 18px;background:#f0f7fb;border-left:4px solid #2589b6;font-size:14px;margin:22px 0}
+footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:var(--muted)}
+button{font:inherit;font-size:14px;padding:9px 16px;border:1px solid #86b1ca;border-radius:6px;color:white;background:transparent;cursor:pointer;margin-top:16px}button:hover{background:#21465e}
+a:focus-visible,button:focus-visible{outline:3px solid #20aaa6;outline-offset:3px}
+@media(max-width:850px){.layout{display:block;padding:0 14px;margin:18px auto}aside{margin-bottom:18px}nav{position:static;max-height:220px}main{padding:26px 22px}h1{font-size:30px}}
+@media print{body{background:white;font-size:11pt}.banner,aside,.note.screen-only{display:none}.layout{display:block;padding:0;margin:0;max-width:none}main{padding:0;border:0;box-shadow:none}h1{font-size:24pt}h2{font-size:17pt;margin-top:25px}h3{font-size:13pt}h1,h2,h3{break-after:avoid}pre,table,blockquote{break-inside:avoid}pre{white-space:pre-wrap;color:#111;background:#f3f5f7;border:1px solid #bbb;font-size:9pt}a{color:inherit}footer{font-size:9pt}}
+</style>
+</head>
+<body>
+<header class="banner"><div class="eyebrow">Networking lab • Cisco Packet Tracer</div><p>Learn, test, and compare switch port-security behavior.</p><button onclick="window.print()" type="button">Print / Save as PDF</button></header>
+<div class="layout">
+<aside><nav aria-label="Lab contents"><strong>Lab contents</strong><a href="#section-2">1. Topology</a>
+<a href="#section-3">2. Configure the PCs</a>
+<a href="#section-7">Part 1 — Verify Normal Switching</a>
+<a href="#section-8">Part 2 — Configure Basic Port Security</a>
+<a href="#section-10">Part 3 — Configure a Maximum Number of MAC Addresses</a>
+<a href="#section-11">Part 4 — Configure Sticky MAC Learning</a>
+<a href="#section-13">Part 5 — Cause a Port-Security Violation</a>
+<a href="#section-14">Part 6 — Observe the Default Shutdown Mode</a>
+<a href="#section-15">Why Did the Port Shut Down?</a>
+<a href="#section-16">Part 7 — Recover the Port</a>
+<a href="#section-17">Part 8 — Demonstrate Violation Mode: Protect</a>
+<a href="#section-18">Part 9 — Demonstrate Violation Mode: Restrict</a>
+<a href="#section-19">Part 10 — Compare the Three Violation Modes</a>
+<a href="#section-20">Part 11 — Configure Port Security on Fa0/2</a>
+<a href="#section-21">Part 12 — Useful Verification Commands</a>
+<a href="#section-28">Part 13 — Recommended Final Configuration</a>
+<a href="#section-29">Student Experiment</a>
+<a href="#section-33">Key Commands to Remember</a>
+<a href="#section-34">The Big Idea</a></nav></aside>
+<main>
+<h1 id="section-0">Cisco Packet Tracer Lab: Switch Port Security</h1>
+<h3 id="section-1">Objectives</h3>
+<p>By the end of this lab, students should be able to:</p>
+<ul><li>Enable port security on a Cisco switch access port.</li><li>Limit the number of MAC addresses permitted on a port.</li><li>Configure a static secure MAC address.</li><li>Configure sticky MAC learning.</li><li>Explain the three violation modes:</li><li><code>protect</code></li><li><code>restrict</code></li><li><code>shutdown</code></li><li>Verify port-security status.</li><li>Observe what happens when an unauthorized device connects.</li></ul>
+<h2 id="section-2">1. Topology</h2>
+<p>Use the following devices:</p>
+<ul><li>1 × Cisco 2960 switch</li><li>3 × PCs</li></ul>
+<p>Connect them as follows:</p>
+<div class="table-wrap"><table><thead><tr><th scope="col">Device</th><th scope="col">Interface</th><th scope="col">Switch Port</th></tr></thead><tbody><tr><td>PC-A</td><td>FastEthernet0</td><td>Fa0/1</td></tr><tr><td>PC-B</td><td>FastEthernet0</td><td>Fa0/2</td></tr><tr><td>PC-C</td><td>FastEthernet0</td><td>Used temporarily on Fa0/1 or Fa0/2 for violation testing</td></tr></tbody></table></div>
+<p>Use <strong>Copper Straight-Through</strong> cables.</p>
+<p>Conceptually:</p>
+<pre><code>        PC-A
+   192.168.1.10
+         |
+       Fa0/1
+         |
+     +--------+
+     |  SW1   |
+     |  2960  |
+     +--------+
+         |
+       Fa0/2
+         |
+        PC-B
+   192.168.1.20
+
+
+PC-C: 192.168.1.30
+Used later as an unauthorized device</code></pre>
+<h2 id="section-3">2. Configure the PCs</h2>
+<p>Configure these IPv4 addresses.</p>
+<h3 id="section-4">PC-A</h3>
+<pre><code>IP Address:      192.168.1.10
+Subnet Mask:     255.255.255.0
+Default Gateway: Leave blank</code></pre>
+<h3 id="section-5">PC-B</h3>
+<pre><code>IP Address:      192.168.1.20
+Subnet Mask:     255.255.255.0
+Default Gateway: Leave blank</code></pre>
+<h3 id="section-6">PC-C</h3>
+<pre><code>IP Address:      192.168.1.30
+Subnet Mask:     255.255.255.0
+Default Gateway: Leave blank</code></pre>
+<p>No router is required because all devices are in the same subnet.</p>
+<h2 id="section-7">Part 1 — Verify Normal Switching</h2>
+<p>From PC-A, ping PC-B:</p>
+<pre><code>ping 192.168.1.20</code></pre>
+<p>The ping should succeed.</p>
+<p>On SW1, examine the MAC address table:</p>
+<pre><code>enable
+show mac address-table</code></pre>
+<p>You should see MAC addresses learned dynamically on Fa0/1 and Fa0/2.</p>
+<h2 id="section-8">Part 2 — Configure Basic Port Security</h2>
+<p>Configure Fa0/1 as an access port and enable port security.</p>
+<pre><code>enable
+configure terminal
+
+interface fastethernet0/1
+
+switchport mode access
+switchport port-security
+
+end</code></pre>
+<p>Verify:</p>
+<pre><code>show port-security interface fastethernet0/1</code></pre>
+<p>Students should notice information similar to:</p>
+<pre><code>Port Security              : Enabled
+Port Status                : Secure-up
+Violation Mode             : Shutdown
+Maximum MAC Addresses      : 1
+Total MAC Addresses        : 0 or 1
+Security Violation Count   : 0</code></pre>
+<h3 id="section-9">Important concept</h3>
+<p>This command:</p>
+<pre><code>switchport port-security</code></pre>
+<p>enables the port-security feature.</p>
+<p>However, it must normally be used on a Layer 2 access port:</p>
+<pre><code>switchport mode access</code></pre>
+<h2 id="section-10">Part 3 — Configure a Maximum Number of MAC Addresses</h2>
+<p>Cisco port security normally allows only one secure MAC address by default.</p>
+<p>Explicitly configure that limit:</p>
+<pre><code>configure terminal
+
+interface fastethernet0/1
+switchport port-security maximum 1
+
+end</code></pre>
+<p>Verify:</p>
+<pre><code>show port-security interface fa0/1</code></pre>
+<p>You should see:</p>
+<pre><code>Maximum MAC Addresses : 1</code></pre>
+<p>This means only one MAC address may use Fa0/1.</p>
+<h2 id="section-11">Part 4 — Configure Sticky MAC Learning</h2>
+<p>Instead of manually entering PC-A's MAC address, let the switch learn it automatically.</p>
+<p>Configure:</p>
+<pre><code>configure terminal
+
+interface fastethernet0/1
+switchport port-security mac-address sticky
+
+end</code></pre>
+<p>Generate traffic from PC-A.</p>
+<p>For example:</p>
+<pre><code>ping 192.168.1.20</code></pre>
+<p>Now check:</p>
+<pre><code>show port-security address</code></pre>
+<p>You should see something similar to:</p>
+<pre><code>Secure Mac Address   Type                 Ports
+------------------   -------------------  -----
+00E0.F9XX.XXXX       SecureSticky         Fa0/1</code></pre>
+<p>You can also examine the running configuration:</p>
+<pre><code>show running-config interface fastethernet0/1</code></pre>
+<p>You may see:</p>
+<pre><code>interface FastEthernet0/1
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 00E0.F9XX.XXXX</code></pre>
+<h3 id="section-12">What did sticky do?</h3>
+<p>The command:</p>
+<pre><code>switchport port-security mac-address sticky</code></pre>
+<p>tells the switch:</p>
+<blockquote>Learn the MAC address currently connected to this port and treat it as a secure MAC address.</blockquote>
+<p>So the administrator does not have to manually type the device's MAC address.</p>
+<h2 id="section-13">Part 5 — Cause a Port-Security Violation</h2>
+<p>Now demonstrate the key feature of the lab.</p>
+<p>First, disconnect <strong>PC-A from Fa0/1</strong>.</p>
+<p>Connect <strong>PC-C to Fa0/1</strong> instead.</p>
+<p>PC-C has a different MAC address.</p>
+<p>Generate traffic from PC-C:</p>
+<pre><code>ping 192.168.1.20</code></pre>
+<p>The switch detects:</p>
+<pre><code>Expected MAC address: PC-A
+Actual MAC address:   PC-C</code></pre>
+<p>Because the maximum allowed secure MAC addresses is:</p>
+<pre><code>1</code></pre>
+<p>PC-C causes a security violation.</p>
+<h2 id="section-14">Part 6 — Observe the Default Shutdown Mode</h2>
+<p>The default port-security violation mode is:</p>
+<pre><code>shutdown</code></pre>
+<p>Check the interface:</p>
+<pre><code>show interfaces status</code></pre>
+<p>Fa0/1 may show:</p>
+<pre><code>err-disabled</code></pre>
+<p>Check port security:</p>
+<pre><code>show port-security interface fa0/1</code></pre>
+<p>You may see:</p>
+<pre><code>Port Security              : Enabled
+Port Status                : Secure-shutdown
+Violation Mode             : Shutdown
+Maximum MAC Addresses      : 1
+Security Violation Count   : 1</code></pre>
+<p>You can also use:</p>
+<pre><code>show interfaces fa0/1</code></pre>
+<p>The port will no longer forward normal traffic.</p>
+<h2 id="section-15">Why Did the Port Shut Down?</h2>
+<p>The switch was configured to accept only PC-A's MAC address.</p>
+<p>When PC-C appeared, the switch detected an unauthorized MAC address.</p>
+<p>Conceptually:</p>
+<pre><code>Fa0/1
+  |
+  | Allowed:
+  |
+  +---- PC-A
+        MAC-A
+        ✓
+
+Replace PC-A with:
+
+Fa0/1
+  |
+  +---- PC-C
+        MAC-C
+        ✗
+
+Different MAC address
+        ↓
+Port-security violation
+        ↓
+Violation mode = shutdown
+        ↓
+Fa0/1 → err-disabled</code></pre>
+<h2 id="section-16">Part 7 — Recover the Port</h2>
+<p>Reconnect PC-A to Fa0/1.</p>
+<p>Enter:</p>
+<pre><code>enable
+configure terminal
+
+interface fastethernet0/1
+shutdown
+no shutdown
+
+end</code></pre>
+<p>Check again:</p>
+<pre><code>show interfaces status</code></pre>
+<p>Fa0/1 should return to an active state.</p>
+<p>Then test:</p>
+<pre><code>ping 192.168.1.20</code></pre>
+<h2 id="section-17">Part 8 — Demonstrate Violation Mode: Protect</h2>
+<p>Now configure:</p>
+<pre><code>configure terminal
+
+interface fastethernet0/1
+switchport port-security violation protect
+
+end</code></pre>
+<p>Verify:</p>
+<pre><code>show port-security interface fa0/1</code></pre>
+<p>Now replace PC-A with PC-C again and generate traffic.</p>
+<p>With <code>protect</code> mode:</p>
+<pre><code>Unauthorized frames
+        ↓
+Dropped</code></pre>
+<p>But:</p>
+<pre><code>Port stays UP</code></pre>
+<p>The switch does <strong>not</strong> shut the port down.</p>
+<h2 id="section-18">Part 9 — Demonstrate Violation Mode: Restrict</h2>
+<p>Reconnect PC-A and configure:</p>
+<pre><code>configure terminal
+
+interface fastethernet0/1
+switchport port-security violation restrict
+
+end</code></pre>
+<p>Replace PC-A with PC-C again.</p>
+<p>Generate traffic.</p>
+<p>Then examine:</p>
+<pre><code>show port-security interface fa0/1</code></pre>
+<p>The violation counter should increase.</p>
+<p>Conceptually:</p>
+<pre><code>Unauthorized MAC
+       ↓
+Frames dropped
+       ↓
+Violation counter increases
+       ↓
+Port remains operational</code></pre>
+<h2 id="section-19">Part 10 — Compare the Three Violation Modes</h2>
+<div class="table-wrap"><table><thead><tr><th scope="col">Mode</th><th scope="col">Unauthorized Frames</th><th scope="col">Port Shutdown?</th><th scope="col">Violation Count</th></tr></thead><tbody><tr><td><code>protect</code></td><td>Dropped</td><td>No</td><td>Generally not incremented/reported the same way</td></tr><tr><td><code>restrict</code></td><td>Dropped</td><td>No</td><td>Yes</td></tr><tr><td><code>shutdown</code></td><td>Dropped</td><td><strong>Yes</strong></td><td>Yes</td></tr></tbody></table></div>
+<p>The most dramatic demonstration in Packet Tracer is:</p>
+<pre><code>shutdown</code></pre>
+<p>because students can see the switch port enter the <code>err-disabled</code> state.</p>
+<h2 id="section-20">Part 11 — Configure Port Security on Fa0/2</h2>
+<p>Now configure PC-B's port independently.</p>
+<pre><code>configure terminal
+
+interface fastethernet0/2
+
+switchport mode access
+switchport port-security
+switchport port-security maximum 1
+switchport port-security mac-address sticky
+switchport port-security violation shutdown
+
+end</code></pre>
+<p>Generate traffic:</p>
+<pre><code>PC-B → ping 192.168.1.10</code></pre>
+<p>Then verify:</p>
+<pre><code>show port-security</code></pre>
+<p>and:</p>
+<pre><code>show port-security address</code></pre>
+<p>You should now have secure MAC addresses associated with both ports.</p>
+<h2 id="section-21">Part 12 — Useful Verification Commands</h2>
+<p>Students should know these commands.</p>
+<h3 id="section-22">Show overall port-security status</h3>
+<pre><code>show port-security</code></pre>
+<h3 id="section-23">Show information about one port</h3>
+<pre><code>show port-security interface fa0/1</code></pre>
+<h3 id="section-24">Show secure MAC addresses</h3>
+<pre><code>show port-security address</code></pre>
+<h3 id="section-25">Show normal MAC-address table</h3>
+<pre><code>show mac address-table</code></pre>
+<h3 id="section-26">Check interface state</h3>
+<pre><code>show interfaces status</code></pre>
+<h3 id="section-27">Check configuration</h3>
+<pre><code>show running-config interface fa0/1</code></pre>
+<h2 id="section-28">Part 13 — Recommended Final Configuration</h2>
+<p>Fa0/1:</p>
+<pre><code>enable
+configure terminal
+
+interface fastethernet0/1
+ description PC-A Secure Access Port
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+
+exit</code></pre>
+<p>Fa0/2:</p>
+<pre><code>interface fastethernet0/2
+ description PC-B Secure Access Port
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+
+end</code></pre>
+<p>Save:</p>
+<pre><code>copy running-config startup-config</code></pre>
+<h2 id="section-29">Student Experiment</h2>
+<p>Have students complete this experiment themselves.</p>
+<h3 id="section-30">Experiment A</h3>
+<p>Configure:</p>
+<pre><code>switchport port-security maximum 1</code></pre>
+<p>Connect one PC.</p>
+<p>Result:</p>
+<pre><code>1 MAC address
+     ↓
+Allowed</code></pre>
+<h3 id="section-31">Experiment B</h3>
+<p>Replace it with another PC.</p>
+<p>Result:</p>
+<pre><code>Different MAC
+     ↓
+Security violation</code></pre>
+<h3 id="section-32">Experiment C</h3>
+<p>Repeat the experiment using each of these:</p>
+<pre><code>switchport port-security violation protect</code></pre>
+<pre><code>switchport port-security violation restrict</code></pre>
+<pre><code>switchport port-security violation shutdown</code></pre>
+<p>Students should record how the switch behaves differently.</p>
+<h2 id="section-33">Key Commands to Remember</h2>
+<pre><code>switchport mode access</code></pre>
+<p>Makes the interface a Layer 2 access port.</p>
+<pre><code>switchport port-security</code></pre>
+<p>Enables port security.</p>
+<pre><code>switchport port-security maximum 1</code></pre>
+<p>Limits the number of secure MAC addresses.</p>
+<pre><code>switchport port-security mac-address sticky</code></pre>
+<p>Automatically learns the connected device's MAC address.</p>
+<pre><code>switchport port-security violation shutdown</code></pre>
+<p>Disables the port when a violation occurs.</p>
+<pre><code>show port-security interface fa0/1</code></pre>
+<p>Displays detailed port-security status.</p>
+<h2 id="section-34">The Big Idea</h2>
+<p>Port security associates a switch access port with one or more authorized MAC addresses:</p>
+<pre><code>        Authorized PC
+        MAC: AAAA
+            |
+            v
+       +---------+
+       | Fa0/1   |
+       | Secure  |
+       +---------+
+            |
+       MAC AAAA ✓
+       MAC BBBB ✗
+       MAC CCCC ✗</code></pre>
+<p>It is therefore useful for preventing someone from simply unplugging an authorized endpoint and connecting a different device to the same switch port.</p>
+<footer>Lab content from the referenced “Generate Packet Tracer Lab” conversation. This standalone page includes all 13 parts, student experiments, and command references. No internet connection is required.</footer>
+</main></div>
+</body></html>
