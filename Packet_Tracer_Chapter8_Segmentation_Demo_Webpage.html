@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Packet Tracer Demo Lab - Chapter 8: Segmentation</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --paper: #ffffff;
+      --ink: #182230;
+      --muted: #5d6b82;
+      --line: #d9e0ea;
+      --accent: #2457c5;
+      --accent-soft: #eaf0ff;
+      --code-bg: #111827;
+      --code-ink: #f3f4f6;
+      --table-head: #eef3fb;
+      --note: #fff7df;
+      --success: #e9f8ef;
+      --warn: #fff1f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.58;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 18px 64px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #173b88, #2f75ff);
+      color: white;
+      border-radius: 18px;
+      padding: 34px 36px;
+      box-shadow: 0 12px 32px rgba(24, 34, 48, 0.18);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 2.1rem;
+      line-height: 1.15;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 500;
+      opacity: 0.95;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .meta div {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 12px 14px;
+      border-radius: 12px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 26px;
+      margin: 18px 0;
+      box-shadow: 0 6px 18px rgba(24, 34, 48, 0.06);
+    }
+
+    h2 {
+      color: #173b88;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 8px;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #24446f;
+      margin-top: 24px;
+    }
+
+    h4 {
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    p { margin: 10px 0; }
+
+    ul, ol { padding-left: 24px; }
+
+    li { margin: 5px 0; }
+
+    .note {
+      background: var(--note);
+      border-left: 5px solid #e6a700;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .success {
+      background: var(--success);
+      border-left: 5px solid #229954;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .warning {
+      background: var(--warn);
+      border-left: 5px solid #d33c32;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 22px;
+      overflow-wrap: anywhere;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: var(--table-head);
+      color: #173b88;
+      font-weight: 700;
+    }
+
+    code {
+      background: #eef2f7;
+      padding: 2px 5px;
+      border-radius: 5px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 0.95em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-ink);
+      padding: 16px 18px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      margin: 12px 0 18px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .topology {
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 14px 0;
+    }
+
+    .toc {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .toc a:hover { text-decoration: underline; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .mini {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { max-width: none; padding: 0; }
+      .hero, .card { box-shadow: none; }
+      .card { break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body><main class="page"><section class="hero"><h1>Packet Tracer Demo Lab</h1><h2>Chapter 8: Segmentation</h2><p>Original instructor/demo lab aligned with <em>CompTIA Network+ Guide to Networks</em>, 10th Edition by Jill West.</p><div class="meta"><div><strong>Course:</strong><br>Internetworking Basics</div><div><strong>Estimated Time:</strong><br>2 hours</div><div><strong>Lab Type:</strong><br>Instructor-led demo with guided practice</div><div><strong>Tool:</strong><br>Cisco Packet Tracer</div></div></section>
+<nav class="toc" aria-label="Page sections"><strong>Page Sections:</strong><ol><li><a href="#purpose">Lab Purpose</a></li><li><a href="#scenario">Scenario and Objectives</a></li><li><a href="#topology">Topology and Addressing</a></li><li><a href="#build">Build the Packet Tracer Network</a></li><li><a href="#configure">Configure VLANs, Trunks, Router, and Endpoints</a></li><li><a href="#verify">Verify Segmentation and Routing</a></li><li><a href="#policy">Segmentation Policy Demo</a></li><li><a href="#troubleshooting">Troubleshooting Demonstrations</a></li><li><a href="#explanations">Instructor Explanation Blocks</a></li><li><a href="#timing">2-Hour Instructor Timing Plan</a></li><li><a href="#summary">Final Demo Summary</a></li></ol></nav>
+<section id="purpose" class="card"><h2>1. Lab Purpose</h2><p>Demonstrate how one physical switching infrastructure can carry separate logical networks. Students create staff, student, and server VLANs, carry them across trunks, and use router subinterfaces to enable communication between them. An optional access-control demonstration then distinguishes traffic separation from security policy.</p><ul><li>Divide a /24 address block into /26 subnets.</li><li>Assign switch access ports to VLANs and connect switches with an 802.1Q trunk.</li><li>Observe same-VLAN communication across switches before routing is enabled.</li><li>Configure router-on-a-stick and test shared DNS and HTTP services.</li><li>Restrict student-to-staff traffic while preserving access to the server.</li><li>Diagnose VLAN membership, trunk, gateway, and subnet-mask errors.</li></ul><div class="note"><strong>Instructor note:</strong> This is an original live demo with guided practice, not a graded assignment. No submission requirements are included. The main lesson is segmentation; the ACL is a short policy extension.</div></section>
+<section id="scenario" class="card"><h2>2. Lab Scenario</h2><p><strong>Northstar Training Center</strong> shares two access switches between staff and students. The administrator wants separate broadcast domains for staff, students, and services without buying a switch for every group. Both groups need access to a shared web and DNS server.</p><h3>Learning Objectives</h3><ul><li>Explain the relationship between a VLAN and its IP subnet in this design.</li><li>Calculate /26 network addresses, host ranges, and broadcast addresses.</li><li>Distinguish access ports from tagged trunks.</li><li>Configure and verify VLANs on both switches.</li><li>Explain why traffic between VLANs needs a Layer 3 device.</li><li>Test the difference between routing availability and an explicit traffic policy.</li></ul><h3>Chapter 8 Concept Alignment</h3><table><thead><tr><th>Segmentation Topic</th><th>Demo Activity</th></tr></thead><tbody><tr><td>Subnetting and CIDR</td><td>Divide 192.168.80.0/24 into four /26 blocks; use three</td></tr><tr><td>VLANs and broadcast domains</td><td>Create STAFF, STUDENTS, and SERVICES VLANs</td></tr><tr><td>Access ports and trunks</td><td>Carry multiple VLANs between switches and to the router</td></tr><tr><td>Inter-VLAN routing</td><td>Configure three router subinterfaces as gateways</td></tr><tr><td>Policy between segments</td><td>Apply an inbound student ACL as an extension</td></tr><tr><td>Troubleshooting</td><td>Introduce and repair one fault at a time</td></tr></tbody></table><p>The <a href="https://www.cengageasia.com/title/default/detail?isbn=9798214405902">publisher's table of contents</a> identifies Chapter 8 as Segmentation. This selective exercise supports that theme rather than reproducing textbook projects.</p></section>
+<section id="topology" class="card"><h2>3. Devices, Topology, and Addressing</h2><h3>Devices Used and Naming Plan</h3><table><thead><tr><th>Suggested Device</th><th>Quantity</th><th>Names / Roles</th></tr></thead><tbody><tr><td>2911 router</td><td>1</td><td>RTR-HQ-01: gateways for all three subnets</td></tr><tr><td>2960 switch</td><td>2</td><td>SW-HQ-01 and SW-HQ-02: VLAN access and trunking</td></tr><tr><td>PC-PT</td><td>4</td><td>PC-STAFF-01, PC-STAFF-02, PC-STUDENT-01, PC-STUDENT-02</td></tr><tr><td>Server-PT</td><td>1</td><td>SRV-HQ-01: shared DNS and HTTP</td></tr></tbody></table><h3>Target Logical Topology</h3><div class="topology">                     RTR-HQ-01 G0/0
+                     .10 / .20 / .30
+                            |
+                 802.1Q trunk: VLANs 10,20,30
+                            |
+                         G0/1
+PC-STAFF-01 -- Fa0/1   SW-HQ-01   G0/2 ===== G0/1 SW-HQ-02
+PC-STUDENT-01- Fa0/2       |                       Fa0/1 -- PC-STAFF-02
+SRV-HQ-01 ---- Fa0/3      |                       Fa0/2 -- PC-STUDENT-02
+
+VLAN 10: STAFF        192.168.80.0/26
+VLAN 20: STUDENTS     192.168.80.64/26
+VLAN 30: SERVICES     192.168.80.128/26
+===== switch-to-switch 802.1Q trunk</div><h3>Subnet Planning</h3><p>Borrow two bits from /24 to create four equal /26 subnets. The mask is <code>255.255.255.192</code>; the block size is 64. Each subnet has 64 addresses and 62 usable host addresses in this conventional IPv4 LAN design.</p><table><thead><tr><th>VLAN / Purpose</th><th>Network</th><th>Usable Hosts</th><th>Broadcast</th><th>Gateway</th></tr></thead><tbody><tr><td>10 STAFF</td><td>192.168.80.0/26</td><td>.1–.62</td><td>192.168.80.63</td><td>192.168.80.1</td></tr><tr><td>20 STUDENTS</td><td>192.168.80.64/26</td><td>.65–.126</td><td>192.168.80.127</td><td>192.168.80.65</td></tr><tr><td>30 SERVICES</td><td>192.168.80.128/26</td><td>.129–.190</td><td>192.168.80.191</td><td>192.168.80.129</td></tr><tr><td>Reserved</td><td>192.168.80.192/26</td><td>.193–.254</td><td>192.168.80.255</td><td>Not configured</td></tr></tbody></table><h3>Endpoint Addressing</h3><table><thead><tr><th>Device</th><th>VLAN</th><th>IP Address</th><th>Mask</th><th>Gateway</th></tr></thead><tbody><tr><td>PC-STAFF-01</td><td>10</td><td>192.168.80.10</td><td>255.255.255.192</td><td>192.168.80.1</td></tr><tr><td>PC-STAFF-02</td><td>10</td><td>192.168.80.11</td><td>255.255.255.192</td><td>192.168.80.1</td></tr><tr><td>PC-STUDENT-01</td><td>20</td><td>192.168.80.70</td><td>255.255.255.192</td><td>192.168.80.65</td></tr><tr><td>PC-STUDENT-02</td><td>20</td><td>192.168.80.71</td><td>255.255.255.192</td><td>192.168.80.65</td></tr><tr><td>SRV-HQ-01</td><td>30</td><td>192.168.80.130</td><td>255.255.255.192</td><td>192.168.80.129</td></tr></tbody></table><p>Set DNS to <code>192.168.80.130</code> on all endpoints, including the server. All addresses are static. No DHCP, NAT, Internet connection, or static routes are required. The router learns these three directly connected networks from its subinterfaces.</p></section>
+<section id="build" class="card"><h2>4. Build the Packet Tracer Network</h2><h3>Part A — Create and Label the Project</h3><ol><li>Start a new file and save it as <code>Chapter8_Segmentation_Demo.pkt</code>.</li><li>Add the eight devices and rename them according to the table.</li><li>Place two PCs on each switch and the server on SW-HQ-01.</li><li>Use workspace notes or colored outlines to identify VLANs 10, 20, and 30 and their /26 networks.</li></ol><h3>Part B — Cable the Network</h3><table><thead><tr><th>From</th><th>To</th><th>Cable</th></tr></thead><tbody><tr><td>PC-STAFF-01 Fa0</td><td>SW-HQ-01 Fa0/1</td><td>Straight-through</td></tr><tr><td>PC-STUDENT-01 Fa0</td><td>SW-HQ-01 Fa0/2</td><td>Straight-through</td></tr><tr><td>SRV-HQ-01 Fa0</td><td>SW-HQ-01 Fa0/3</td><td>Straight-through</td></tr><tr><td>RTR-HQ-01 G0/0</td><td>SW-HQ-01 G0/1</td><td>Straight-through</td></tr><tr><td>SW-HQ-01 G0/2</td><td>SW-HQ-02 G0/1</td><td>Crossover or automatic connection</td></tr><tr><td>PC-STAFF-02 Fa0</td><td>SW-HQ-02 Fa0/1</td><td>Straight-through</td></tr><tr><td>PC-STUDENT-02 Fa0</td><td>SW-HQ-02 Fa0/2</td><td>Straight-through</td></tr></tbody></table><div class="note"><strong>Preflight:</strong> The examples use 2911 and 2960 interface names. If using other models, check the available ports first. Leave the router unconfigured until the pre-routing checkpoint. Allow switch links to settle before testing.</div></section>
+<section id="configure" class="card"><h2>5. Configure VLANs, Trunks, Router, and Endpoints</h2><h3>Part C — Configure SW-HQ-01</h3><p>Open CLI, press Enter, and enter:</p><pre><code>enable
+configure terminal
+hostname SW-HQ-01
+vlan 10
+ name STAFF
+ exit
+vlan 20
+ name STUDENTS
+ exit
+vlan 30
+ name SERVICES
+ exit
+interface fastEthernet0/1
+ description PC-STAFF-01
+ switchport mode access
+ switchport access vlan 10
+ exit
+interface fastEthernet0/2
+ description PC-STUDENT-01
+ switchport mode access
+ switchport access vlan 20
+ exit
+interface fastEthernet0/3
+ description SRV-HQ-01
+ switchport mode access
+ switchport access vlan 30
+ exit
+interface gigabitEthernet0/1
+ description Trunk to RTR-HQ-01
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+ exit
+interface gigabitEthernet0/2
+ description Trunk to SW-HQ-02
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+ exit
+end
+copy running-config startup-config</code></pre><p>Press Enter to accept the default destination filename when prompted.</p><h3>Part D — Configure SW-HQ-02</h3><pre><code>enable
+configure terminal
+hostname SW-HQ-02
+vlan 10
+ name STAFF
+ exit
+vlan 20
+ name STUDENTS
+ exit
+vlan 30
+ name SERVICES
+ exit
+interface fastEthernet0/1
+ description PC-STAFF-02
+ switchport mode access
+ switchport access vlan 10
+ exit
+interface fastEthernet0/2
+ description PC-STUDENT-02
+ switchport mode access
+ switchport access vlan 20
+ exit
+interface gigabitEthernet0/1
+ description Trunk to SW-HQ-01
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+ exit
+end
+copy running-config startup-config</code></pre><div class="note"><strong>2960 note:</strong> Do not enter <code>switchport trunk encapsulation dot1q</code> on these switches; their trunk encapsulation is already 802.1Q. The default native VLAN remains 1 on both switch ends, with no user endpoints assigned to it. All three lab VLANs use tags on the trunks.</div><h3>Part E — Configure Endpoints and Services</h3><ol><li>On each PC and the server, open <strong>Desktop &gt; IP Configuration</strong>, choose Static, and enter the addressing-plan values.</li><li>On SRV-HQ-01, open <strong>Services &gt; DNS</strong>, turn DNS On, and add an A record for <code>portal.northstar.com</code> pointing to <code>192.168.80.130</code>.</li><li>Open <strong>Services &gt; HTTP</strong>, turn HTTP On, edit <code>index.html</code>, and save the page below.</li></ol><pre><code>&lt;html&gt;&lt;body&gt;
+&lt;h1&gt;Northstar Shared Services Portal&lt;/h1&gt;
+&lt;p&gt;VLAN 30 | 192.168.80.128/26&lt;/p&gt;
+&lt;p&gt;Staff and students access this service through their gateways.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</code></pre><p>The .com name is a locally configured DNS record inside this simulation; it does not require a public domain registration or public DNS change.</p><h3>Part F — Pre-Routing Checkpoint</h3><p>With the router still unconfigured, open each PC's Command Prompt:</p><table><thead><tr><th>Source / Test</th><th>Expected</th><th>Reason</th></tr></thead><tbody><tr><td>PC-STAFF-01: ping 192.168.80.11</td><td>Success</td><td>VLAN 10 crosses the switch trunk</td></tr><tr><td>PC-STUDENT-01: ping 192.168.80.71</td><td>Success</td><td>VLAN 20 crosses the switch trunk</td></tr><tr><td>PC-STAFF-01: ping 192.168.80.70</td><td>Failure</td><td>No working gateway between subnets yet</td></tr><tr><td>PC-STAFF-01: ping 192.168.80.130</td><td>Failure</td><td>Server is in another VLAN/subnet</td></tr></tbody></table><p>Repeat an initial ping if ARP or link convergence consumes the first attempt. Do not proceed until same-VLAN tests work.</p><h3>Part G — Configure Router-on-a-Stick</h3><p>On RTR-HQ-01, answer <code>no</code> to the initial configuration dialog if prompted. The physical interface has no IP address; each subinterface supplies one subnet's gateway.</p><pre><code>enable
+configure terminal
+hostname RTR-HQ-01
+interface gigabitEthernet0/0
+ description 802.1Q trunk to SW-HQ-01
+ no ip address
+ no shutdown
+ exit
+interface gigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.80.1 255.255.255.192
+ exit
+interface gigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.80.65 255.255.255.192
+ exit
+interface gigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 192.168.80.129 255.255.255.192
+ exit
+end
+copy running-config startup-config</code></pre><p>The subinterface number is a naming convention; the <code>encapsulation dot1Q</code> command actually selects the VLAN ID.</p></section>
+<section id="verify" class="card"><h2>6. Verify Segmentation and Routing</h2><h3>Part H — Inspect the Switches and Router</h3><p>On both switches:</p><pre><code>show vlan brief
+show interfaces trunk</code></pre><p>Confirm VLANs 10, 20, and 30 exist, access ports have the intended memberships, and active trunks allow all three VLANs. Trunks are checked with <code>show interfaces trunk</code>; they are not listed as ordinary VLAN access members in <code>show vlan brief</code>.</p><p>On the router:</p><pre><code>show ip interface brief
+show ip route</code></pre><p>Expect G0/0 and all three subinterfaces up/up, and connected routes for 192.168.80.0/26, 192.168.80.64/26, and 192.168.80.128/26. An up/up subinterface alone does not prove its VLAN is allowed on the switch trunk.</p><h3>Part I — Test from Clients</h3><p>From PC-STAFF-01:</p><pre><code>ipconfig
+ping 192.168.80.1
+ping 192.168.80.11
+ping 192.168.80.70
+ping 192.168.80.130
+ping portal.northstar.com</code></pre><p>All should succeed before the ACL is installed. On both student PCs, test their gateway 192.168.80.65, the server 192.168.80.130, and the portal name. On all four clients, use <strong>Desktop &gt; Web Browser</strong> to open <code>http://portal.northstar.com</code>. Also try <code>http://192.168.80.130</code> to separate DNS from HTTP troubleshooting.</p><div class="success"><strong>Checkpoint:</strong> Save a verified copy as <code>Chapter8_Segmentation_Baseline.pkt</code>. Use a separate working copy for policy and fault demonstrations.</div><h3>Part J — Simulation Mode: Broadcast Boundaries</h3><ol><li>Select Simulation Mode and filter ARP and ICMP.</li><li>From PC-STAFF-01 ping PC-STAFF-02. Step through events with Capture/Forward.</li><li>Observe that staff ARP broadcasts stay inside VLAN 10, including across the switch trunk; student and server access ports do not receive them.</li><li>Next ping the server. The PC resolves its gateway MAC, not the remote server MAC. The router performs a separate ARP lookup in VLAN 30 when needed.</li><li>Inspect PDU details on trunk and access links to discuss VLAN tagging, where the simulator exposes it.</li><li>Add DNS, TCP, and HTTP filters and request the portal. Return to Realtime afterward.</li></ol><p>Previously learned ARP/DNS entries can hide lookup events. Restart a client in a saved working copy if a fresh lookup is needed; clearing the event list alone does not necessarily clear caches.</p></section>
+<section id="policy" class="card"><h2>7. Segmentation Policy Demo</h2><h3>Part K — Add a Student-to-Staff Restriction</h3><p>VLANs separate Layer 2 broadcasts. After routing is enabled, all three subnets can communicate unless a policy says otherwise. This extension drops IP traffic entering from the student subnet with a staff-subnet destination, while allowing its other IP traffic.</p><p>On RTR-HQ-01:</p><pre><code>enable
+configure terminal
+ip access-list extended STUDENT-IN
+ deny ip 192.168.80.64 0.0.0.63 192.168.80.0 0.0.0.63
+ permit ip any any
+ exit
+interface gigabitEthernet0/0.20
+ ip access-group STUDENT-IN in
+ exit
+end
+show access-lists
+show ip interface gigabitEthernet0/0.20</code></pre><p>The /26 wildcard <code>0.0.0.63</code> matches the last six address bits. ACL entries are evaluated in order. The final permit preserves other traffic for this focused demo; without it the implicit deny would block unmatched traffic, including student access to services.</p><h3>Part L — Verify the Policy</h3><table><thead><tr><th>Test</th><th>Expected Result</th></tr></thead><tbody><tr><td>Student .70 → staff .10 ping</td><td>Blocked by the inbound student ACL</td></tr><tr><td>Student .70 → student .71 ping</td><td>Success within VLAN 20; bypasses router ACL</td></tr><tr><td>Student .70 → server .130 ping and portal HTTP</td><td>Success; destination is in VLAN 30</td></tr><tr><td>Staff .10 → server .130 ping and portal HTTP</td><td>Success</td></tr><tr><td>Staff .10 → student .70 ping</td><td>Fails: student echo replies toward staff are also blocked</td></tr></tbody></table><div class="warning"><strong>Stateless policy:</strong> This ACL does not distinguish new sessions from replies. Do not describe it as “staff can initiate unrestricted connections to students.” It also does not isolate students from one another within VLAN 20 or provide a complete firewall policy.</div><p>Inspect <code>show access-lists</code> for rule matches where supported. If preserving this variant, save it separately as <code>Chapter8_Segmentation_Policy.pkt</code>.</p><h3>Part M — Restore the Baseline Policy</h3><p>Remove the ACL attachment before the troubleshooting demonstrations:</p><pre><code>configure terminal
+interface gigabitEthernet0/0.20
+ no ip access-group STUDENT-IN in
+ exit
+no ip access-list extended STUDENT-IN
+end</code></pre><p>Retest student-to-staff and staff-to-student ping; both should work again.</p></section>
+<section id="troubleshooting" class="card"><h2>8. Troubleshooting Demonstrations</h2><div class="note"><strong>One fault at a time:</strong> Start with the verified baseline and no ACL. Introduce one fault, predict its scope, test it, and restore it before continuing. Do not save a fault over the baseline.</div><h3>Demo 1 — Wrong Access VLAN</h3><p>On SW-HQ-02 move the staff PC's port into VLAN 20:</p><pre><code>enable
+configure terminal
+interface fastEthernet0/1
+ switchport access vlan 20
+end</code></pre><p>PC-STAFF-02 keeps its staff IP but loses ordinary staff and gateway connectivity. Check <code>show vlan brief</code>. Repair on SW-HQ-02:</p><pre><code>configure terminal
+interface fastEthernet0/1
+ switchport access vlan 10
+end</code></pre><h3>Demo 2 — VLAN Missing from the Trunk</h3><p>On SW-HQ-01 exclude VLAN 20 from the inter-switch trunk:</p><pre><code>configure terminal
+interface gigabitEthernet0/2
+ switchport trunk allowed vlan 10,30
+end</code></pre><p>PC-STUDENT-02 loses its gateway and server access, while PC-STUDENT-01 and staff clients still work. Inspect <code>show interfaces trunk</code> on both switches. Restore:</p><pre><code>configure terminal
+interface gigabitEthernet0/2
+ switchport trunk allowed vlan 10,20,30
+end</code></pre><h3>Demo 3 — Incorrect Subnet Mask</h3><p>Change PC-STAFF-01's mask to <code>255.255.255.0</code>. It now treats the server .130 as local and ARPs for it in VLAN 10 rather than using the gateway.</p><div class="note"><strong>Make the observation deterministic:</strong> IOS proxy ARP can mask this error. Before the fault, on RTR-HQ-01 enter <code>interface gigabitEthernet0/0.10</code> in configuration mode and apply <code>no ip proxy-arp</code>. With the /24 mask, a fresh server ping should fail and Simulation Mode should show the incorrect ARP target. If the installed model rejects this command, teach the wrong local/remote decision from ARP events rather than promising a failure.</div><p>Restore the PC mask to <code>255.255.255.192</code>. If proxy ARP was disabled for this demonstration, restore it with <code>ip proxy-arp</code> on G0/0.10. Retest the server and portal.</p><h3>Demo 4 — Wrong Default Gateway</h3><p>Change PC-STUDENT-02's gateway to unused <code>192.168.80.126</code>. Its same-VLAN peer remains reachable, but server access fails. Inspect <code>ipconfig</code> and restore <code>192.168.80.65</code>.</p><h3>Demo 5 — Router Physical Interface Down</h3><p>On RTR-HQ-01 enter configuration mode, select G0/0, and apply <code>shutdown</code>. Same-VLAN communication across the switch trunk still works; inter-VLAN communication fails. Inspect <code>show ip interface brief</code>. Restore with <code>no shutdown</code> on G0/0 and wait for recovery.</p><h3>Troubleshooting Decision Table</h3><table><thead><tr><th>Symptom</th><th>Check First</th></tr></thead><tbody><tr><td>One PC cannot reach its same-VLAN peer</td><td>Cable, address/mask, access VLAN, and trunk allowed list</td></tr><tr><td>One VLAN fails only across switches</td><td>VLAN existence on both switches and inter-switch trunk</td></tr><tr><td>Same-VLAN works; all inter-VLAN fails</td><td>Router link, switch-to-router trunk, and subinterfaces</td></tr><tr><td>One VLAN cannot reach its gateway</td><td>Gateway address, dot1Q VLAN ID, and allowed VLANs</td></tr><tr><td>Server IP works; name fails</td><td>Client DNS address and server A record</td></tr><tr><td>Traffic fails only after policy is applied</td><td>ACL order, direction, subnet wildcard, and return traffic</td></tr></tbody></table><p>End by confirming all four PCs reach the server by IP and name, staff peers communicate, student peers communicate, and cross-VLAN ping works with the ACL removed.</p></section>
+<section id="explanations" class="card"><h2>9. Instructor Explanation Blocks</h2><h3>VLAN vs. Subnet</h3><p>A VLAN is a Layer 2 broadcast domain. A subnet defines a Layer 3 address range. This design maps one subnet to each VLAN. Changing a PC's IP address does not change the VLAN assigned to its switch port.</p><h3>Access vs. Trunk</h3><p>An access port places an ordinary endpoint's untagged traffic into one VLAN. A trunk carries multiple VLANs over one link. An allowed VLAN list limits which VLANs may traverse that trunk; it does not create the VLANs automatically.</p><h3>Broadcast vs. Collision Domain</h3><p>Switch ports separate Ethernet collision domains; full-duplex switched links do not use collision detection during normal operation. VLANs separate broadcast domains. A router does not simply forward a received Layer 2 broadcast into all its other VLANs.</p><h3>Routing vs. Filtering</h3><p>A trunk transports VLAN traffic; it does not route between VLANs. The router performs that routing, and an ACL can then filter selected packets. VLAN separation alone does not enforce a restrictive inter-VLAN policy after unrestricted routing is enabled.</p><h3>Capacity and Design</h3><p>Router-on-a-stick makes the shared gateway function easy to observe, but inter-VLAN traffic shares one physical router link and depends on one router. Larger networks often use multilayer switches and resilient designs. This demo does not measure throughput or implement redundancy.</p><h3>Questions and Expected Answers</h3><ul><li><strong>Why /26?</strong> Four equal blocks of 64 addresses fit inside the /24; each conventional LAN block has 62 usable addresses.</li><li><strong>Is 192.168.80.127 a valid student host?</strong> No; it is the student subnet's broadcast address.</li><li><strong>Can staff PCs on different switches communicate without the router?</strong> Yes, through VLAN 10 on the switch trunk.</li><li><strong>Does the ACL affect student-to-student traffic?</strong> No; same-VLAN traffic does not pass through that router interface.</li><li><strong>Does an up/up router subinterface prove end-to-end VLAN transport?</strong> No; switch VLAN membership and trunk configuration must also be checked.</li></ul></section>
+<section id="timing" class="card"><h2>10. Suggested 2-Hour Instructor Timing Plan</h2><table><thead><tr><th>Time</th><th>Activity</th></tr></thead><tbody><tr><td>0–10 min</td><td>Introduce VLANs, subnets, broadcast domains, and the scenario</td></tr><tr><td>10–20 min</td><td>Calculate /26 ranges and label the topology</td></tr><tr><td>20–35 min</td><td>Add devices, cable, and configure endpoint addresses</td></tr><tr><td>35–55 min</td><td>Configure VLANs and trunks; run the pre-routing checkpoint</td></tr><tr><td>55–70 min</td><td>Configure router subinterfaces and server DNS/HTTP</td></tr><tr><td>70–85 min</td><td>Verify all paths and inspect Simulation Mode; save baseline</td></tr><tr><td>85–100 min</td><td>Demonstrate, verify, and remove the student ACL</td></tr><tr><td>100–115 min</td><td>Demonstrate wrong access VLAN and missing trunk VLAN; repair</td></tr><tr><td>115–120 min</td><td>Review key distinctions and confirm the final working state</td></tr></tbody></table><div class="note"><strong>Pacing:</strong> Prepare a working baseline before class. Use the subnet-mask, gateway, and interface-down faults as optional extensions. If students need more subnetting practice, shorten the ACL extension rather than rushing the core VLAN checks.</div></section>
+<section id="summary" class="card"><h2>11. Final Demo Summary</h2><p>Trace a student request to the shared portal:</p><div class="topology">PC-STUDENT-02 opens http://portal.northstar.com
+
+1. Its /26 mask identifies the DNS/server address as off-subnet.
+2. It sends traffic to gateway 192.168.80.65.
+3. SW-HQ-02 carries VLAN 20 across the inter-switch trunk.
+4. SW-HQ-01 carries VLAN 20 to router subinterface G0/0.20.
+5. The router evaluates any inbound ACL and routes toward VLAN 30.
+6. G0/0.30 sends server-bound traffic tagged for VLAN 30.
+7. DNS resolves the portal name; TCP/HTTP carries the page request.
+8. Server responses return through gateway 192.168.80.129.</div><div class="success"><strong>Key lesson:</strong> Subnets organize IP addresses, VLANs separate broadcast domains, trunks carry multiple VLANs, routers connect subnets, and filtering rules control which routed traffic is permitted.</div><h3>Instructor References and Preflight</h3><ul><li><a href="https://www.cengageasia.com/title/default/detail?isbn=9798214405902">Cengage: 10th-edition chapter sequence</a></li><li><a href="https://www.cisco.com/c/en/us/support/docs/lan-switching/inter-vlan-routing/14976-50.html">Cisco: Inter-VLAN routing with an external router</a></li><li><a href="https://tutorials.ptnetacad.net/help/default/mode_simulation.htm">Cisco Packet Tracer: Simulation Mode</a></li></ul><p>Commands are designed for the listed simulated devices. Run the baseline, selected faults, and policy checks in your installed Packet Tracer version before teaching. This webpage is a guide, not a supplied .pkt project or a record of an executed simulation.</p></section><p class="footer">Original instructor/demo webpage for Internetworking Basics. Chapter 8 retains the Chapter 6/7 presentation style and is saved as a separate file. No textbook content is reproduced.</p>
+</main></body></html>
