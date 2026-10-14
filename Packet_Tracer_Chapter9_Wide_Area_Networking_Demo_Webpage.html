@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Packet Tracer Demo Lab - Chapter 9: Wide Area Networking</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --paper: #ffffff;
+      --ink: #182230;
+      --muted: #5d6b82;
+      --line: #d9e0ea;
+      --accent: #2457c5;
+      --accent-soft: #eaf0ff;
+      --code-bg: #111827;
+      --code-ink: #f3f4f6;
+      --table-head: #eef3fb;
+      --note: #fff7df;
+      --success: #e9f8ef;
+      --warn: #fff1f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.58;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 18px 64px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #173b88, #2f75ff);
+      color: white;
+      border-radius: 18px;
+      padding: 34px 36px;
+      box-shadow: 0 12px 32px rgba(24, 34, 48, 0.18);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 2.1rem;
+      line-height: 1.15;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 500;
+      opacity: 0.95;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .meta div {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 12px 14px;
+      border-radius: 12px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 26px;
+      margin: 18px 0;
+      box-shadow: 0 6px 18px rgba(24, 34, 48, 0.06);
+    }
+
+    h2 {
+      color: #173b88;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 8px;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #24446f;
+      margin-top: 24px;
+    }
+
+    h4 {
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    p { margin: 10px 0; }
+
+    ul, ol { padding-left: 24px; }
+
+    li { margin: 5px 0; }
+
+    .note {
+      background: var(--note);
+      border-left: 5px solid #e6a700;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .success {
+      background: var(--success);
+      border-left: 5px solid #229954;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .warning {
+      background: var(--warn);
+      border-left: 5px solid #d33c32;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 22px;
+      overflow-wrap: anywhere;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: var(--table-head);
+      color: #173b88;
+      font-weight: 700;
+    }
+
+    code {
+      background: #eef2f7;
+      padding: 2px 5px;
+      border-radius: 5px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 0.95em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-ink);
+      padding: 16px 18px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      margin: 12px 0 18px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .topology {
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 14px 0;
+    }
+
+    .toc {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .toc a:hover { text-decoration: underline; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .mini {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { max-width: none; padding: 0; }
+      .hero, .card { box-shadow: none; }
+      .card { break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body><main class="page"><section class="hero"><h1>Packet Tracer Demo Lab</h1><h2>Chapter 9: Wide Area Networking</h2><p>Original instructor/demo lab aligned with <em>CompTIA Network+ Guide to Networks</em>, 10th Edition by Jill West.</p><div class="meta"><div><strong>Course:</strong><br>Internetworking Basics</div><div><strong>Estimated Time:</strong><br>2 hours</div><div><strong>Lab Type:</strong><br>Instructor-led demo with guided practice</div><div><strong>Tool:</strong><br>Cisco Packet Tracer</div></div></section>
+<nav class="toc" aria-label="Page sections"><strong>Page Sections:</strong><ol><li><a href="#purpose">Lab Purpose</a></li><li><a href="#scenario">Scenario and Objectives</a></li><li><a href="#topology">Topology and Addressing</a></li><li><a href="#build">Build the Packet Tracer Network</a></li><li><a href="#configure">Configure WAN Links, Routes, and Services</a></li><li><a href="#verify">Verify Site-to-Site Connectivity</a></li><li><a href="#wan">WAN Demonstrations</a></li><li><a href="#troubleshooting">Troubleshooting Demonstrations</a></li><li><a href="#explanations">Instructor Explanation Blocks</a></li><li><a href="#timing">2-Hour Instructor Timing Plan</a></li><li><a href="#summary">Final Demo Summary</a></li></ol></nav>
+<section id="purpose" class="card"><h2>1. Lab Purpose</h2><p>Connect a branch office to headquarters through a simulated provider network. Students configure point-to-point links and routing, access a central application, and distinguish a working local network from a working WAN path.</p><ul><li>Identify customer edge, provider, and local access roles.</li><li>Address two point-to-point WAN links using /30 subnets.</li><li>Configure serial PPP links and identify DCE clocking.</li><li>Use default routes at the customer sites and specific return routes in the provider network.</li><li>Verify DNS and HTTP access across multiple routers.</li><li>Compare legacy serial links with modern WAN options and discuss VPN and SD-WAN roles.</li><li>Introduce and repair link, encapsulation, routing, and DNS faults.</li></ul><div class="note"><strong>Instructor note:</strong> This is a live teaching demo with guided practice, not a graded assignment. Prepare a working baseline before class.</div><div class="warning"><strong>Model scope:</strong> Serial PPP is used to make point-to-point link behavior visible. It is a teaching model, not a recommendation for a new production WAN. The provider router represents a simplified routed private service, not the public Internet, MPLS internals, or an actual carrier network. The baseline includes no NAT, VPN encryption, authentication, or redundant path.</div></section>
+<section id="scenario" class="card"><h2>2. Lab Scenario</h2><p><strong>Northstar Training Center</strong> has a headquarters server and a small branch classroom. The branch must access the central portal through a provider connection. Staff need to isolate faults by determining whether the local LAN, WAN link, route, DNS service, or application has failed.</p><h3>Learning Objectives</h3><ul><li>Explain the difference between LAN connectivity and end-to-end WAN connectivity.</li><li>Identify the two usable addresses in each /30 link network.</li><li>Distinguish DCE clocking, PPP encapsulation, and IP routing.</li><li>Configure default routes and return routes without a dynamic routing protocol.</li><li>Trace a request from a branch PC to the headquarters server.</li><li>Explain why PPP encapsulation alone does not encrypt traffic.</li><li>Discuss availability, latency, throughput, and provider service commitments without treating simulation timing as a benchmark.</li></ul><h3>Chapter 9 Concept Alignment</h3><table><thead><tr><th>WAN Topic</th><th>Demo Activity</th><th>Scope</th></tr></thead><tbody><tr><td>Customer and provider boundaries</td><td>Label two customer routers and a provider router</td><td>Build and discuss</td></tr><tr><td>Point-to-point connections</td><td>Configure two addressed PPP serial links</td><td>Configure and inspect</td></tr><tr><td>WAN routing</td><td>Install edge defaults and provider LAN routes</td><td>Test both directions</td></tr><tr><td>Centralized services</td><td>Access HQ DNS and HTTP from the branch</td><td>Demonstrate</td></tr><tr><td>WAN service choices</td><td>Compare carrier Ethernet, Internet access, cellular, and satellite</td><td>Discussion</td></tr><tr><td>VPN and SD-WAN</td><td>Distinguish transport, encryption, and traffic selection</td><td>Conceptual only</td></tr><tr><td>WAN troubleshooting</td><td>Separate link failures from missing routes and DNS errors</td><td>Controlled faults</td></tr></tbody></table><p>The <a href="https://www.cengageasia.com/title/default/detail?isbn=9798214405902">publisher's table of contents</a> identifies Chapter 9 as Wide Area Networking. This original exercise selectively supports the chapter theme.</p></section>
+<section id="topology" class="card"><h2>3. Devices, Topology, and Addressing</h2><h3>Devices Used and Naming Plan</h3><table><thead><tr><th>Suggested Device</th><th>Quantity</th><th>Names and Roles</th></tr></thead><tbody><tr><td>1941 router</td><td>3</td><td>RTR-HQ-01 and RTR-BRANCH-01: customer gateways; RTR-PROVIDER-01: transit router</td></tr><tr><td>HWIC-2T module</td><td>3</td><td>One per router, providing serial ports</td></tr><tr><td>2960 switch</td><td>2</td><td>SW-HQ-01 and SW-BRANCH-01: LAN access</td></tr><tr><td>PC-PT</td><td>3</td><td>PC-HQ-01, PC-BRANCH-01, PC-BRANCH-02</td></tr><tr><td>Server-PT</td><td>1</td><td>SRV-HQ-01: DNS and HTTP</td></tr></tbody></table><h3>Target Logical Topology</h3><div class="topology">HQ LAN: 192.168.90.0/24
+
+PC-HQ-01 ---- SW-HQ-01 ---- G0/0 RTR-HQ-01
+SRV-HQ-01 ---/                      S0/1/0 (DTE)
+                                     |
+                              10.9.0.0/30 PPP
+                                     |
+                                  S0/1/0 (DCE)
+                              RTR-PROVIDER-01
+                                  S0/1/1 (DCE)
+                                     |
+                              10.9.0.4/30 PPP
+                                     |
+                                  S0/1/0 (DTE)
+                              RTR-BRANCH-01 G0/0
+                                             |
+                                        SW-BRANCH-01
+                                         /         \
+                               PC-BRANCH-01   PC-BRANCH-02
+
+Branch LAN: 192.168.91.0/24</div><h3>Router Addressing</h3><table><thead><tr><th>Device / Interface</th><th>IP Address</th><th>Subnet Mask</th><th>Role</th></tr></thead><tbody><tr><td>RTR-HQ-01 G0/0</td><td>192.168.90.1</td><td>255.255.255.0</td><td>HQ gateway</td></tr><tr><td>RTR-HQ-01 S0/1/0</td><td>10.9.0.1</td><td>255.255.255.252</td><td>HQ WAN, DTE</td></tr><tr><td>RTR-PROVIDER-01 S0/1/0</td><td>10.9.0.2</td><td>255.255.255.252</td><td>Provider toward HQ, DCE</td></tr><tr><td>RTR-PROVIDER-01 S0/1/1</td><td>10.9.0.5</td><td>255.255.255.252</td><td>Provider toward branch, DCE</td></tr><tr><td>RTR-BRANCH-01 S0/1/0</td><td>10.9.0.6</td><td>255.255.255.252</td><td>Branch WAN, DTE</td></tr><tr><td>RTR-BRANCH-01 G0/0</td><td>192.168.91.1</td><td>255.255.255.0</td><td>Branch gateway</td></tr></tbody></table><h3>Endpoint Addressing</h3><table><thead><tr><th>Endpoint / Fa0</th><th>IP Address</th><th>Mask</th><th>Default Gateway</th><th>DNS</th></tr></thead><tbody><tr><td>SRV-HQ-01</td><td>192.168.90.10</td><td>255.255.255.0</td><td>192.168.90.1</td><td>192.168.90.10</td></tr><tr><td>PC-HQ-01</td><td>192.168.90.21</td><td>255.255.255.0</td><td>192.168.90.1</td><td>192.168.90.10</td></tr><tr><td>PC-BRANCH-01</td><td>192.168.91.21</td><td>255.255.255.0</td><td>192.168.91.1</td><td>192.168.90.10</td></tr><tr><td>PC-BRANCH-02</td><td>192.168.91.22</td><td>255.255.255.0</td><td>192.168.91.1</td><td>192.168.90.10</td></tr></tbody></table><div class="note"><strong>/30 check:</strong> 10.9.0.0/30 has usable .1 and .2, broadcast .3. The next network, 10.9.0.4/30, has usable .5 and .6, broadcast .7. All addresses are private and confined to this simulated private WAN. Switches need no management addresses for the demo.</div></section>
+<section id="build" class="card"><h2>4. Build the Packet Tracer Network</h2><h3>Part A — Create the Project and Install Modules</h3><ol><li>Create a new file and save it as <code>Chapter9_Wide_Area_Networking_Demo.pkt</code>.</li><li>Add and rename the three 1941 routers, two switches, three PCs, and one server.</li><li>For each router, open the Physical tab and switch off its power.</li><li>Insert one HWIC-2T into the first compatible module slot, then switch the router on.</li><li>Check <code>show ip interface brief</code>. The commands below assume S0/1/0 and S0/1/1. If the slot yields different numbering, substitute the actual names throughout.</li><li>Label the two LANs and WAN subnets in the workspace. Put the provider in the center.</li></ol><h3>Part B — Cable the LANs</h3><table><thead><tr><th>From</th><th>To</th><th>Cable</th></tr></thead><tbody><tr><td>PC-HQ-01 Fa0</td><td>SW-HQ-01 Fa0/1</td><td>Straight-through</td></tr><tr><td>SRV-HQ-01 Fa0</td><td>SW-HQ-01 Fa0/2</td><td>Straight-through</td></tr><tr><td>RTR-HQ-01 G0/0</td><td>SW-HQ-01 G0/1</td><td>Straight-through</td></tr><tr><td>PC-BRANCH-01 Fa0</td><td>SW-BRANCH-01 Fa0/1</td><td>Straight-through</td></tr><tr><td>PC-BRANCH-02 Fa0</td><td>SW-BRANCH-01 Fa0/2</td><td>Straight-through</td></tr><tr><td>RTR-BRANCH-01 G0/0</td><td>SW-BRANCH-01 G0/1</td><td>Straight-through</td></tr></tbody></table><h3>Part C — Cable the WAN Links</h3><ol><li>Select the <strong>Serial DCE</strong> cable. Click RTR-PROVIDER-01 first and choose S0/1/0; connect the other end to RTR-HQ-01 S0/1/0.</li><li>Select another Serial DCE cable. Click RTR-PROVIDER-01 first and choose S0/1/1; connect the other end to RTR-BRANCH-01 S0/1/0.</li><li>Verify the DCE side using <code>show controllers serial 0/1/0</code> and <code>show controllers serial 0/1/1</code> on the provider. Look for DCE in the output.</li></ol><div class="warning"><strong>Clocking:</strong> The configuration assumes the provider is DCE on both links. If inspection shows otherwise, reconnect the cable to match the plan or apply clock rate only to the actual DCE endpoint. DCE/DTE describes this serial-link role; it is not the same as an IP address or routing role.</div></section>
+<section id="configure" class="card"><h2>5. Configure WAN Links, Routes, and Services</h2><h3>Part D — Configure Headquarters</h3><p>Open CLI, answer <code>no</code> to the initial configuration dialog if prompted, and press Enter.</p><pre><code>enable
+configure terminal
+hostname RTR-HQ-01
+interface gigabitEthernet0/0
+ description HQ LAN gateway
+ ip address 192.168.90.1 255.255.255.0
+ no shutdown
+ exit
+interface serial0/1/0
+ description PPP link to provider
+ ip address 10.9.0.1 255.255.255.252
+ encapsulation ppp
+ no shutdown
+ exit
+ip route 0.0.0.0 0.0.0.0 10.9.0.2
+end
+copy running-config startup-config</code></pre><p>Press Enter to accept the default destination filename.</p><h3>Part E — Configure the Provider</h3><pre><code>enable
+configure terminal
+hostname RTR-PROVIDER-01
+interface serial0/1/0
+ description PPP link to HQ - DCE
+ ip address 10.9.0.2 255.255.255.252
+ encapsulation ppp
+ clock rate 64000
+ no shutdown
+ exit
+interface serial0/1/1
+ description PPP link to branch - DCE
+ ip address 10.9.0.5 255.255.255.252
+ encapsulation ppp
+ clock rate 64000
+ no shutdown
+ exit
+ip route 192.168.90.0 255.255.255.0 10.9.0.1
+ip route 192.168.91.0 255.255.255.0 10.9.0.6
+end
+copy running-config startup-config</code></pre><h3>Part F — Configure the Branch</h3><pre><code>enable
+configure terminal
+hostname RTR-BRANCH-01
+interface gigabitEthernet0/0
+ description Branch LAN gateway
+ ip address 192.168.91.1 255.255.255.0
+ no shutdown
+ exit
+interface serial0/1/0
+ description PPP link to provider
+ ip address 10.9.0.6 255.255.255.252
+ encapsulation ppp
+ no shutdown
+ exit
+ip route 0.0.0.0 0.0.0.0 10.9.0.5
+end
+copy running-config startup-config</code></pre><div class="note"><strong>Routing explanation:</strong> Each edge sends unknown destinations toward the provider. The provider must know the customer LAN routes to forward traffic to those sites. A default route does not provide Internet access by itself. There is no upstream Internet network in this topology.</div><h3>Part G — Configure PCs and Server</h3><p>On every endpoint, open <strong>Desktop &gt; IP Configuration</strong>, select Static, and enter its address, mask, gateway, and DNS from the plan.</p><p>On SRV-HQ-01, open <strong>Services &gt; DNS</strong>, turn DNS On, and add:</p><table><thead><tr><th>Name</th><th>Type</th><th>Address</th></tr></thead><tbody><tr><td>portal.northstar.com</td><td>A</td><td>192.168.90.10</td></tr></tbody></table><p>Open <strong>Services &gt; HTTP</strong>, enable HTTP, edit <code>index.html</code>, and save:</p><pre><code>&lt;html&gt;&lt;body&gt;
+&lt;h1&gt;Northstar Headquarters Portal&lt;/h1&gt;
+&lt;p&gt;Central service: 192.168.90.10&lt;/p&gt;
+&lt;p&gt;Branch users reach this page across the simulated private WAN.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</code></pre><p>The .com name is resolved by the simulation's local DNS server. No public DNS change or domain registration is required. Switches can remain in their default access VLAN.</p></section>
+<section id="verify" class="card"><h2>6. Verify Site-to-Site Connectivity</h2><h3>Part H — Verify Link and Routing State</h3><p>On all three routers:</p><pre><code>show ip interface brief
+show ip route
+show interfaces serial0/1/0</code></pre><p>On the provider, also run <code>show interfaces serial0/1/1</code>. Both WAN links should be up/up and show PPP encapsulation. HQ and branch should each have an <code>S*</code> default route. The provider should have two connected WAN networks and static routes to both LANs.</p><table><thead><tr><th>Router</th><th>Important Route</th><th>Next Hop</th></tr></thead><tbody><tr><td>HQ</td><td>0.0.0.0/0</td><td>10.9.0.2</td></tr><tr><td>Branch</td><td>0.0.0.0/0</td><td>10.9.0.5</td></tr><tr><td>Provider</td><td>192.168.90.0/24</td><td>10.9.0.1</td></tr><tr><td>Provider</td><td>192.168.91.0/24</td><td>10.9.0.6</td></tr></tbody></table><h3>Part I — Test from the Branch</h3><p>On PC-BRANCH-01, open <strong>Desktop &gt; Command Prompt</strong>:</p><pre><code>ipconfig
+ping 192.168.91.22
+ping 192.168.91.1
+ping 10.9.0.5
+ping 192.168.90.1
+ping 192.168.90.10
+ping portal.northstar.com
+tracert 192.168.90.10</code></pre><p>All pings should succeed. The trace normally shows branch gateway 192.168.91.1, provider 10.9.0.5, HQ WAN interface 10.9.0.1, and the server. Display details can vary with Packet Tracer version. Repeat an initial ping if ARP resolution consumes the first attempt.</p><p>From PC-HQ-01, ping both branch PCs to verify reverse-direction reachability. On both branch PCs, open <strong>Desktop &gt; Web Browser</strong> and request:</p><pre><code>http://192.168.90.10
+http://portal.northstar.com</code></pre><p>Confirm that both requests display the HQ portal. Test the same page from the HQ PC.</p><div class="success"><strong>Checkpoint:</strong> Save a verified copy as <code>Chapter9_WAN_Baseline.pkt</code>. Use a separate working copy for demonstrations and faults.</div><h3>Part J — Trace the Request in Simulation Mode</h3><ol><li>Switch to Simulation and select ARP, DNS, ICMP, TCP, and HTTP in Edit Filters.</li><li>Issue a fresh branch ping or portal request and advance with Capture/Forward.</li><li>Observe Ethernet/ARP on the LANs and forwarding through the serial links. Point-to-point PPP does not use Ethernet ARP to discover its peer.</li><li>Inspect IP source/destination addresses and each router's forwarding decision. This lab does not translate addresses.</li><li>Follow replies as well as requests to emphasize return routes.</li><li>Return to Realtime before introducing faults.</li></ol><p>Cached ARP or DNS entries may suppress fresh lookup events. Restart a client in the saved working copy when a fresh lookup is needed; clearing the event list alone does not necessarily clear caches.</p></section>
+<section id="wan" class="card"><h2>7. WAN Demonstrations</h2><h3>Part K — WAN Failure vs. Local Availability</h3><p>Before making a change, ask which services will still work. On RTR-BRANCH-01:</p><pre><code>enable
+configure terminal
+interface serial0/1/0
+ shutdown
+end</code></pre><p>From PC-BRANCH-01, ping its local peer .22 and gateway 192.168.91.1; both should still work. Ping 192.168.90.10 and issue a fresh portal request; both should fail. The HQ PC should still reach the HQ server. Branch name lookups also depend on the HQ DNS service, although a cached result may still appear.</p><p>Restore the WAN link:</p><pre><code>configure terminal
+interface serial0/1/0
+ no shutdown
+end</code></pre><p>Wait for PPP to recover and repeat all tests. A page already visible in a browser is not proof that the WAN is working; request it again and corroborate with ping or simulation events.</p><h3>Part L — Clock Rate vs. Bandwidth</h3><p>On the provider, inspect a serial interface's configuration and status. The <code>clock rate 64000</code> command supplies timing on this lab's DCE endpoint. The <code>bandwidth</code> interface command is an informational value used by features such as routing metrics; changing it is not a physical speed control. Do not use simulator ping times to claim production WAN throughput or latency.</p><h3>Part M — Compare WAN Transport Choices</h3><table><thead><tr><th>Option</th><th>Teaching Point</th><th>Relationship to This Lab</th></tr></thead><tbody><tr><td>Private point-to-point service</td><td>Connects sites through a contracted path or service</td><td>Serial links illustrate link and routing dependencies</td></tr><tr><td>Carrier Ethernet</td><td>Provides an Ethernet service handoff; service scope and responsibilities depend on the contract</td><td>Discuss replacing serial handoffs with provider Ethernet</td></tr><tr><td>Provider MPLS service</td><td>Uses provider forwarding mechanisms to deliver services between customer sites; privacy does not itself imply encryption</td><td>The simple provider router does not simulate MPLS labels or VPN internals</td></tr><tr><td>Business Internet over fiber, cable, or DSL</td><td>Provides an underlay over which applications or encrypted tunnels can run</td><td>No public Internet is built here</td></tr><tr><td>Cellular or satellite</td><td>Can provide access or an alternate path; coverage, capacity, latency, and cost vary</td><td>Discuss as alternate transports, not configured links</td></tr></tbody></table><h3>Part N — VPN, SD-WAN, and Resilience</h3><div class="grid"><div class="mini"><strong>VPN</strong><p>An appropriately configured encrypted VPN can protect traffic over an underlying network. PPP framing alone does not encrypt this demo's traffic.</p></div><div class="mini"><strong>SD-WAN</strong><p>Uses policy and orchestration to manage WAN paths and application traffic. Multiple links alone do not constitute an SD-WAN deployment.</p></div><div class="mini"><strong>Resilience</strong><p>Independent links and providers can reduce shared failure risks, but routing, failure detection, and application behavior determine failover.</p></div></div><p>Ask students to sketch a second branch path and name the additional routing decisions it would require. Discuss demarcation, customer equipment, provider responsibilities, availability targets, and escalation contacts. These are design discussions; automatic failover is not configured in this baseline.</p></section>
+<section id="troubleshooting" class="card"><h2>8. Troubleshooting Demonstrations</h2><div class="note"><strong>One fault at a time:</strong> Begin from the working baseline. Record the symptom, inspect the likely layer, repair the fault, and repeat the affected tests before proceeding.</div><h3>Demo 1 — Encapsulation Mismatch</h3><p>On RTR-BRANCH-01, change only its serial interface to HDLC:</p><pre><code>enable
+configure terminal
+interface serial0/1/0
+ encapsulation hdlc
+end
+show interfaces serial0/1/0</code></pre><p>The branch and provider encapsulations no longer match. After the protocol settles, the line protocol should fail; exact status timing can vary. Local branch communication remains available but HQ access fails. Inspect both ends, then restore:</p><pre><code>configure terminal
+interface serial0/1/0
+ encapsulation ppp
+end</code></pre><h3>Demo 2 — Missing Provider Return Route</h3><p>On RTR-PROVIDER-01:</p><pre><code>enable
+configure terminal
+no ip route 192.168.91.0 255.255.255.0 10.9.0.6
+end
+show ip route</code></pre><p>From PC-BRANCH-01 ping 192.168.90.10. The request can reach HQ, but the provider cannot route the reply back to the branch LAN. A ping sourced by the branch router from its serial address can still succeed because that transit network remains connected at the provider. Test from the endpoint, not only the router.</p><p>Restore on the provider:</p><pre><code>configure terminal
+ip route 192.168.91.0 255.255.255.0 10.9.0.6
+end</code></pre><h3>Demo 3 — Missing Branch Default Route</h3><p>On RTR-BRANCH-01:</p><pre><code>configure terminal
+no ip route 0.0.0.0 0.0.0.0 10.9.0.5
+end
+show ip route</code></pre><p>The local LAN and directly connected provider interface remain reachable, but the HQ LAN is unknown. Restore:</p><pre><code>configure terminal
+ip route 0.0.0.0 0.0.0.0 10.9.0.5
+end</code></pre><h3>Demo 4 — Wrong Client DNS</h3><p>Change PC-BRANCH-01's DNS setting to unused <code>192.168.91.99</code>. Server-IP ping and direct-IP HTTP should still work. On the HQ server add a previously unused A record <code>wancheck.northstar.com</code> pointing to 192.168.90.10, then request that new name from the branch PC so a cached answer does not hide the failure. Restore DNS to <code>192.168.90.10</code> and repeat the name request.</p><h3>Demo 5 — Wrong Endpoint Gateway</h3><p>Change PC-BRANCH-02's gateway to unused <code>192.168.91.254</code>. Its same-LAN peer stays reachable, but HQ access fails. PC-BRANCH-01 should continue working. Restore the gateway to <code>192.168.91.1</code>.</p><h3>Troubleshooting Decision Table</h3><table><thead><tr><th>Observation</th><th>Inspect First</th></tr></thead><tbody><tr><td>Serial interface administratively down</td><td>Interface shutdown state; apply no shutdown if intended</td></tr><tr><td>Serial physical/protocol state down</td><td>Power, module, cable, actual DCE clocking, matching encapsulation, both ends enabled</td></tr><tr><td>Serial up/up; HQ IP unreachable</td><td>Link IP/mask, default route, provider LAN routes, endpoint gateways</td></tr><tr><td>Router ping works; client ping fails</td><td>Source subnet and its return route; client IP/gateway</td></tr><tr><td>IP HTTP works; fresh name fails</td><td>DNS setting, DNS server service, A record</td></tr><tr><td>Server ping works; HTTP fails</td><td>HTTP service and requested URL</td></tr><tr><td>Only one client fails</td><td>Its access link and IP configuration before blaming the provider</td></tr></tbody></table><p>Restore all changes, confirm both serial links are up/up, retest both branch PCs against the HQ server by address and name, and save the repaired working copy.</p></section>
+<section id="explanations" class="card"><h2>9. Instructor Explanation Blocks</h2><h3>Link State Is Not End-to-End Reachability</h3><p>A WAN interface can be up/up while user traffic fails because of missing routes, bad endpoint gateways, or a stopped service. Work outward from the endpoint and verify the return path.</p><h3>Default Routes and Specific Routes</h3><p>An edge default is useful when one provider is the exit for unknown destinations. The provider's specific LAN routes identify which edge serves each site. Routing uses the most specific matching route.</p><h3>Encapsulation Is Not Encryption</h3><p>PPP provides framing and link negotiation. Optional PPP authentication is distinct from traffic encryption; neither authentication nor encryption is configured here. A private WAN service also should not be assumed to encrypt payloads automatically.</p><h3>Demarcation and Operational Ownership</h3><p>The service handoff marks an agreed responsibility boundary. In practice, ownership and troubleshooting responsibilities depend on the service contract and equipment arrangement. The lab's provider router makes that conceptual boundary visible.</p><h3>Performance and Service Commitments</h3><p>Bandwidth, achieved throughput, latency, jitter, packet loss, and availability describe different properties. Service-level agreements define measurable commitments and remedies. This simulator demonstrates packet paths and selected failure behavior, not a production capacity test.</p><h3>Discussion Prompts and Expected Answers</h3><ul><li><strong>Why can branch PCs still communicate during a WAN outage?</strong> Their local traffic remains on the branch LAN.</li><li><strong>Why might a router ping succeed when a PC ping fails?</strong> The probes can use different source subnets with different return-route requirements.</li><li><strong>Does a default route create an Internet connection?</strong> No; it only specifies where unmatched traffic is forwarded.</li><li><strong>Does PPP secure portal contents?</strong> No; PPP framing alone does not encrypt them.</li><li><strong>Is changing interface bandwidth the same as changing clock rate?</strong> No; they serve different purposes.</li></ul></section>
+<section id="timing" class="card"><h2>10. Suggested 2-Hour Instructor Timing Plan</h2><table><thead><tr><th>Time</th><th>Activity</th></tr></thead><tbody><tr><td>0–10 min</td><td>Introduce WAN roles, provider boundaries, and model limitations</td></tr><tr><td>10–25 min</td><td>Install serial modules, cable the network, and verify DCE ends</td></tr><tr><td>25–45 min</td><td>Configure LAN interfaces, PPP links, and routing</td></tr><tr><td>45–60 min</td><td>Configure endpoints, DNS, and HTTP</td></tr><tr><td>60–75 min</td><td>Verify paths in both directions and save the baseline</td></tr><tr><td>75–90 min</td><td>Trace traffic; demonstrate WAN failure and local survival</td></tr><tr><td>90–105 min</td><td>Compare WAN transports, VPN, SD-WAN, and service expectations</td></tr><tr><td>105–120 min</td><td>Demonstrate encapsulation mismatch and missing return route; restore and review</td></tr></tbody></table><div class="note"><strong>Pacing:</strong> Prepare a verified baseline before class. Use DNS, gateway, and missing-default faults as optional guided practice. Preinstall modules if hardware setup would take time away from routing and troubleshooting.</div></section>
+<section id="summary" class="card"><h2>11. Final Demo Summary</h2><p>Trace a fresh branch request to the central service:</p><div class="topology">PC-BRANCH-01 opens http://portal.northstar.com
+
+1. The PC sends its DNS query toward local gateway 192.168.91.1.
+2. The branch default route forwards it to provider 10.9.0.5.
+3. The provider route sends HQ-bound traffic to 10.9.0.1.
+4. HQ delivers the query to DNS server 192.168.90.10.
+5. DNS replies use the HQ default and provider branch-LAN route.
+6. The client sends TCP/HTTP traffic to the resolved server address.
+7. Requests and replies traverse both PPP links and the site LANs.</div><div class="success"><strong>Key lesson:</strong> A working WAN application depends on local access, operational links, correct forwarding and return routes, and healthy services. A green link or a successful router ping proves only part of that path.</div><h3>Instructor References and Preflight</h3><ul><li><a href="https://www.cengageasia.com/title/default/detail?isbn=9798214405902">Cengage: 10th-edition chapter sequence</a></li><li><a href="https://www.cisco.com/c/en/us/td/docs/routers/access/800M/software/800MSCG/serconf.html">Cisco: serial interfaces and PPP configuration concepts</a></li><li><a href="https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/iproute_pi/configuration/15-mt/iri-15-mt-book/iri-iprouting.html">Cisco IOS: Basic IP Routing</a></li><li><a href="https://tutorials.ptnetacad.net/help/default/mode_simulation.htm">Cisco Packet Tracer: Simulation Mode</a></li></ul><p>Commands are designed for the listed simulated devices. Run the baseline and chosen faults in your installed Packet Tracer version before teaching. This webpage is a guide, not a supplied .pkt project or a record of an executed simulation.</p></section><p class="footer">Original instructor/demo webpage for Internetworking Basics. Chapter 9 preserves the earlier chapters' presentation style and is saved separately. No textbook content is reproduced.</p>
+</main></body></html>
