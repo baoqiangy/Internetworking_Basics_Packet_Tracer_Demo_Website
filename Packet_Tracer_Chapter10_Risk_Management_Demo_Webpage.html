@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Packet Tracer Demo Lab - Chapter 10: Risk Management</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --paper: #ffffff;
+      --ink: #182230;
+      --muted: #5d6b82;
+      --line: #d9e0ea;
+      --accent: #2457c5;
+      --accent-soft: #eaf0ff;
+      --code-bg: #111827;
+      --code-ink: #f3f4f6;
+      --table-head: #eef3fb;
+      --note: #fff7df;
+      --success: #e9f8ef;
+      --warn: #fff1f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.58;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 18px 64px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #173b88, #2f75ff);
+      color: white;
+      border-radius: 18px;
+      padding: 34px 36px;
+      box-shadow: 0 12px 32px rgba(24, 34, 48, 0.18);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 2.1rem;
+      line-height: 1.15;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 500;
+      opacity: 0.95;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .meta div {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 12px 14px;
+      border-radius: 12px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 26px;
+      margin: 18px 0;
+      box-shadow: 0 6px 18px rgba(24, 34, 48, 0.06);
+    }
+
+    h2 {
+      color: #173b88;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 8px;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #24446f;
+      margin-top: 24px;
+    }
+
+    h4 {
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    p { margin: 10px 0; }
+
+    ul, ol { padding-left: 24px; }
+
+    li { margin: 5px 0; }
+
+    .note {
+      background: var(--note);
+      border-left: 5px solid #e6a700;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .success {
+      background: var(--success);
+      border-left: 5px solid #229954;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .warning {
+      background: var(--warn);
+      border-left: 5px solid #d33c32;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 22px;
+      overflow-wrap: anywhere;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: var(--table-head);
+      color: #173b88;
+      font-weight: 700;
+    }
+
+    code {
+      background: #eef2f7;
+      padding: 2px 5px;
+      border-radius: 5px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 0.95em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-ink);
+      padding: 16px 18px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      margin: 12px 0 18px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .topology {
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 14px 0;
+    }
+
+    .toc {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .toc a:hover { text-decoration: underline; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .mini {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { max-width: none; padding: 0; }
+      .hero, .card { box-shadow: none; }
+      .card { break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body><main class="page"><section class="hero"><h1>Packet Tracer Demo Lab</h1><h2>Chapter 10: Risk Management</h2><p>Original instructor/demo lab aligned with <em>CompTIA Network+ Guide to Networks</em>, 10th Edition by Jill West.</p><div class="meta"><div><strong>Course:</strong><br>Internetworking Basics</div><div><strong>Estimated Time:</strong><br>2 hours</div><div><strong>Lab Type:</strong><br>Instructor-led demo with guided practice</div><div><strong>Tool:</strong><br>Cisco Packet Tracer</div></div></section>
+<nav class="toc" aria-label="Page sections"><strong>Page Sections:</strong><ol><li><a href="#purpose">Lab Purpose</a></li><li><a href="#scenario">Scenario, Objectives, and Risk Register</a></li><li><a href="#topology">Topology and Addressing</a></li><li><a href="#build">Build the Packet Tracer Network</a></li><li><a href="#configure">Configure and Document the Baseline</a></li><li><a href="#verify">Verify Normal Operations</a></li><li><a href="#controls">Risk Treatment Demonstrations</a></li><li><a href="#troubleshooting">Incident and Recovery Demonstrations</a></li><li><a href="#explanations">Instructor Explanation Blocks</a></li><li><a href="#timing">2-Hour Instructor Timing Plan</a></li><li><a href="#summary">Final Demo Summary</a></li></ol></nav>
+<section id="purpose" class="card"><h2>1. Lab Purpose</h2><p>Use a small, functioning network to connect risk decisions with observable outcomes. Students identify assets and dependencies, prioritize plausible risks, apply a limited set of controls, and verify that service can be restored after a controlled fault.</p><ul><li>Distinguish assets, threats, vulnerabilities, likelihood, impact, and residual risk.</li><li>Build a simple risk register and select justified treatments.</li><li>Reduce exposure from unused switch ports and unexpected device replacement.</li><li>Observe the availability tradeoff introduced by a shutdown-mode control.</li><li>Save a known-good baseline and practice a documented rollback.</li><li>Separate network reachability from DNS and application health.</li></ul><div class="note"><strong>Instructor note:</strong> This is an original live demonstration, not a graded assignment. The risk discussion drives the technical steps; the controls are examples, not a complete security design.</div><div class="warning"><strong>Simulation scope:</strong> Packet Tracer can model selected network configurations and failures. It does not establish real-world likelihood, perform a vulnerability assessment, validate regulatory compliance, or simulate a full incident investigation. Physical security, patching, malware protection, business continuity, and organizational policy are discussion topics here.</div></section>
+<section id="scenario" class="card"><h2>2. Lab Scenario</h2><p><strong>Northstar Training Center</strong> depends on a staff portal hosted on a separate services network. An equipment review finds unused active switch ports, no documented recovery checkpoint, and several single points of failure. The instructor acts as network administrator; students help explain and prioritize the risks.</p><h3>Learning Objectives</h3><ul><li>Inventory the portal, DNS, endpoint, switching, and gateway dependencies.</li><li>Explain confidentiality, integrity, and availability impacts.</li><li>Assign illustrative likelihood and impact scores, then explain their limitations.</li><li>Apply and verify a preventive control and a corrective recovery procedure.</li><li>Document control side effects and remaining exposure.</li><li>Choose mitigation, avoidance, transfer, or acceptance with an accountable owner.</li></ul><h3>Risk Scoring for This Exercise</h3><p>Use likelihood 1–3 (low, medium, high) and impact 1–3 (minor, material, severe). Multiply them for a classroom priority score. Treat 1–2 as low, 3–4 as medium, and 6–9 as high. These are illustrative teaching judgments, not measured probabilities or a standardized assessment.</p><table><thead><tr><th>ID / Risk Scenario</th><th>Asset / Impact</th><th>L × I</th><th>Treatment and Owner</th><th>Evidence / Residual Risk</th></tr></thead><tbody><tr><td>R1: An unapproved device uses an unused active jack</td><td>LAN confidentiality and integrity</td><td>3 × 2 = 6</td><td>Mitigate: disable unused ports; network administrator</td><td>Test an unused port; approved ports still need identity and physical controls</td></tr><tr><td>R2: A different endpoint replaces an approved staff PC</td><td>LAN access and service availability</td><td>2 × 2 = 4</td><td>Mitigate: demonstrate port security; network administrator</td><td>Verify shutdown on MAC change; MAC addresses are not strong identity</td></tr><tr><td>R3: A configuration mistake stops portal access</td><td>Portal availability</td><td>2 × 3 = 6</td><td>Mitigate: baseline, change log, rollback; change owner</td><td>Restore and retest; saved files may still be stale or inaccessible</td></tr><tr><td>R4: The server or a shared switch fails</td><td>DNS and portal availability</td><td>2 × 3 = 6</td><td>Evaluate resilient design; service owner</td><td>No redundancy added here; residual risk remains high in the model</td></tr><tr><td>R5: Plain HTTP exposes sensitive content on an untrusted path</td><td>Portal confidentiality and integrity</td><td>2 × 3 = 6</td><td>Avoid sensitive data in this lab; plan protected production service; application owner</td><td>Use only fictional content; HTTP remains unencrypted in the demo</td></tr></tbody></table><p>Discuss the highest scores first, but also consider control cost, feasibility, dependencies, and business priorities. After testing, revisit scores with explicit assumptions; do not automatically mark a risk eliminated.</p><h3>Chapter 10 Concept Alignment</h3><p>The <a href="https://www.cengageasia.com/title/default/detail?isbn=9798214405902">publisher's table of contents</a> identifies Chapter 10 as Risk Management. This exercise focuses on assessment, treatment, change control, evidence, and residual risk; detailed access-control designs and recovery architectures can be explored in later chapters.</p></section>
+<section id="topology" class="card"><h2>3. Devices, Topology, and Addressing</h2><h3>Devices Used and Naming Plan</h3><table><thead><tr><th>Suggested Device</th><th>Quantity</th><th>Name / Role</th></tr></thead><tbody><tr><td>2911 router</td><td>1</td><td>RTR-HQ-01: gateway between staff and services</td></tr><tr><td>2960 switch</td><td>2</td><td>SW-STAFF-01 and SW-SERVICES-01: access switching</td></tr><tr><td>PC-PT</td><td>3</td><td>PC-STAFF-01 and PC-STAFF-02: approved clients; PC-TEST-01: disconnected test endpoint</td></tr><tr><td>Server-PT</td><td>1</td><td>SRV-HQ-01: DNS and HTTP</td></tr></tbody></table><h3>Target Logical Topology</h3><div class="topology">PC-STAFF-01 -- Fa0/1 
+                        SW-STAFF-01 G0/1 -- G0/0 RTR-HQ-01
+PC-STAFF-02 -- Fa0/2 /                            G0/1
+                                                   |
+                                                  G0/1
+                                            SW-SERVICES-01
+                                                  Fa0/1
+                                                   |
+                                               SRV-HQ-01
+
+Staff LAN:    192.168.100.0/24
+Services LAN: 192.168.101.0/24
+
+PC-TEST-01: disconnected until the controlled tests</div><h3>Addressing Plan</h3><table><thead><tr><th>Device / Interface</th><th>IP Address</th><th>Mask</th><th>Gateway</th></tr></thead><tbody><tr><td>RTR-HQ-01 G0/0</td><td>192.168.100.1</td><td>255.255.255.0</td><td>Routing table</td></tr><tr><td>RTR-HQ-01 G0/1</td><td>192.168.101.1</td><td>255.255.255.0</td><td>Routing table</td></tr><tr><td>PC-STAFF-01 Fa0</td><td>192.168.100.21</td><td>255.255.255.0</td><td>192.168.100.1</td></tr><tr><td>PC-STAFF-02 Fa0</td><td>192.168.100.22</td><td>255.255.255.0</td><td>192.168.100.1</td></tr><tr><td>PC-TEST-01 Fa0</td><td>192.168.100.99</td><td>255.255.255.0</td><td>192.168.100.1</td></tr><tr><td>SRV-HQ-01 Fa0</td><td>192.168.101.10</td><td>255.255.255.0</td><td>192.168.101.1</td></tr></tbody></table><p>Set DNS to <code>192.168.101.10</code> on every endpoint. All addresses are static. Switch management addresses, DHCP, NAT, and static routes are unnecessary for this topology. Both IP networks are directly connected to the router.</p><div class="note"><strong>Design limitation:</strong> Separate subnets do not constitute a restrictive security policy. This router permits traffic between the two networks; no firewall or ACL is configured. The test PC remains disconnected except during explicit classroom tests.</div></section>
+<section id="build" class="card"><h2>4. Build the Packet Tracer Network</h2><h3>Part A — Create and Document the Project</h3><ol><li>Create a new file named <code>Chapter10_Risk_Management_Demo.pkt</code>.</li><li>Add and rename the seven devices in the inventory.</li><li>Label both networks, the server's services, and the disconnected test endpoint.</li><li>Add a workspace note with the risk IDs R1–R5 and their owners.</li></ol><h3>Part B — Cable Approved Devices</h3><p>Use copper straight-through cables for every connection below.</p><table><thead><tr><th>From</th><th>To</th></tr></thead><tbody><tr><td>PC-STAFF-01 Fa0</td><td>SW-STAFF-01 Fa0/1</td></tr><tr><td>PC-STAFF-02 Fa0</td><td>SW-STAFF-01 Fa0/2</td></tr><tr><td>SW-STAFF-01 G0/1</td><td>RTR-HQ-01 G0/0</td></tr><tr><td>RTR-HQ-01 G0/1</td><td>SW-SERVICES-01 G0/1</td></tr><tr><td>SW-SERVICES-01 Fa0/1</td><td>SRV-HQ-01 Fa0</td></tr></tbody></table><p>Leave PC-TEST-01 uncabled. Use the listed 2911/2960 devices so interface names match; otherwise inspect and adapt the port names. Wait for switch links to settle before testing.</p></section>
+<section id="configure" class="card"><h2>5. Configure and Document the Baseline</h2><h3>Part C — Configure the Router</h3><p>Open CLI and answer <code>no</code> to the initial configuration dialog if prompted.</p><pre><code>enable
+configure terminal
+hostname RTR-HQ-01
+interface gigabitEthernet0/0
+ description Staff LAN gateway
+ ip address 192.168.100.1 255.255.255.0
+ no shutdown
+ exit
+interface gigabitEthernet0/1
+ description Services LAN gateway
+ ip address 192.168.101.1 255.255.255.0
+ no shutdown
+ exit
+end
+copy running-config startup-config</code></pre><p>Accept the default destination filename by pressing Enter.</p><h3>Part D — Label the Switches</h3><p>On the staff switch:</p><pre><code>enable
+configure terminal
+hostname SW-STAFF-01
+interface fastEthernet0/1
+ description Approved PC-STAFF-01
+ switchport mode access
+ exit
+interface fastEthernet0/2
+ description Approved PC-STAFF-02
+ switchport mode access
+ exit
+interface gigabitEthernet0/1
+ description Uplink to RTR-HQ-01
+ switchport mode access
+ exit
+end
+copy running-config startup-config</code></pre><p>On the services switch:</p><pre><code>enable
+configure terminal
+hostname SW-SERVICES-01
+interface fastEthernet0/1
+ description SRV-HQ-01 DNS and HTTP
+ switchport mode access
+ exit
+interface gigabitEthernet0/1
+ description Uplink to RTR-HQ-01
+ switchport mode access
+ exit
+end
+copy running-config startup-config</code></pre><h3>Part E — Configure Endpoints and the Portal</h3><ol><li>On all PCs and the server, open <strong>Desktop &gt; IP Configuration</strong>, select Static, and enter the addressing-plan values.</li><li>On SRV-HQ-01 open <strong>Services &gt; DNS</strong>, turn DNS On, and add an A record: <code>portal.northstar.com</code> → <code>192.168.101.10</code>.</li><li>Open <strong>Services &gt; HTTP</strong>, enable HTTP, edit <code>index.html</code>, and save the sample below.</li></ol><pre><code>&lt;html&gt;&lt;body&gt;
+&lt;h1&gt;Northstar Staff Portal&lt;/h1&gt;
+&lt;p&gt;Chapter 10: Risk Management Demo&lt;/p&gt;
+&lt;p&gt;Fictional classroom content only. Service address: 192.168.101.10&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</code></pre><p>The .com name is a local record inside Packet Tracer; no public DNS change is required.</p><h3>Part F — Record the Baseline</h3><p>After the verification below succeeds, save <code>Chapter10_Risk_Baseline.pkt</code>. Then use Save As to create <code>Chapter10_Risk_Working.pkt</code> for changes. Keep the original baseline intact.</p><table><thead><tr><th>Record</th><th>Baseline Entry</th></tr></thead><tbody><tr><td>Assets</td><td>Two approved clients, one portal/DNS server, two switches, one gateway</td></tr><tr><td>Services</td><td>DNS and HTTP on 192.168.101.10</td></tr><tr><td>Dependencies</td><td>Client link, staff switch, router, services switch, server and application</td></tr><tr><td>Approved endpoint</td><td>Record PC-STAFF-01's actual Fa0 MAC from its Config tab or ipconfig /all</td></tr><tr><td>Recovery checkpoint</td><td>Verified baseline .pkt plus saved device startup configurations</td></tr><tr><td>Verification evidence</td><td>Actual results of gateway, peer, server, DNS, and HTTP tests</td></tr></tbody></table><p>Saving startup configuration preserves device configuration across restart. A .pkt checkpoint preserves the simulated project. Neither is evidence of an off-site production backup or tested server-data restoration.</p></section>
+<section id="verify" class="card"><h2>6. Verify Normal Operations</h2><h3>Part G — Infrastructure Checks</h3><p>On RTR-HQ-01:</p><pre><code>show ip interface brief
+show ip route</code></pre><p>Both used interfaces should be up/up, with connected routes for both /24 networks. On each switch, inspect <code>show interfaces status</code> and confirm the cabled ports are connected.</p><h3>Part H — Client and Service Checks</h3><p>On PC-STAFF-01, open Command Prompt:</p><pre><code>ipconfig
+ping 192.168.100.22
+ping 192.168.100.1
+ping 192.168.101.10
+ping portal.northstar.com</code></pre><p>Repeat an initial ping if ARP resolution causes a first-packet timeout. On both staff PCs, open the Web Browser and test:</p><pre><code>http://192.168.101.10
+http://portal.northstar.com</code></pre><p>Both should display the portal. Record these results before applying controls.</p><h3>Part I — Inspect the Dependency Path</h3><ol><li>Switch to Simulation Mode and filter ARP, ICMP, DNS, TCP, and HTTP.</li><li>Generate a new portal request and step through Capture/Forward.</li><li>Identify the DNS exchange, gateway forwarding, and HTTP traffic.</li><li>Ask which assets must remain available and which traffic is not encrypted.</li><li>Return to Realtime before changing configurations.</li></ol><p>Cached ARP and DNS entries can hide fresh lookup events. Restart a client in a saved working copy if needed; clearing the event list alone does not necessarily clear caches.</p></section>
+<section id="controls" class="card"><h2>7. Risk Treatment Demonstrations</h2><h3>Part J — R1: Disable Unused Ports</h3><p>Before treatment, connect PC-TEST-01 to SW-STAFF-01 Fa0/10 using a straight-through cable and ping the server. With the correct static configuration it should succeed, illustrating the exposure. Disconnect the test PC.</p><p>On SW-STAFF-01:</p><pre><code>enable
+configure terminal
+interface range fastEthernet0/3 - 24
+ description UNUSED - administratively disabled
+ shutdown
+ exit
+interface gigabitEthernet0/2
+ description UNUSED - administratively disabled
+ shutdown
+ exit
+end</code></pre><p>On SW-SERVICES-01:</p><pre><code>enable
+configure terminal
+interface range fastEthernet0/2 - 24
+ description UNUSED - administratively disabled
+ shutdown
+ exit
+interface gigabitEthernet0/2
+ description UNUSED - administratively disabled
+ shutdown
+ exit
+end</code></pre><p>Reconnect PC-TEST-01 to staff Fa0/10. Its link and server access should fail. Confirm with <code>show interfaces fastEthernet0/10</code> that the port is administratively down. Verify both approved PCs still reach the portal, then disconnect the test PC again.</p><div class="note"><strong>Scope check:</strong> Staff Fa0/1, Fa0/2, and G0/1 and services Fa0/1 and G0/1 remain enabled. Never apply the unused-port ranges blindly to a differently cabled topology.</div><h3>Part K — R2: Learn One Approved Endpoint</h3><p>Ensure the original PC-STAFF-01 is connected to staff Fa0/1 before enabling learning. On SW-STAFF-01:</p><pre><code>configure terminal
+interface fastEthernet0/1
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 1
+ switchport port-security violation shutdown
+ switchport port-security mac-address sticky
+end</code></pre><p>From PC-STAFF-01, ping its gateway to generate traffic. Then inspect:</p><pre><code>show port-security interface fastEthernet0/1
+show port-security address
+show running-config</code></pre><p>Confirm Fa0/1 has learned the actual approved PC's MAC, the maximum is one, and the port is secure-up. Do not proceed with the replacement test before verifying the learned address.</p><h3>Part L — Test and Recover from a Violation</h3><ol><li>Disconnect PC-STAFF-01 from Fa0/1.</li><li>Connect PC-TEST-01 to that same port and generate a ping to 192.168.100.1. It has a different MAC address and its own .99 IP.</li><li>Inspect <code>show port-security interface fastEthernet0/1</code>. Expect a violation and secure-shutdown/err-disabled state; exact display varies by version.</li><li>Confirm PC-STAFF-02 still reaches the portal. The control's effect is limited to the protected port in this scenario.</li><li>Disconnect the test PC and reconnect the original approved PC before recovering the port.</li></ol><p>Recover on SW-STAFF-01:</p><pre><code>configure terminal
+interface fastEthernet0/1
+ shutdown
+ no shutdown
+end</code></pre><p>Wait for the link to recover. Verify secure-up and successful gateway/server/portal tests. Retain the original sticky MAC; do not remove the binding merely to allow the test endpoint.</p><div class="warning"><strong>Control tradeoff:</strong> This reduces casual device replacement but is not user authentication, malware detection, or protection against MAC impersonation. A legitimate device replacement can also trigger shutdown. Only Fa0/1 is protected in this example; Fa0/2 still represents residual exposure.</div><h3>Part M — Save and Reassess</h3><p>With approved clients working and the test PC disconnected, run <code>copy running-config startup-config</code> on both switches. Saving after learning retains the sticky MAC in startup configuration. Save the project as <code>Chapter10_Risk_Controlled.pkt</code>, then create another working copy for incident practice.</p><p>Revisit R1 and R2: explain how the tested controls reduce the specific exposure, identify what they do not address, and assign any revised score as a classroom judgment. R4 remains unresolved: no redundant server, switch, or gateway was added.</p></section>
+<section id="troubleshooting" class="card"><h2>8. Incident and Recovery Demonstrations</h2><div class="note"><strong>Workflow:</strong> Record the symptom and time, determine scope, inspect evidence, make one justified change, validate recovery, and update the record. Use a working copy and introduce only one fault at a time.</div><h3>Demo 1 — R3: Accidental Server-Port Shutdown</h3><p>On SW-SERVICES-01:</p><pre><code>enable
+configure terminal
+interface fastEthernet0/1
+ shutdown
+end</code></pre><p>Both staff PCs lose server ping, fresh DNS resolution, and portal access. They should still reach each other and the staff gateway. Inspect the server link and <code>show interfaces fastEthernet0/1</code>. The administrative state points to a configuration change.</p><p>Roll back the change on SW-SERVICES-01:</p><pre><code>configure terminal
+interface fastEthernet0/1
+ no shutdown
+end</code></pre><p>Wait for recovery, then retest server IP, DNS, and HTTP from both clients. Record actual time to restore for classroom comparison, not as proof of a production recovery commitment.</p><h3>Demo 2 — Reachable Host, Failed Application</h3><p>On SRV-HQ-01 turn <strong>Services &gt; HTTP</strong> Off. Server ping should still work, but a fresh HTTP request should fail. Restore HTTP On and request the page again. A page already visible in the browser is not evidence of current availability.</p><h3>Demo 3 — DNS Configuration Error</h3><p>Change PC-STAFF-01's DNS to unused <code>192.168.101.99</code>. Direct-IP HTTP should still work. To avoid cached answers, add a new A record on the server: <code>riskcheck.northstar.com</code> → <code>192.168.101.10</code>, and request that new name from the PC. Restore client DNS to <code>192.168.101.10</code> and retest.</p><h3>Demo 4 — Checkpoint Restoration Exercise</h3><ol><li>Save the current practice file under a separate incident filename so it does not overwrite the controlled checkpoint.</li><li>Use File &gt; Open to reopen <code>Chapter10_Risk_Controlled.pkt</code>. This deliberately returns the simulator to a known-good project state.</li><li>Verify approved-client connectivity, unused-port shutdowns, and the original sticky MAC binding.</li><li>Document which changes made after that checkpoint are absent.</li></ol><p>This demonstrates checkpoint selection and verification. It is not a live device configuration restore or a test of recovering production server data. Discuss how real backups would require protected storage, retention, access controls, and separate restoration tests.</p><h3>Incident Record Template</h3><table><thead><tr><th>Field</th><th>Record During the Demo</th></tr></thead><tbody><tr><td>Detection and scope</td><td>Time, affected clients, failed service, and functions still working</td></tr><tr><td>Evidence</td><td>Interface state, port-security status, addressing, and actual test results</td></tr><tr><td>Cause</td><td>Supported conclusion; distinguish observed facts from hypotheses</td></tr><tr><td>Action and owner</td><td>Exact change or rollback and the person responsible</td></tr><tr><td>Validation</td><td>Server-IP, DNS, HTTP, approved-port, and unused-port checks</td></tr><tr><td>Follow-up</td><td>Risk-register update, procedure correction, and unresolved exposure</td></tr></tbody></table><h3>Troubleshooting Decision Table</h3><table><thead><tr><th>Symptom</th><th>First Checks</th></tr></thead><tbody><tr><td>Protected port fails after endpoint replacement</td><td>Port-security state and learned MAC; restore approved endpoint before resetting</td></tr><tr><td>Unused port has no link</td><td>Administrative state; this is expected after treatment</td></tr><tr><td>Both clients lose only server access</td><td>Server link, services switch port, gateway path, and server state</td></tr><tr><td>Ping works; HTTP fails</td><td>HTTP service and URL</td></tr><tr><td>IP works; fresh name fails</td><td>Client DNS and server record/service</td></tr><tr><td>Only one client fails</td><td>Its cable, port state, IP settings, and recent changes</td></tr></tbody></table></section>
+<section id="explanations" class="card"><h2>9. Instructor Explanation Blocks</h2><h3>Threat, Vulnerability, and Risk</h3><p>An asset provides value. A threat is a potential cause of harm; a vulnerability is a weakness that can be exploited or triggered. Risk combines the possibility of a harmful event with its consequences. “An unused active jack permits an unapproved device to connect” is more actionable than simply listing “hackers.”</p><h3>Confidentiality, Integrity, and Availability</h3><p>Confidentiality concerns unauthorized disclosure, integrity concerns unauthorized or accidental changes, and availability concerns timely access. A preventive control can improve one aspect while harming another: shutdown-mode port security can also interrupt a legitimate device replacement.</p><h3>Risk Treatment Choices</h3><div class="grid"><div class="mini"><strong>Mitigate</strong><p>Reduce likelihood or impact, such as disabling unused ports.</p></div><div class="mini"><strong>Avoid</strong><p>Stop an activity creating an unacceptable exposure, such as placing sensitive data in this HTTP demo.</p></div><div class="mini"><strong>Transfer / Share</strong><p>Allocate aspects of loss or responsibility through arrangements such as insurance or service contracts; underlying exposure can remain.</p></div><div class="mini"><strong>Accept</strong><p>An accountable owner knowingly retains a documented residual risk under defined conditions and review dates.</p></div></div><h3>Preventive, Detective, and Corrective Controls</h3><p>Unused-port shutdown and MAC limiting are preventive examples. Reviewing violation status is a detective activity. Restoring an approved connection and rolling back a harmful change are corrective actions. Automated monitoring and a full incident-response system are not deployed here.</p><h3>Recovery Objectives</h3><p>Recovery time objective (RTO) describes the target time to restore a service; recovery point objective (RPO) describes the acceptable data-loss window. Reopening a saved .pkt file illustrates returning to an earlier state but does not prove that business RTO or RPO requirements have been met.</p><h3>Discussion Prompts and Expected Answers</h3><ul><li><strong>Is a disabled unused port a fault?</strong> No; it is expected behavior under the documented control.</li><li><strong>Does port security identify a person?</strong> No; this example checks source MAC addresses.</li><li><strong>Does a successful ping prove the portal works?</strong> No; application and name-resolution tests are also needed.</li><li><strong>Did saving a checkpoint eliminate configuration risk?</strong> No; checkpoint quality, accessibility, and restoration procedures still matter.</li><li><strong>Which major risk remains?</strong> Shared infrastructure and the combined DNS/HTTP server remain single points of failure.</li></ul></section>
+<section id="timing" class="card"><h2>10. Suggested 2-Hour Instructor Timing Plan</h2><table><thead><tr><th>Time</th><th>Activity</th></tr></thead><tbody><tr><td>0–15 min</td><td>Introduce assets, risk scenarios, scoring, and treatment choices</td></tr><tr><td>15–30 min</td><td>Build, cable, label, and inventory the topology</td></tr><tr><td>30–45 min</td><td>Configure addressing, routing interfaces, DNS, and HTTP</td></tr><tr><td>45–55 min</td><td>Verify normal operations and save the baseline</td></tr><tr><td>55–70 min</td><td>Test and disable unused ports; verify approved clients</td></tr><tr><td>70–85 min</td><td>Learn the approved MAC, trigger a violation, and recover</td></tr><tr><td>85–100 min</td><td>Demonstrate server-port fault and HTTP failure; document recovery</td></tr><tr><td>100–110 min</td><td>Reopen and verify the controlled checkpoint</td></tr><tr><td>110–120 min</td><td>Reassess residual risk and discuss recovery objectives and owners</td></tr></tbody></table><div class="note"><strong>Pacing:</strong> Prepare a verified baseline and controlled checkpoint before class. Use the DNS fault and Simulation Mode inspection as optional extensions if discussion needs more time.</div></section>
+<section id="summary" class="card"><h2>11. Final Demo Summary</h2><div class="topology">Risk management loop
+
+1. Identify the assets and business dependencies.
+2. Describe specific risk scenarios and their consequences.
+3. Prioritize using explicit assumptions.
+4. Select a treatment and accountable owner.
+5. Apply a controlled change and observe its effects.
+6. Test expected service and expected restrictions.
+7. Practice recovery and retain evidence.
+8. Review residual risk and the next action.</div><div class="success"><strong>Key lesson:</strong> A control is useful when it addresses a defined risk, behaves as expected, and has manageable side effects. Verification, recovery practice, and ownership matter as much as the configuration commands.</div><h3>Final State Checklist</h3><ul><li>Both approved clients reach the server by IP and portal.northstar.com.</li><li>All documented unused switch ports remain shut down.</li><li>Staff Fa0/1 is secure-up with the original approved MAC.</li><li>PC-TEST-01 is disconnected.</li><li>The baseline and controlled checkpoints remain separate from incident practice files.</li><li>Residual risks and owners are documented rather than marked automatically resolved.</li></ul><h3>Instructor References and Preflight</h3><ul><li><a href="https://www.cengageasia.com/title/default/detail?isbn=9798214405902">Cengage: 10th-edition chapter sequence</a></li><li><a href="https://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst2960/software/release/15-2_3_e/consolidated_guide/b_1523e_2960p_2960c_cg/b_1522e_2960_2960c_2960s_2960sf_2960p_cg_chapter_010111.html">Cisco: port security, sticky learning, and violation behavior</a></li><li><a href="https://tutorials.ptnetacad.net/help/default/mode_simulation.htm">Cisco Packet Tracer: Simulation Mode</a></li></ul><p>Commands are designed for the listed simulated devices. Run the baseline, control tests, and recovery steps in your installed Packet Tracer version before teaching. This webpage is a guide, not a supplied .pkt project or a record of an executed simulation.</p></section><p class="footer">Original instructor/demo webpage for Internetworking Basics. Chapter 10 preserves the earlier chapters' presentation style and is saved separately. No textbook content is reproduced.</p>
+</main></body></html>
