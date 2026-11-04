@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cisco IOS SSH Configuration — Command Explanation</title>
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#17253b;background:#f4f7fb}*{box-sizing:border-box}body{margin:0;line-height:1.65}main{max-width:950px;margin:35px auto;padding:42px;background:white;border-radius:18px;box-shadow:0 12px 35px #1e3a5f12}h1{font-size:2rem;line-height:1.2;color:#112e52}h2{margin-top:2.3rem;padding-bottom:8px;border-bottom:2px solid #dae5f2;color:#173a61}h3{color:#24507f;margin-top:1.5rem}p,li{font-size:1rem}code{background:#eef3f9;padding:2px 5px;border-radius:4px}pre{position:relative;background:#14243a;color:#e6f2ff;padding:18px 20px;border-radius:10px;white-space:pre-wrap;overflow:auto;line-height:1.55}pre code{background:none;padding:0;color:inherit}table{border-collapse:collapse;width:100%;margin:16px 0}th,td{border:1px solid #d8e3f0;padding:10px 13px;text-align:left;vertical-align:top}th{background:#eaf2fc}blockquote,.note{border-left:4px solid #2e76bc;background:#f0f7ff;padding:12px 18px;border-radius:0 8px 8px 0}.warn{border-left-color:#d68a1f;background:#fff8e9}.diagram{max-width:620px;margin:20px auto;border:1px solid #d8e3f0;border-radius:12px;padding:18px;background:#f9fcff}.diagram svg{display:block;width:100%;height:auto}.intro{font-size:1.1rem;color:#3b526e}.small{color:#526783;font-size:.91rem}button.copy{float:right;border:1px solid #517393;background:#294b70;color:#fff;border-radius:5px;padding:4px 10px;cursor:pointer;font:inherit;font-size:.78rem}button.copy:hover{background:#366b9e}@media(max-width:650px){main{margin:0;padding:20px;border-radius:0}h1{font-size:1.6rem}table{display:block;overflow-x:auto}}@media print{body{background:#fff}main{box-shadow:none;margin:0;padding:12px}button.copy{display:none}pre{break-inside:avoid}h2{break-after:avoid}}
+</style>
+</head><body><main>
+<h1>Cisco IOS SSH Configuration: Explained</h1>
+<p class="intro">These commands configure a local administrator account and generate an RSA key pair on a Cisco router or switch, usually as preparation for enabling <strong>SSH (Secure Shell)</strong> for secure remote management.</p>
+<h2>1. Explanation of each command</h2>
+<h3>Command 1: <code>configure terminal</code></h3>
+<pre><code>configure terminal</code></pre>
+<ul><li>Enters <strong>global configuration mode</strong> from privileged EXEC mode.</li><li>Allows changes to the device configuration.</li><li>The prompt changes from <code>Router#</code> to <code>Router(config)#</code>.</li></ul>
+<h3>Command 2: <code>ip domain-name northstar.com</code></h3>
+<pre><code>ip domain-name northstar.com</code></pre>
+<ul><li>Configures the device's domain name as <code>northstar.com</code>.</li><li>The domain name and hostname form a fully qualified domain name (FQDN).</li><li>On Cisco IOS, hostname and domain name are conventionally used when generating RSA keys for SSH.</li></ul>
+<p>For a device with hostname <code>SW1</code>, the FQDN is:</p><pre><code>SW1.northstar.com</code></pre>
+<div class="note"><strong>Important:</strong> The domain does not need to be publicly registered for a classroom SSH lab. The command does not automatically register the device in DNS.</div>
+<h3>Command 3: <code>username netadmin privilege 15 secret N0rthstar-Admin11!</code></h3>
+<pre><code>username netadmin privilege 15 secret N0rthstar-Admin11!</code></pre>
+<p>Creates a local user account for authentication.</p>
+<table><thead><tr><th>Component</th><th>Meaning</th></tr></thead><tbody><tr><td><code>username netadmin</code></td><td>Creates a user named <code>netadmin</code>.</td></tr><tr><td><code>privilege 15</code></td><td>Assigns the highest traditional Cisco IOS privilege level.</td></tr><tr><td><code>secret</code></td><td>Stores a one-way hash of the password instead of plaintext.</td></tr><tr><td><code>N0rthstar-Admin11!</code></td><td>Example password for the local account.</td></tr></tbody></table>
+<p><strong>Privilege levels:</strong> Level 0 offers very limited commands; level 1 is the default user EXEC level; levels 2–14 can be customized; level 15 provides full privileged EXEC access.</p>
+<p><code>secret</code> is generally preferable to <code>password</code>, since it uses a one-way hash. The exact password-hashing algorithm depends on the IOS version and configuration.</p>
+<div class="note warn"><strong>Security:</strong> Privilege level 15 grants extensive control. For production devices, use a unique strong password, follow an appropriate password-hashing policy, and restrict management access. The password here is a lab example, not a recommended reusable credential.</div>
+<h3>Command 4: <code>crypto key generate rsa</code></h3>
+<pre><code>crypto key generate rsa</code></pre>
+<p>Generates an <strong>RSA public/private key pair</strong> on the Cisco device. SSH can use RSA host keys to authenticate the device and, depending on the negotiated SSH algorithms, support the secure connection process.</p>
+<p>On platforms with an interactive prompt, you may see:</p><pre><code>How many bits in the modulus [512]: 2048</code></pre>
+<p>Use at least <strong>2048-bit RSA keys</strong> if supported by your device and IOS version.</p>
+<table><thead><tr><th>RSA keys</th><th>Username/password</th></tr></thead><tbody><tr><td>Identify/authenticate the SSH server and support the cryptographic SSH process.</td><td>Authenticate the person logging in.</td></tr><tr><td>Generated and stored on the device.</td><td>Configured in the local user database.</td></tr><tr><td>Public/private key cryptography.</td><td>Password-based user authentication.</td></tr></tbody></table>
+<h2>2. How the commands work together</h2>
+<div class="diagram"><svg viewBox="0 0 560 440" role="img" aria-label="SSH process: hostname plus domain name, generate RSA key pair, establish encrypted SSH session, authenticate local user, authorize administrator access">
+<defs><marker id="arr" markerWidth="9" markerHeight="9" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="none" stroke="#607c9e" stroke-width="1.5"/></marker></defs>
+<rect x="105" y="15" width="350" height="66" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/><text x="280" y="40" fill="#1e40af" font-size="17" font-weight="bold" text-anchor="middle">Hostname + Domain Name</text><text x="280" y="64" fill="#1e40af" font-size="15" text-anchor="middle">SW1.northstar.com</text>
+<line x1="280" y1="81" x2="280" y2="104" stroke="#607c9e" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="105" y="110" width="350" height="66" rx="10" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/><text x="280" y="136" fill="#1e40af" font-size="17" font-weight="bold" text-anchor="middle">Generate RSA Key Pair</text><text x="280" y="160" fill="#1e40af" font-size="15" text-anchor="middle">SSH server identity</text>
+<line x1="280" y1="176" x2="280" y2="199" stroke="#607c9e" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="105" y="205" width="350" height="66" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/><text x="280" y="231" fill="#166534" font-size="17" font-weight="bold" text-anchor="middle">Establish SSH Connection</text><text x="280" y="255" fill="#166534" font-size="15" text-anchor="middle">Encrypted communication</text>
+<line x1="280" y1="271" x2="280" y2="294" stroke="#607c9e" stroke-width="2" marker-end="url(#arr)"/>
+<rect x="105" y="300" width="350" height="66" rx="10" fill="#ffedd5" stroke="#f97316" stroke-width="2"/><text x="280" y="326" fill="#9a3412" font-size="17" font-weight="bold" text-anchor="middle">Local User Authentication</text><text x="280" y="350" fill="#9a3412" font-size="15" text-anchor="middle">netadmin / password</text>
+<line x1="280" y1="366" x2="280" y2="389" stroke="#607c9e" stroke-width="2" marker-end="url(#arr)"/><text x="280" y="418" font-size="18" font-weight="bold" text-anchor="middle" fill="#17253b">Authorized Administrator Access</text>
+</svg><p class="small" style="text-align:center">Simplified instructional flow. Real SSH also negotiates algorithms and establishes session encryption.</p></div>
+<h2>3. Complete example: Enable SSH on a Cisco switch</h2>
+<p>The original four commands <strong>do not by themselves complete SSH remote login</strong>. Configure VTY lines, local authentication, and SSH-only transport as well.</p>
+<pre><code>enable
+configure terminal
+
+! Set device hostname
+hostname SW1
+
+! Configure domain name
+ip domain-name northstar.com
+
+! Create local administrator account
+username netadmin privilege 15 secret N0rthstar-Admin11!
+
+! Generate RSA keys (2048-bit)
+crypto key generate rsa modulus 2048
+
+! Prefer SSH version 2
+ip ssh version 2
+
+! Configure remote-access lines
+line vty 0 15
+ login local
+ transport input ssh
+ exit
+
+end
+copy running-config startup-config</code></pre>
+<div class="note"><strong>Platform note:</strong> Some Cisco devices have a different VTY range or RSA key-generation syntax. The switch must also have a reachable management IP address, appropriate interface/VLAN status, and correct routing if the client is on another network.</div>
+<p><strong><code>login local</code>:</strong> Authenticates remote users against the device's local username database.</p><p><strong><code>transport input ssh</code>:</strong> Allows SSH on the configured VTY lines and disallows Telnet on those lines.</p>
+<h2>4. Testing SSH</h2>
+<p>From another machine with network connectivity to the switch's management address:</p>
+<pre><code>ssh netadmin@192.168.1.2</code></pre>
+<p><code>192.168.1.2</code> is an example management IP address. The SSH client may ask you to verify the server's host key fingerprint before prompting for the user's password.</p>
+<p>Verify SSH configuration on the Cisco device:</p>
+<pre><code>show ip ssh
+show crypto key mypubkey rsa
+show running-config | section line vty</code></pre>
+<h2>Key takeaway</h2>
+<div class="note">The original commands prepare the device for SSH by configuring a domain name, creating an administrator account, and generating RSA keys. <code>line vty</code>, <code>login local</code>, and <code>transport input ssh</code> complete the remote-login configuration.</div>
+</main>
+<script>document.querySelectorAll('pre').forEach(pre=>{let b=document.createElement('button');b.className='copy';b.textContent='Copy';b.setAttribute('aria-label','Copy command block');b.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(pre.querySelector('code').innerText);b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1500)}catch(e){b.textContent='Select text to copy'}});pre.prepend(b)});</script>
+</body></html>
