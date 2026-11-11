@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cisco Packet Tracer Lab — SNMP Network Monitoring</title>
+<style>
+:root{--navy:#18314b;--blue:#1769aa;--ink:#213145;--muted:#596b7c;--line:#dce5ec;--bg:#f4f7fa;--pale:#eaf3fa;--green:#137357}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.sheet{max-width:960px;margin:30px auto;background:#fff;padding:44px 56px;box-shadow:0 7px 28px #203b5814;border-radius:12px}h1{font-size:2.25rem;line-height:1.18;color:var(--navy);margin:4px 0 10px}h2{font-size:1.36rem;color:var(--navy);margin:34px 0 12px;border-bottom:2px solid #dbe9f3;padding-bottom:8px}h3{font-size:1.03rem;color:var(--navy);margin:22px 0 8px}p{margin:10px 0}ul,ol{padding-left:25px}li{margin:5px 0}.eyebrow{letter-spacing:.1em;text-transform:uppercase;color:var(--blue);font-size:.78rem;font-weight:800}.meta{color:var(--muted);margin-bottom:23px}.lead{font-size:1.08rem;color:#40556a}.callout{background:var(--pale);border-left:4px solid var(--blue);padding:13px 17px;border-radius:5px;margin:17px 0}.warning{background:#fff7e8;border-left-color:#c58b23}.success{background:#ecf8f1;border-left-color:var(--green)}table{border-collapse:collapse;width:100%;font-size:.94rem;margin:13px 0 20px}th,td{padding:10px 12px;text-align:left;border:1px solid var(--line);vertical-align:top}th{background:#eaf1f7;color:var(--navy)}tr:nth-child(even) td{background:#fbfdfe}pre{background:#152638;color:#eaf6ff;border-radius:8px;padding:16px 18px;overflow:auto;line-height:1.5;font:14px/1.55 Consolas,'Liberation Mono',monospace}code:not(pre code){background:#edf2f6;padding:2px 5px;border-radius:3px;font-size:.91em}figure{margin:20px 0;padding:12px;border:1px solid var(--line);border-radius:9px;background:#fbfdff}figcaption{text-align:center;color:var(--muted);font-size:.86rem;margin-top:4px}.toolbar{text-align:right;max-width:960px;margin:18px auto -15px}.print{border:0;background:var(--blue);color:#fff;padding:10px 17px;border-radius:6px;font:inherit;cursor:pointer}.small{font-size:.9rem;color:var(--muted)}.task{padding:8px 0;border-bottom:1px dashed var(--line)}.task:last-child{border-bottom:0}.check{margin-right:8px;accent-color:var(--blue)}.diagram{width:100%;max-width:580px;display:block;margin:auto}.flow{max-width:620px}.footer{border-top:1px solid var(--line);padding-top:16px;margin-top:36px;font-size:.85rem;color:var(--muted)}@media(max-width:650px){.sheet{margin:0;padding:25px 18px;border-radius:0}.toolbar{margin:10px 10px -4px}h1{font-size:1.8rem}table{font-size:.84rem}th,td{padding:7px}}@media print{@page{size:letter;margin:0.65in}body{background:white;font-size:10pt}.sheet{padding:0;margin:0;max-width:none;box-shadow:none}.toolbar{display:none}h1{font-size:22pt}h2{break-after:avoid}h3{break-after:avoid}pre,table,figure,.callout{break-inside:avoid}pre{white-space:pre-wrap;overflow-wrap:anywhere}a{color:inherit}}
+</style>
+</head>
+<body>
+<div class="toolbar"><button class="print" onclick="window.print()">Print / Save as PDF</button></div>
+<main class="sheet">
+<div class="eyebrow">Hands-on networking lab</div>
+<h1>Cisco Packet Tracer Lab: SNMP Network Monitoring</h1>
+<p class="meta">Cisco Packet Tracer 9.x &nbsp;·&nbsp; Estimated time: 30–45 minutes &nbsp;·&nbsp; SNMPv2c</p>
+<p class="lead">In this lab, you will configure Cisco devices as SNMP agents, retrieve management information from a monitoring PC, and examine SNMP messages in Packet Tracer Simulation Mode.</p>
+<h2>1. Learning objectives</h2>
+<ol><li>Distinguish an SNMP manager from an SNMP agent.</li><li>Configure SNMPv2c read-only monitoring on a router and a switch.</li><li>Query MIB objects using an SNMP MIB Browser.</li><li>Identify common SNMP Object Identifiers (OIDs).</li><li>Observe SNMP GET and RESPONSE packets in Simulation Mode.</li><li>Explain how event-driven SNMP traps differ from polling.</li></ol>
+<h2>2. Network topology and addressing</h2>
+<figure><svg class="diagram" viewBox="0 0 580 340" role="img" aria-label="Router R1 connected to Switch S1, which connects to monitoring PC0 and client PC1" xmlns="http://www.w3.org/2000/svg"><rect x="214" y="12" width="152" height="70" rx="10" fill="#dceafa" stroke="#4381b4" stroke-width="2"/><text x="290" y="38" text-anchor="middle" fill="#20466b" font-size="19" font-weight="700">R1 · 2911</text><text x="290" y="61" text-anchor="middle" fill="#20466b" font-size="15">192.168.10.1</text><path d="M290 82V132" stroke="#6f7c89" stroke-width="3"/><text x="307" y="113" fill="#485d70" font-size="13">G0/0 ↔ Fa0/1</text><rect x="214" y="132" width="152" height="70" rx="10" fill="#e7e3f7" stroke="#8576bb" stroke-width="2"/><text x="290" y="158" text-anchor="middle" fill="#4c4084" font-size="19" font-weight="700">S1 · 2960</text><text x="290" y="181" text-anchor="middle" fill="#4c4084" font-size="15">192.168.10.2</text><path d="M250 202V245H123V270M330 202V245H458V270" fill="none" stroke="#6f7c89" stroke-width="3"/><text x="130" y="238" fill="#485d70" font-size="13">Fa0/2</text><text x="398" y="238" fill="#485d70" font-size="13">Fa0/3</text><rect x="19" y="270" width="210" height="60" rx="10" fill="#dcf3e6" stroke="#4b9c77" stroke-width="2"/><text x="124" y="295" text-anchor="middle" fill="#245f49" font-size="17" font-weight="700">PC0 · SNMP Manager</text><text x="124" y="316" text-anchor="middle" fill="#245f49" font-size="15">192.168.10.100</text><rect x="355" y="270" width="210" height="60" rx="10" fill="#e9edf2" stroke="#8c98a6" stroke-width="2"/><text x="460" y="295" text-anchor="middle" fill="#374a5c" font-size="17" font-weight="700">PC1 · Client</text><text x="460" y="316" text-anchor="middle" fill="#374a5c" font-size="15">192.168.10.101</text></svg><figcaption>PC0 uses SNMP to monitor R1 and S1. All devices are on the same /24 LAN.</figcaption></figure>
+<h3>Required equipment</h3><ul><li>1 Cisco 2911 router (R1)</li><li>1 Cisco 2960 switch (S1)</li><li>2 PCs (PC0 and PC1)</li><li>3 copper straight-through cables</li></ul>
+<table><thead><tr><th>Device</th><th>Interface</th><th>IP address</th><th>Subnet mask</th></tr></thead><tbody><tr><td>R1</td><td>G0/0</td><td>192.168.10.1</td><td>255.255.255.0</td></tr><tr><td>S1</td><td>VLAN 1</td><td>192.168.10.2</td><td>255.255.255.0</td></tr><tr><td>PC0</td><td>FastEthernet0</td><td>192.168.10.100</td><td>255.255.255.0</td></tr><tr><td>PC1</td><td>FastEthernet0</td><td>192.168.10.101</td><td>255.255.255.0</td></tr></tbody></table>
+<p><strong>Default gateway:</strong> <code>192.168.10.1</code> on PC0, PC1, and S1.</p>
+<h3>Build the topology</h3><ol><li>Add and rename the devices as shown.</li><li>Connect R1 <code>G0/0</code> to S1 <code>Fa0/1</code>.</li><li>Connect PC0 <code>FastEthernet0</code> to S1 <code>Fa0/2</code>.</li><li>Connect PC1 <code>FastEthernet0</code> to S1 <code>Fa0/3</code>.</li></ol>
+<h2>3. Configure the router (R1)</h2><p>Open R1 → <strong>CLI</strong> and enter:</p>
+<pre><code>enable
+configure terminal
+hostname R1
+
+interface gigabitEthernet0/0
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+exit
+
+snmp-server community MONITOR123 RO
+snmp-server location Network-Lab
+snmp-server contact netadmin@example.com
+
+end
+write memory</code></pre>
+<div class="callout"><strong>Explanation:</strong> <code>snmp-server community MONITOR123 RO</code> establishes a read-only SNMPv2c community string. The MIB Browser must supply the same community string to read the router’s SNMP data.</div>
+<h2>4. Configure the switch (S1)</h2><p>Open S1 → <strong>CLI</strong> and enter:</p>
+<pre><code>enable
+configure terminal
+hostname S1
+
+interface vlan 1
+ ip address 192.168.10.2 255.255.255.0
+ no shutdown
+exit
+
+ip default-gateway 192.168.10.1
+
+snmp-server community MONITOR123 RO
+snmp-server location Network-Lab
+snmp-server contact netadmin@example.com
+
+end
+write memory</code></pre>
+<p class="small">The VLAN 1 interface requires an active port in VLAN 1 to become operational. The connected switch ports use VLAN 1 by default.</p>
+<h2>5. Configure the PCs and verify connectivity</h2><ol><li>On each PC, navigate to <strong>Desktop → IP Configuration</strong>.</li><li>Enter the IP address, subnet mask, and default gateway from the table.</li><li>On PC0, open <strong>Desktop → Command Prompt</strong>.</li><li>Run these commands:</li></ol>
+<pre><code>ping 192.168.10.1
+ping 192.168.10.2
+ping 192.168.10.101</code></pre>
+<p><strong>Expected result:</strong> Each destination replies to ping. If the first attempt fails, allow time for interfaces and ARP resolution, then try again.</p>
+<h2>6. Demonstrate SNMP polling with the MIB Browser</h2>
+<ol><li>On PC0, open <strong>Desktop → MIB Browser</strong>.</li><li>Set the target address to <code>192.168.10.1</code>.</li><li>Choose SNMP <strong>v2c</strong>, UDP port <strong>161</strong>, and read community <code>MONITOR123</code>. Depending on the Packet Tracer version, these may be under Advanced settings.</li><li>Navigate the MIB tree to <code>iso → org → dod → internet → mgmt → mib-2 → system</code>.</li><li>Find <code>sysName</code> and issue a GET request for instance <code>0</code> (full OID <code>1.3.6.1.2.1.1.5.0</code>).</li><li>Observe the returned value. It should identify the router as <code>R1</code>.</li><li>Try the additional OIDs below.</li><li>Change the target to <code>192.168.10.2</code> and repeat the queries for the switch.</li></ol>
+<table><thead><tr><th>OID</th><th>Object</th><th>What it returns</th></tr></thead><tbody><tr><td>1.3.6.1.2.1.1.1.0</td><td><code>sysDescr</code></td><td>Device/system description</td></tr><tr><td>1.3.6.1.2.1.1.3.0</td><td><code>sysUpTime</code></td><td>Time since the SNMP management subsystem initialized</td></tr><tr><td>1.3.6.1.2.1.1.5.0</td><td><code>sysName</code></td><td>Device name</td></tr><tr><td>1.3.6.1.2.1.1.4.0</td><td><code>sysContact</code></td><td>Administrator contact</td></tr><tr><td>1.3.6.1.2.1.1.6.0</td><td><code>sysLocation</code></td><td>Configured location</td></tr></tbody></table>
+<div class="callout"><strong>Expected observations:</strong> <code>sysName.0 = R1</code> on the router, <code>sysName.0 = S1</code> on the switch, and configured contact/location values if those objects are implemented by the simulated device. The exact MIB tree and controls vary by Packet Tracer release.</div>
+<h2>7. Examine SNMP traffic in Simulation Mode</h2><ol><li>Select <strong>Simulation</strong> at the bottom of Packet Tracer.</li><li>Open <strong>Edit Filters</strong> and enable <strong>SNMP</strong> (and ARP if necessary).</li><li>Return to PC0’s MIB Browser and issue another GET request for <code>sysName.0</code>.</li><li>Click <strong>Capture/Forward</strong> to step through the packet flow.</li><li>Click the packet envelope to examine protocol details.</li></ol>
+<figure><svg class="diagram flow" viewBox="0 0 590 240" role="img" aria-label="SNMP manager sends GET to SNMP agent on port 161; agent sends RESPONSE to manager" xmlns="http://www.w3.org/2000/svg"><rect x="18" y="12" width="190" height="58" rx="9" fill="#dcf3e6" stroke="#4b9c77" stroke-width="2"/><text x="113" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#245f49">SNMP Manager</text><text x="113" y="55" text-anchor="middle" font-size="14" fill="#245f49">PC0 · 192.168.10.100</text><rect x="382" y="12" width="190" height="58" rx="9" fill="#dceafa" stroke="#4381b4" stroke-width="2"/><text x="477" y="35" text-anchor="middle" font-size="18" font-weight="700" fill="#20466b">SNMP Agent</text><text x="477" y="55" text-anchor="middle" font-size="14" fill="#20466b">R1 · 192.168.10.1</text><path d="M113 70V232 M477 70V232" stroke="#97a8b7" stroke-dasharray="5 6" stroke-width="2"/><path d="M115 125H474" stroke="#2372ad" stroke-width="3"/><path d="M460 117L475 125L460 133" fill="none" stroke="#2372ad" stroke-width="3"/><text x="295" y="108" text-anchor="middle" font-size="17" font-weight="700" fill="#2372ad">GET</text><text x="295" y="145" text-anchor="middle" font-size="13" fill="#576a7d">UDP destination port 161</text><path d="M475 192H116" stroke="#218260" stroke-width="3"/><path d="M130 184L115 192L130 200" fill="none" stroke="#218260" stroke-width="3"/><text x="295" y="181" text-anchor="middle" font-size="17" font-weight="700" fill="#218260">RESPONSE</text><text x="295" y="218" text-anchor="middle" font-size="13" fill="#576a7d">sysName.0 = R1</text></svg><figcaption>A polling request originates from the manager; the agent replies with the requested value.</figcaption></figure>
+<p>Record the SNMP PDU type, requested OID, UDP destination port, and returned value. Observe the community string if Packet Tracer exposes it in the packet details.</p>
+<h2>8. Optional extension: SNMP traps</h2><p>Unlike GET requests, <strong>SNMP traps are unsolicited notifications initiated by a device</strong>, typically toward an SNMP manager on UDP port <strong>162</strong>.</p>
+<p>On routers that support the commands, trap configuration may resemble:</p>
+<pre><code>enable
+configure terminal
+snmp-server host 192.168.10.100 version 2c MONITOR123
+snmp-server enable traps snmp linkdown linkup
+end</code></pre>
+<div class="callout warning"><strong>Packet Tracer limitation:</strong> Trap command support and trap reception are not consistently implemented across simulated Cisco devices and Packet Tracer releases. The standard Packet Tracer PC MIB Browser should not be assumed to function as a trap receiver. This extension is conceptual unless you have verified the specific device and receiver support in your version.</div>
+<p><strong>Important design consideration:</strong> Do not shut down R1’s only management interface <code>G0/0</code> to test delivery: doing so disconnects the router from the receiver. On a system with working trap support, trigger an event on a <em>separate</em> monitored interface while leaving the management connection up.</p>
+<p>For a full hands-on trap demonstration, use real Cisco IOS or a network emulator with an SNMP-capable receiver such as a trap listener on a Linux VM.</p>
+<h2>9. Troubleshooting</h2><table><thead><tr><th>Symptom</th><th>What to check</th></tr></thead><tbody><tr><td>Ping fails</td><td>Addresses, physical links, switch port status, router <code>no shutdown</code>.</td></tr><tr><td>GET request times out</td><td>Destination IP, read community, SNMP version, and UDP port 161.</td></tr><tr><td>Unexpected device name</td><td>Verify the target IP address; inspect <code>hostname</code> configuration.</td></tr><tr><td>SNMP packets not visible</td><td>Confirm Simulation Mode and SNMP event filters; trigger a new query.</td></tr><tr><td>Trap command rejected</td><td>The simulated platform may not implement the command.</td></tr><tr><td>Switch management inaccessible</td><td>Verify VLAN 1 interface and at least one active VLAN 1 port.</td></tr></tbody></table>
+<h2>10. Review questions</h2><ol><li>What role does an SNMP agent perform?</li><li>How do SNMP GET and RESPONSE messages differ?</li><li>Which UDP destination port is normally used for SNMP polling?</li><li>What information does OID <code>1.3.6.1.2.1.1.5.0</code> identify?</li><li>What happens when the MIB Browser uses an incorrect community string?</li><li>How does an SNMP trap differ from periodic polling?</li><li>Why is SNMPv3 generally preferred over SNMPv2c in production networks?</li></ol>
+<h2>11. Completion checklist</h2>
+<div class="task"><label><input class="check" type="checkbox"> Topology built and all IP addresses configured</label></div>
+<div class="task"><label><input class="check" type="checkbox"> Ping tests successful</label></div>
+<div class="task"><label><input class="check" type="checkbox"> SNMP read-only community configured on R1 and S1</label></div>
+<div class="task"><label><input class="check" type="checkbox"> MIB Browser queries returned device information</label></div>
+<div class="task"><label><input class="check" type="checkbox"> SNMP GET and RESPONSE observed in Simulation Mode</label></div>
+<div class="task"><label><input class="check" type="checkbox"> Review questions answered</label></div>
+<div class="callout success"><strong>Expected result:</strong> You can remotely read available management values from R1 and S1 and trace an SNMP GET/RESPONSE exchange. You can explain how a trap would instead be generated by a device in response to an event.</div>
+<p class="small"><strong>Security note:</strong> This lab uses SNMPv2c for instructional simplicity. Its community strings are not encrypted. Production monitoring should use SNMPv3 with authentication and privacy where supported.</p>
+</main>
+</body></html>
