@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Packet Tracer Demo Lab - Chapter 12: Performance and Recovery</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --paper: #ffffff;
+      --ink: #182230;
+      --muted: #5d6b82;
+      --line: #d9e0ea;
+      --accent: #2457c5;
+      --accent-soft: #eaf0ff;
+      --code-bg: #111827;
+      --code-ink: #f3f4f6;
+      --table-head: #eef3fb;
+      --note: #fff7df;
+      --success: #e9f8ef;
+      --warn: #fff1f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.58;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 18px 64px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #173b88, #2f75ff);
+      color: white;
+      border-radius: 18px;
+      padding: 34px 36px;
+      box-shadow: 0 12px 32px rgba(24, 34, 48, 0.18);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 2.1rem;
+      line-height: 1.15;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 500;
+      opacity: 0.95;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .meta div {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 12px 14px;
+      border-radius: 12px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 26px;
+      margin: 18px 0;
+      box-shadow: 0 6px 18px rgba(24, 34, 48, 0.06);
+    }
+
+    h2 {
+      color: #173b88;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 8px;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #24446f;
+      margin-top: 24px;
+    }
+
+    h4 {
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    p { margin: 10px 0; }
+
+    ul, ol { padding-left: 24px; }
+
+    li { margin: 5px 0; }
+
+    .note {
+      background: var(--note);
+      border-left: 5px solid #e6a700;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .success {
+      background: var(--success);
+      border-left: 5px solid #229954;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .warning {
+      background: var(--warn);
+      border-left: 5px solid #d33c32;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 22px;
+      overflow-wrap: anywhere;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: var(--table-head);
+      color: #173b88;
+      font-weight: 700;
+    }
+
+    code {
+      background: #eef2f7;
+      padding: 2px 5px;
+      border-radius: 5px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 0.95em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-ink);
+      padding: 16px 18px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      margin: 12px 0 18px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .topology {
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 14px 0;
+    }
+
+    .toc {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .toc a:hover { text-decoration: underline; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .mini {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { max-width: none; padding: 0; }
+      .hero, .card { box-shadow: none; }
+      .card { break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body><main class="page"><section class="hero"><h1>Packet Tracer Demo Lab</h1><h2>Chapter 12: Performance and Recovery</h2><p>Original instructor/demo lab aligned with <em>CompTIA Network+ Guide to Networks</em>, 10th Edition by Jill West.</p><div class="meta"><div><strong>Course:</strong><br>Internetworking Basics</div><div><strong>Estimated Time:</strong><br>2 hours</div><div><strong>Lab Type:</strong><br>Instructor-led demo with guided practice</div><div><strong>Tool:</strong><br>Cisco Packet Tracer</div></div></section>
+<nav class="toc" aria-label="Page sections"><strong>Page Sections:</strong><ol><li><a href="#purpose">Lab Purpose</a></li><li><a href="#scenario">Scenario and Objectives</a></li><li><a href="#topology">Topology and Addressing</a></li><li><a href="#build">Build the Packet Tracer Network</a></li><li><a href="#configure">Configure Primary and Backup Paths</a></li><li><a href="#verify">Record and Verify the Baseline</a></li><li><a href="#recovery">Failover and Recovery Demonstrations</a></li><li><a href="#troubleshooting">Troubleshooting Demonstrations</a></li><li><a href="#explanations">Instructor Explanation Blocks</a></li><li><a href="#timing">2-Hour Instructor Timing Plan</a></li><li><a href="#summary">Final Demo Summary</a></li></ol></nav>
+<section id="purpose" class="card"><h2>1. Lab Purpose</h2><p>Establish a known-good service baseline, observe network state, and test recovery from selected failures. Students configure a preferred inter-router link and a standby link, verify route changes during an outage, and distinguish link resilience from application recovery.</p><ul><li>Record reachability, path, interface state, and application behavior before making changes.</li><li>Explain bandwidth, throughput, latency, jitter, packet loss, and availability.</li><li>Configure floating static routes in both directions.</li><li>Demonstrate primary-link failure, backup operation, and return to the preferred path.</li><li>Show a failure that redundant links cannot fix.</li><li>Practice a controlled rollback and verify a saved recovery checkpoint.</li></ul><div class="note"><strong>Instructor note:</strong> This is a live teaching demonstration with guided practice, not a graded assignment. The emphasis is evidence-based troubleshooting and recovery verification.</div><div class="warning"><strong>Simulation scope:</strong> Packet Tracer demonstrates selected forwarding and failure behavior. Its timing, counters, and traffic generation are not a production throughput benchmark. This exercise protects against loss of one directly connected inter-router link; it does not provide router, switch, server, site, or power redundancy.</div></section>
+<section id="scenario" class="card"><h2>2. Lab Scenario</h2><p><strong>Northstar Training Center</strong> uses a shared portal on its services LAN. Two routers connect users to services over separate primary and backup Ethernet links. The administrator must prove that a link outage can be handled and document what remains unavailable during a service failure.</p><h3>Learning Objectives</h3><ul><li>Define normal operation with repeatable tests rather than a single green link.</li><li>Explain why a higher administrative distance makes a static route a standby choice.</li><li>Verify the return path as well as the request path.</li><li>Compare route availability with application health.</li><li>Record incident observations, restoration steps, and residual risks.</li><li>Distinguish redundancy, backup, failover, rollback, RTO, and RPO.</li></ul><h3>Chapter 12 Concept Alignment</h3><table><thead><tr><th>Topic</th><th>Demo Activity</th></tr></thead><tbody><tr><td>Baselines and monitoring</td><td>Record route, interface, DNS, and HTTP observations</td></tr><tr><td>Performance indicators</td><td>Interpret ping and interface outputs with simulator limitations</td></tr><tr><td>Availability and redundancy</td><td>Build a second link and configure standby routes</td></tr><tr><td>Failure detection and recovery</td><td>Remove the primary physical link and observe a route transition</td></tr><tr><td>Configuration recovery</td><td>Restore a missing backup route and verify a saved checkpoint</td></tr><tr><td>Business continuity</td><td>Discuss recovery objectives, backup validation, and remaining shared dependencies</td></tr></tbody></table><p>The <a href="https://www.cengageasia.com/title/default/detail?isbn=9798214405902">publisher's table of contents</a> identifies Chapter 12 as Performance and Recovery. This original lab selectively supports that chapter theme.</p></section>
+<section id="topology" class="card"><h2>3. Devices, Topology, and Addressing</h2><h3>Devices Used and Naming Plan</h3><table><thead><tr><th>Suggested Device</th><th>Quantity</th><th>Name / Role</th></tr></thead><tbody><tr><td>2911 router</td><td>2</td><td>RTR-USERS-01 and RTR-SERVICES-01</td></tr><tr><td>2960 switch</td><td>2</td><td>SW-USERS-01 and SW-SERVICES-01</td></tr><tr><td>PC-PT</td><td>2</td><td>PC-USER-01 and PC-USER-02</td></tr><tr><td>Server-PT</td><td>1</td><td>SRV-PORTAL-01: DNS and HTTP</td></tr></tbody></table><h3>Target Logical Topology</h3><div class="topology">PC-USER-01 --\
+              SW-USERS-01 -- G0/0 RTR-USERS-01
+PC-USER-02 --/                    G0/1     G0/2
+                                   |        |
+                         PRIMARY   |        |   BACKUP
+                         10.12.0.0/30     10.12.0.4/30
+                                   |        |
+                                  G0/1     G0/2
+                                 RTR-SERVICES-01 G0/0
+                                                   |
+                                             SW-SERVICES-01
+                                                   |
+                                              SRV-PORTAL-01
+
+Users LAN:    192.168.120.0/24
+Services LAN: 192.168.121.0/24</div><h3>Addressing Plan</h3><table><thead><tr><th>Device / Interface</th><th>Address</th><th>Mask</th><th>Gateway / Role</th></tr></thead><tbody><tr><td>RTR-USERS-01 G0/0</td><td>192.168.120.1</td><td>255.255.255.0</td><td>User gateway</td></tr><tr><td>RTR-USERS-01 G0/1</td><td>10.12.0.1</td><td>255.255.255.252</td><td>Primary transit</td></tr><tr><td>RTR-SERVICES-01 G0/1</td><td>10.12.0.2</td><td>255.255.255.252</td><td>Primary transit</td></tr><tr><td>RTR-USERS-01 G0/2</td><td>10.12.0.5</td><td>255.255.255.252</td><td>Backup transit</td></tr><tr><td>RTR-SERVICES-01 G0/2</td><td>10.12.0.6</td><td>255.255.255.252</td><td>Backup transit</td></tr><tr><td>RTR-SERVICES-01 G0/0</td><td>192.168.121.1</td><td>255.255.255.0</td><td>Services gateway</td></tr><tr><td>PC-USER-01 Fa0</td><td>192.168.120.21</td><td>255.255.255.0</td><td>192.168.120.1</td></tr><tr><td>PC-USER-02 Fa0</td><td>192.168.120.22</td><td>255.255.255.0</td><td>192.168.120.1</td></tr><tr><td>SRV-PORTAL-01 Fa0</td><td>192.168.121.10</td><td>255.255.255.0</td><td>192.168.121.1</td></tr></tbody></table><p>Set DNS to <code>192.168.121.10</code> on both PCs and the server. All addresses are static. The transit /30 networks use .1/.2 and .5/.6 as host addresses; .0 and .4 are network addresses, and .3 and .7 are broadcasts.</p><h3>Routing Plan</h3><table><thead><tr><th>Router / Destination</th><th>Preferred Next Hop / Interface</th><th>Backup Next Hop / Interface</th></tr></thead><tbody><tr><td>RTR-USERS-01 → 192.168.121.0/24</td><td>10.12.0.2 / G0/1; distance 1</td><td>10.12.0.6 / G0/2; distance 10</td></tr><tr><td>RTR-SERVICES-01 → 192.168.120.0/24</td><td>10.12.0.1 / G0/1; distance 1</td><td>10.12.0.5 / G0/2; distance 10</td></tr></tbody></table><p>The links have the same modeled media speed. Route preference is configured by administrative distance, not chosen from a measured performance difference. Both router interfaces and both link cables are required.</p></section>
+<section id="build" class="card"><h2>4. Build the Packet Tracer Network</h2><h3>Part A — Create and Label the Project</h3><ol><li>Create <code>Chapter12_Performance_Recovery_Demo.pkt</code>.</li><li>Add and rename the seven devices listed above.</li><li>Label the two routed links PRIMARY and BACKUP with their /30 networks.</li><li>Use 2911 routers with G0/0, G0/1, and G0/2. Check interface names before pasting commands if using another model.</li></ol><h3>Part B — Cable the Network</h3><table><thead><tr><th>From</th><th>To</th><th>Cable</th></tr></thead><tbody><tr><td>PC-USER-01 Fa0</td><td>SW-USERS-01 Fa0/1</td><td>Straight-through</td></tr><tr><td>PC-USER-02 Fa0</td><td>SW-USERS-01 Fa0/2</td><td>Straight-through</td></tr><tr><td>SW-USERS-01 G0/1</td><td>RTR-USERS-01 G0/0</td><td>Straight-through</td></tr><tr><td>RTR-USERS-01 G0/1</td><td>RTR-SERVICES-01 G0/1</td><td>Crossover or automatic connection</td></tr><tr><td>RTR-USERS-01 G0/2</td><td>RTR-SERVICES-01 G0/2</td><td>Crossover or automatic connection</td></tr><tr><td>RTR-SERVICES-01 G0/0</td><td>SW-SERVICES-01 G0/1</td><td>Straight-through</td></tr><tr><td>SW-SERVICES-01 Fa0/1</td><td>SRV-PORTAL-01 Fa0</td><td>Straight-through</td></tr></tbody></table><div class="note"><strong>Topology distinction:</strong> These are separate routed Ethernet links on different subnets, not parallel Layer 2 switch links or an EtherChannel. The exercise does not require spanning-tree tuning or link aggregation.</div></section>
+<section id="configure" class="card"><h2>5. Configure Primary and Backup Paths</h2><h3>Part C — Configure the Users Router</h3><p>Open CLI, answer <code>no</code> to the setup dialog if prompted, and enter:</p><pre><code>enable
+configure terminal
+hostname RTR-USERS-01
+interface gigabitEthernet0/0
+ description Users LAN gateway
+ ip address 192.168.120.1 255.255.255.0
+ no shutdown
+ exit
+interface gigabitEthernet0/1
+ description PRIMARY to RTR-SERVICES-01
+ ip address 10.12.0.1 255.255.255.252
+ no shutdown
+ exit
+interface gigabitEthernet0/2
+ description BACKUP to RTR-SERVICES-01
+ ip address 10.12.0.5 255.255.255.252
+ no shutdown
+ exit
+ip route 192.168.121.0 255.255.255.0 10.12.0.2
+ip route 192.168.121.0 255.255.255.0 10.12.0.6 10
+end
+copy running-config startup-config</code></pre><p>Accept the default destination filename by pressing Enter.</p><h3>Part D — Configure the Services Router</h3><pre><code>enable
+configure terminal
+hostname RTR-SERVICES-01
+interface gigabitEthernet0/0
+ description Services LAN gateway
+ ip address 192.168.121.1 255.255.255.0
+ no shutdown
+ exit
+interface gigabitEthernet0/1
+ description PRIMARY to RTR-USERS-01
+ ip address 10.12.0.2 255.255.255.252
+ no shutdown
+ exit
+interface gigabitEthernet0/2
+ description BACKUP to RTR-USERS-01
+ ip address 10.12.0.6 255.255.255.252
+ no shutdown
+ exit
+ip route 192.168.120.0 255.255.255.0 10.12.0.1
+ip route 192.168.120.0 255.255.255.0 10.12.0.5 10
+end
+copy running-config startup-config</code></pre><div class="note"><strong>Route explanation:</strong> The final <code>10</code> is administrative distance, not hop count, speed, or delay. The primary static route defaults to distance 1. These routes specify the next-hop IP address. The router uses its routing table to determine the outgoing interface for that next hop. The backup stays configured but is normally absent from the active routing table while the preferred route is usable.</div><h3>Part E — Configure Endpoints and Services</h3><ol><li>On both PCs and the server open <strong>Desktop &gt; IP Configuration &gt; Static</strong> and enter the addressing-plan values.</li><li>On SRV-PORTAL-01 open <strong>Services &gt; DNS</strong>, enable DNS, and add <code>portal.northstar.com</code>, type A, address <code>192.168.121.10</code>.</li><li>Open <strong>Services &gt; HTTP</strong>, enable HTTP, edit <code>index.html</code>, and save:</li></ol><pre><code>&lt;html&gt;&lt;body&gt;
+&lt;h1&gt;Northstar Service Status Portal&lt;/h1&gt;
+&lt;p&gt;Chapter 12: Performance and Recovery&lt;/p&gt;
+&lt;p&gt;Portal address: 192.168.121.10&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</code></pre><p>The .com record is resolved inside the simulation; no public DNS or Internet connection is needed. Switches can retain their default access configuration.</p></section>
+<section id="verify" class="card"><h2>6. Record and Verify the Baseline</h2><h3>Part F — Inspect Infrastructure</h3><p>On both routers:</p><pre><code>show ip interface brief
+show ip route
+show running-config
+show interfaces gigabitEthernet0/1
+show interfaces gigabitEthernet0/2</code></pre><p>All three used interfaces should be up/up. Confirm that both static routes are present in the configuration but the active remote-LAN route uses G0/1 and distance 1. Its route display normally includes <code>[1/0]</code>. The backup interface should be operational even while the route is on standby.</p><h3>Part G — Verify User Experience</h3><p>On PC-USER-01:</p><pre><code>ipconfig
+ping 192.168.120.22
+ping 192.168.120.1
+ping 192.168.121.10
+ping portal.northstar.com
+tracert 192.168.121.10</code></pre><p>Run a warm-up ping for ARP, then repeat a small fixed set of pings and record actual replies/timeouts. The primary trace normally shows 192.168.120.1, 10.12.0.2, then 192.168.121.10. Formatting and timing may vary.</p><p>From both PCs open <code>http://192.168.121.10</code> and <code>http://portal.northstar.com</code>. Both should show the portal. From the server's Command Prompt, ping both PCs to confirm reverse-direction reachability.</p><h3>Baseline Observation Sheet</h3><table><thead><tr><th>Indicator</th><th>Record Before Failure</th><th>Interpretation</th></tr></thead><tbody><tr><td>Gateway / server reachability</td><td>Actual replies and timeouts after warm-up</td><td>IP path evidence, not application health</td></tr><tr><td>Active route and path</td><td>G0/1, primary next hop, distance 1</td><td>Expected forwarding choice</td></tr><tr><td>Interface state</td><td>Primary and backup up/up</td><td>Local link availability</td></tr><tr><td>Interface counters</td><td>Packets and available error/drop counters before and after tests</td><td>Compare changes; modeled counters are limited</td></tr><tr><td>DNS</td><td>portal.northstar.com resolves to .121.10</td><td>Name resolution works</td></tr><tr><td>HTTP</td><td>Fresh page request succeeds from both PCs</td><td>Application responds</td></tr><tr><td>Checkpoint</td><td>Filename and save time</td><td>Identifies the known-good state</td></tr></tbody></table><div class="success"><strong>Checkpoint:</strong> Save <code>Chapter12_Recovery_Baseline.pkt</code>, then create <code>Chapter12_Recovery_Working.pkt</code>. Keep the verified baseline intact. A saved startup configuration and a saved simulator project serve different purposes; keep both current.</div><h3>Part H — Performance Concepts</h3><table><thead><tr><th>Measure</th><th>Meaning</th><th>Demo Limit</th></tr></thead><tbody><tr><td>Bandwidth</td><td>Nominal capacity of a link or service</td><td>Interface bandwidth metadata is not achieved throughput</td></tr><tr><td>Throughput</td><td>Actual transfer rate over an interval</td><td>A few pings do not measure application throughput</td></tr><tr><td>Latency</td><td>Delivery delay; ping reports round-trip time</td><td>Simulation timings are not production predictions</td></tr><tr><td>Jitter</td><td>Variation in delay</td><td>Requires a suitable measurement method and sample</td></tr><tr><td>Packet loss</td><td>Share of traffic that fails to arrive</td><td>Initial ARP and deliberate transitions can affect small samples</td></tr><tr><td>Availability</td><td>Whether the defined service is usable over time</td><td>Link-up status does not prove the portal works</td></tr></tbody></table></section>
+<section id="recovery" class="card"><h2>7. Failover and Recovery Demonstrations</h2><h3>Part I — Fail the Primary Physical Link</h3><ol><li>Confirm both PCs reach the portal and both routers use their primary route.</li><li>Record the start of the event. Remove only the cable connecting the two G0/1 interfaces. Leave G0/0 and G0/2 links untouched.</li><li>Inspect <code>show ip interface brief</code> on both routers and confirm G0/1 is down.</li><li>Run <code>show ip route</code> on both routers. The remote-LAN route should now use G0/2, its backup next hop, and distance 10, normally displayed as <code>[10/0]</code>.</li><li>Repeat server ping, trace, and a fresh HTTP request from both PCs.</li></ol><p>The trace normally changes its second router address to <code>10.12.0.6</code>. Some packets or sessions may fail during the transition; repeat tests after the routing state settles. Do not promise uninterrupted sessions or a particular recovery time.</p><div class="note"><strong>Why remove the cable?</strong> This intentionally makes the directly connected primary link go down at both endpoints. The configured route depends on that link, so the standby route can take over in each direction.</div><h3>Part J — Restore the Primary Path</h3><ol><li>Reconnect RTR-USERS-01 G0/1 to RTR-SERVICES-01 G0/1 with crossover or automatic connection.</li><li>Wait for both primary interfaces to return to up/up.</li><li>Verify that the preferred distance-1 routes are active again on both routers.</li><li>Repeat the user and server tests. Record the observed restoration and any transient failures.</li></ol><p>This is failback to the preferred route. The higher-distance route remains configured for future failures. No load balancing or combined capacity is configured.</p><h3>Part K — Inspect Forwarding in Simulation Mode</h3><ol><li>In a working copy, select Simulation Mode and filter ARP, ICMP, TCP, DNS, and HTTP.</li><li>Generate a fresh server request and step through it using Capture/Forward.</li><li>Compare the path before and after a controlled primary-cable removal.</li><li>Follow the reply as well as the request to demonstrate the two backup routes.</li><li>Restore the cable and return to Realtime.</li></ol><p>Cached ARP or DNS entries may hide new lookups. Restart a client in a saved copy if a fresh lookup is necessary; clearing the event list alone does not necessarily clear caches.</p><h3>Part L — Demonstrate the Limit of Link Redundancy</h3><p>With both links healthy, turn <strong>Services &gt; HTTP</strong> Off on the server. Server ping still succeeds and the primary route remains active, but a fresh browser request fails. Restore HTTP On and verify both PCs can load the page.</p><div class="warning"><strong>Failure-detection boundary:</strong> These static routes do not monitor portal health or detect every failure beyond an operational next hop. A service outage or a forwarding black hole with the primary interface still up does not automatically select the backup. End-to-end tracking, suitable routing mechanisms, or application health checks would be additional design work.</div><h3>Part M — Recovery Checkpoint Exercise</h3><ol><li>Save incident observations in a separate working file, without overwriting the baseline.</li><li>Open <code>Chapter12_Recovery_Baseline.pkt</code>.</li><li>Repeat route, backup-link, DNS, and HTTP checks; do not assume reopening a file proves it is usable.</li><li>Discuss what changes or data created after the checkpoint would be absent.</li></ol><p>This restores a simulator project state, not a live production server or device backup. Production recovery testing must cover configuration, application data, storage protection, dependencies, and access to recovery materials.</p></section>
+<section id="troubleshooting" class="card"><h2>8. Troubleshooting Demonstrations</h2><div class="note"><strong>One fault at a time:</strong> Start with both links healthy and primary routes active. Preserve the baseline, introduce one fault in the working copy, diagnose it, then restore and verify.</div><h3>Demo 1 — Missing Backup Return Route</h3><p>On RTR-SERVICES-01 remove its standby route:</p><pre><code>enable
+configure terminal
+no ip route 192.168.120.0 255.255.255.0 10.12.0.5 10
+end</code></pre><p>Portal access still works over the primary link, hiding the fault. Now remove the primary G0/1-to-G0/1 cable. RTR-USERS-01 installs its backup route, but RTR-SERVICES-01 lacks a route back to the user LAN. Client-to-server tests fail.</p><p>Restore the route while the primary cable is still disconnected:</p><pre><code>configure terminal
+ip route 192.168.120.0 255.255.255.0 10.12.0.5 10
+end</code></pre><p>Verify backup-path service now works. Reconnect the primary cable and confirm failback. This proves why a standby design must be tested rather than inferred from normal operation.</p><h3>Demo 2 — Backup Interface Administratively Down</h3><p>On RTR-USERS-01:</p><pre><code>configure terminal
+interface gigabitEthernet0/2
+ shutdown
+end</code></pre><p>The primary path still works. Inspect interface state before failing the primary and ask students to predict the outcome. If demonstrating it, remove the primary cable; no usable path remains. Recover the backup:</p><pre><code>configure terminal
+interface gigabitEthernet0/2
+ no shutdown
+end</code></pre><p>Verify service over the backup, then reconnect the primary and retest. Keeping a route in configuration does not make an unavailable interface usable.</p><h3>Demo 3 — Name Resolution vs. Connectivity</h3><p>Change PC-USER-01's DNS to unused <code>192.168.121.99</code>. Direct-IP HTTP still works. Add a new A record on the server, <code>recoverycheck.northstar.com</code> → 192.168.121.10, and request that name so a cached response cannot hide the error. Restore DNS to <code>192.168.121.10</code> and repeat.</p><h3>Demo 4 — Change Rollback</h3><p>On RTR-SERVICES-01 temporarily shut down G0/0, the services LAN interface. Both transit links remain operational, but neither path can deliver traffic to the server. Inspect interface state and restore G0/0 with <code>no shutdown</code>. Verify server IP, DNS, and HTTP before marking recovery complete.</p><h3>Troubleshooting Decision Table</h3><table><thead><tr><th>Observation</th><th>First Checks</th></tr></thead><tbody><tr><td>Primary link fails; service remains available</td><td>Confirm backup route and path on both routers</td></tr><tr><td>Primary link fails; no backup route appears</td><td>Backup configuration, distance, exit interface state, next-hop addressing</td></tr><tr><td>Backup route appears on one side only</td><td>Return route and interface state on the other router</td></tr><tr><td>Both paths configured; server unreachable</td><td>Server LAN link, server gateway, both active routing tables</td></tr><tr><td>Ping works; HTTP fails</td><td>Application service and requested URL</td></tr><tr><td>IP works; fresh DNS name fails</td><td>DNS settings, record, and server service</td></tr><tr><td>Only one user fails</td><td>Endpoint address, cable, switch port, DNS, and gateway</td></tr></tbody></table><h3>Recovery Record</h3><table><thead><tr><th>Field</th><th>Record During Class</th></tr></thead><tbody><tr><td>Baseline</td><td>Checkpoint file, normal route, verified service tests</td></tr><tr><td>Fault</td><td>Exact cable/interface/configuration/service change and time</td></tr><tr><td>Evidence</td><td>Both routing tables, interface state, and client results</td></tr><tr><td>Recovery action</td><td>Exact repair, responsible person, and observed restoration</td></tr><tr><td>Validation</td><td>Fresh DNS/HTTP tests from both clients plus route and link checks</td></tr><tr><td>Follow-up</td><td>Residual failures, procedure changes, and checkpoint update</td></tr></tbody></table></section>
+<section id="explanations" class="card"><h2>9. Instructor Explanation Blocks</h2><h3>Baseline Before Diagnosis</h3><p>A useful baseline records the normal service, path, and context. Compare the same test from the same endpoint before and after a change. In production, collect time-series measurements over representative workloads rather than extrapolating from a handful of probes.</p><h3>Monitoring and Capacity Planning</h3><p>Logs, interface telemetry, flow records, and application checks provide different evidence. Rising utilization, errors, delay, or loss can suggest investigation, but no single counter identifies every cause. SNMP, syslog, flow collection, QoS, and capacity tests are discussion topics here, not configured monitoring systems.</p><h3>Redundancy vs. Backup</h3><p>The alternate link provides another live forwarding path. A saved configuration or project provides an earlier state to restore. Neither replaces the other: a second link cannot undo a bad server change, and a saved file does not keep traffic flowing during a cable outage.</p><h3>Recovery Objectives</h3><p>RTO is the target time to restore service. RPO describes the acceptable data-loss window. A successful link failover can improve availability without restoring lost application data. Simulator recovery observations do not establish production RTO or RPO compliance.</p><h3>Backup and Recovery Strategy</h3><p>Discuss full, incremental, and differential backups, their restore dependencies, protected/off-site copies, and routine restoration tests. Also compare recovery facilities with different readiness levels. This lab contains no production data backup, replication, or disaster recovery site.</p><h3>Remaining Single Points of Failure</h3><p>Both paths share the same routers, LAN switches, server, and likely supporting power in the model. A router failure takes down both transit paths. Real resilience requires examining shared physical and operational dependencies, not merely drawing two lines.</p><h3>Discussion Prompts and Expected Answers</h3><ul><li><strong>Why is the backup route absent from the normal active table?</strong> The same destination has a usable lower-distance route.</li><li><strong>Does distance 10 mean ten hops?</strong> No; it is route-source preference.</li><li><strong>Does successful ping prove HTTP is healthy?</strong> No; test the application directly.</li><li><strong>Will the backup fix a stopped HTTP service?</strong> No; the endpoint service is a shared dependency.</li><li><strong>What proves recovery?</strong> Restored intended service and verified configuration, not only an up interface.</li></ul></section>
+<section id="timing" class="card"><h2>10. Suggested 2-Hour Instructor Timing Plan</h2><table><thead><tr><th>Time</th><th>Activity</th></tr></thead><tbody><tr><td>0–10 min</td><td>Introduce baseline, performance measures, and recovery objectives</td></tr><tr><td>10–25 min</td><td>Build and label the topology and its two transit paths</td></tr><tr><td>25–45 min</td><td>Configure interfaces, preferred routes, and floating static routes</td></tr><tr><td>45–60 min</td><td>Configure DNS/HTTP, verify service, and save baseline</td></tr><tr><td>60–75 min</td><td>Record route, interface, and application observations</td></tr><tr><td>75–90 min</td><td>Remove primary link, verify backup, and restore preferred path</td></tr><tr><td>90–105 min</td><td>Demonstrate missing backup return route and application outage</td></tr><tr><td>105–115 min</td><td>Reopen and verify recovery checkpoint; discuss RTO/RPO</td></tr><tr><td>115–120 min</td><td>Confirm final state and review remaining failure risks</td></tr></tbody></table><div class="note"><strong>Pacing:</strong> Prepare a verified baseline before class. Use Simulation Mode and the DNS/backup-interface faults as extensions if live configuration or discussion takes longer.</div></section>
+<section id="summary" class="card"><h2>11. Final Demo Summary</h2><div class="topology">Normal operation
+  Users LAN -> preferred G0/1 transit -> services LAN
+  Primary static routes: distance 1
+
+Primary cable removed
+  G0/1 goes down on both routers
+  Preferred routes become unavailable
+  Backup static routes through G0/2 become active: distance 10
+  Verify user requests AND server replies
+
+Primary cable restored
+  G0/1 returns up/up
+  Preferred routes become active again
+  Verify DNS, HTTP, path, and both clients</div><div class="success"><strong>Key lesson:</strong> Measure normal behavior, test the failures your design is meant to handle, and verify service after recovery. Redundant links improve only the failure cases they actually cover.</div><h3>Final State Checklist</h3><ul><li>Both primary and backup cables are connected to the planned ports.</li><li>All six used router interfaces are up/up.</li><li>Both primary and backup routes remain in configuration; primary routes are active.</li><li>Both PCs can reach the server by IP and portal.northstar.com.</li><li>HTTP is enabled and the page is freshly retrievable.</li><li>Device startup configurations are saved after repairs; the verified baseline remains separate.</li><li>Recovery observations and remaining single points of failure are documented.</li></ul><h3>Instructor References and Preflight</h3><ul><li><a href="https://www.cengageasia.com/title/default/detail?isbn=9798214405902">Cengage: 10th-edition chapter sequence</a></li><li><a href="https://www.cisco.com/c/en/us/support/docs/dial-access/floating-static-route/118263-technote-nexthop-00.html">Cisco: floating static routes and next-hop selection</a></li><li><a href="https://tutorials.ptnetacad.net/help/default/mode_simulation.htm">Cisco Packet Tracer: Simulation Mode</a></li></ul><p>Commands are designed for the listed simulated devices. Run the baseline, failover/failback, and chosen faults in your installed Packet Tracer version before teaching. This webpage is a guide, not a supplied .pkt project or a record of an executed simulation.</p></section><p class="footer">Original instructor/demo webpage for Internetworking Basics. Chapter 12 preserves the earlier chapters' presentation style and is saved separately. No textbook content is reproduced.</p>
+</main></body></html>

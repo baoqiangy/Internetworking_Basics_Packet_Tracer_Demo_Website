@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Packet Tracer Demo Lab - Chapter 11: Access Control</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --paper: #ffffff;
+      --ink: #182230;
+      --muted: #5d6b82;
+      --line: #d9e0ea;
+      --accent: #2457c5;
+      --accent-soft: #eaf0ff;
+      --code-bg: #111827;
+      --code-ink: #f3f4f6;
+      --table-head: #eef3fb;
+      --note: #fff7df;
+      --success: #e9f8ef;
+      --warn: #fff1f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.58;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 18px 64px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #173b88, #2f75ff);
+      color: white;
+      border-radius: 18px;
+      padding: 34px 36px;
+      box-shadow: 0 12px 32px rgba(24, 34, 48, 0.18);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: 2.1rem;
+      line-height: 1.15;
+    }
+
+    .hero h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 500;
+      opacity: 0.95;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .meta div {
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 12px 14px;
+      border-radius: 12px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 26px;
+      margin: 18px 0;
+      box-shadow: 0 6px 18px rgba(24, 34, 48, 0.06);
+    }
+
+    h2 {
+      color: #173b88;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 8px;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #24446f;
+      margin-top: 24px;
+    }
+
+    h4 {
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    p { margin: 10px 0; }
+
+    ul, ol { padding-left: 24px; }
+
+    li { margin: 5px 0; }
+
+    .note {
+      background: var(--note);
+      border-left: 5px solid #e6a700;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .success {
+      background: var(--success);
+      border-left: 5px solid #229954;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    .warning {
+      background: var(--warn);
+      border-left: 5px solid #d33c32;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 14px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 22px;
+      overflow-wrap: anywhere;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: var(--table-head);
+      color: #173b88;
+      font-weight: 700;
+    }
+
+    code {
+      background: #eef2f7;
+      padding: 2px 5px;
+      border-radius: 5px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 0.95em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-ink);
+      padding: 16px 18px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      margin: 12px 0 18px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .topology {
+      background: #0f172a;
+      color: #e5e7eb;
+      border-radius: 14px;
+      padding: 18px;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 14px 0;
+    }
+
+    .toc {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .toc a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .toc a:hover { text-decoration: underline; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .mini {
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      text-align: center;
+    }
+
+    @media print {
+      body { background: white; }
+      .page { max-width: none; padding: 0; }
+      .hero, .card { box-shadow: none; }
+      .card { break-inside: avoid; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body><main class="page"><section class="hero"><h1>Packet Tracer Demo Lab</h1><h2>Chapter 11: Access Control</h2><p>Original instructor/demo lab aligned with <em>CompTIA Network+ Guide to Networks</em>, 10th Edition by Jill West.</p><div class="meta"><div><strong>Course:</strong><br>Internetworking Basics</div><div><strong>Estimated Time:</strong><br>2 hours</div><div><strong>Lab Type:</strong><br>Instructor-led demo with guided practice</div><div><strong>Tool:</strong><br>Cisco Packet Tracer</div></div></section>
+<nav class="toc" aria-label="Page sections"><strong>Page Sections:</strong><ol><li><a href="#purpose">Lab Purpose</a></li><li><a href="#scenario">Scenario, Objectives, and Access Policy</a></li><li><a href="#topology">Topology and Addressing</a></li><li><a href="#build">Build the Packet Tracer Network</a></li><li><a href="#configure">Configure the Network and SSH Management</a></li><li><a href="#verify">Verify the Working Baseline</a></li><li><a href="#controls">Apply and Test Access Controls</a></li><li><a href="#troubleshooting">Troubleshooting and Recovery</a></li><li><a href="#explanations">Instructor Explanation Blocks</a></li><li><a href="#timing">2-Hour Instructor Timing Plan</a></li><li><a href="#summary">Final Demo Summary</a></li></ol></nav>
+<section id="purpose" class="card"><h2>1. Lab Purpose</h2><p>Turn a written access policy into testable network behavior. Students enable authenticated SSH management, restrict management access to one administrative workstation, and permit guest access only to selected shared services.</p><ul><li>Distinguish identification, authentication, authorization, and accounting.</li><li>Define permitted sources, destinations, and services before entering commands.</li><li>Configure SSH version 2 with a local administrative account.</li><li>Use a standard ACL to restrict remote management by source address.</li><li>Use an extended ACL to allow guest DNS and HTTP while denying other routed guest traffic.</li><li>Verify both permitted and denied cases, then diagnose rule order and placement errors.</li></ul><div class="note"><strong>Instructor note:</strong> This original lab is an instructor demonstration with guided practice, not a graded assignment. Keep direct router CLI access available for recovery while testing remote-management restrictions.</div><div class="warning"><strong>Scope:</strong> The lab uses static addresses, local router authentication, and stateless IPv4 ACLs. It does not configure centralized AAA, MFA, 802.1X, a stateful firewall, application user roles, or full accounting. Source IP addresses are policy selectors, not proof of a person's identity.</div></section>
+<section id="scenario" class="card"><h2>2. Lab Scenario</h2><p><strong>Northstar Training Center</strong> has staff, guest, and services networks. Guests may use the shared portal and its DNS server but must not reach staff computers or manage the router. Only the designated admin workstation may establish a router SSH session.</p><h3>Learning Objectives</h3><ul><li>Translate a policy table into source/destination/protocol decisions.</li><li>Demonstrate a correct password from an allowed source and a rejected password.</li><li>Show that valid credentials alone do not bypass a source restriction.</li><li>Explain first-match processing and the implicit deny.</li><li>Distinguish <code>access-class</code> on VTY lines from <code>ip access-group</code> on interfaces.</li><li>Explain why a blocked ping can coexist with a working website.</li><li>Recognize the limits of network ACLs and local privilege levels.</li></ul><h3>Target Access Policy</h3><table><thead><tr><th>Source</th><th>Destination / Service</th><th>Desired Result</th><th>Control</th></tr></thead><tbody><tr><td>PC-ADMIN-01</td><td>Router SSH, TCP 22</td><td>Allow with valid local credentials</td><td>SSH, local login, VTY source ACL</td></tr><tr><td>PC-STAFF-01 or PC-GUEST-01</td><td>Router SSH</td><td>Deny</td><td>VTY ACL; guest interface ACL also denies guest SSH</td></tr><tr><td>Any remote client</td><td>Router Telnet</td><td>Deny</td><td>SSH-only VTY transport</td></tr><tr><td>Guest subnet</td><td>192.168.112.10 DNS, UDP/TCP 53</td><td>Allow</td><td>Extended inbound guest ACL</td></tr><tr><td>Guest subnet</td><td>192.168.112.10 HTTP, TCP 80</td><td>Allow</td><td>Extended inbound guest ACL</td></tr><tr><td>Guest subnet</td><td>All other routed IPv4 destinations/services, including ICMP</td><td>Deny</td><td>Final deny rule</td></tr><tr><td>Admin and staff</td><td>Shared DNS and HTTP</td><td>Allow</td><td>No staff data-plane ACL in this exercise</td></tr></tbody></table><p>The <a href="https://www.cengageasia.com/title/default/detail?isbn=9798214405902">publisher's table of contents</a> identifies Chapter 11 as Access Control. Activities selectively support the topic rather than reproducing textbook projects.</p></section>
+<section id="topology" class="card"><h2>3. Devices, Topology, and Addressing</h2><h3>Devices Used and Naming Plan</h3><table><thead><tr><th>Suggested Device</th><th>Quantity</th><th>Names / Roles</th></tr></thead><tbody><tr><td>2911 router</td><td>1</td><td>RTR-HQ-01: three LAN interfaces, routing, SSH and ACLs</td></tr><tr><td>2960 switch</td><td>3</td><td>SW-STAFF-01, SW-GUEST-01, SW-SERVICES-01</td></tr><tr><td>PC-PT</td><td>3</td><td>PC-ADMIN-01, PC-STAFF-01, PC-GUEST-01</td></tr><tr><td>Server-PT</td><td>1</td><td>SRV-HQ-01: shared DNS and HTTP</td></tr></tbody></table><h3>Target Logical Topology</h3><div class="topology">PC-ADMIN-01 -- Fa0/1 
+                       SW-STAFF-01 G0/1 -- G0/0
+PC-STAFF-01 -- Fa0/2 /                       |
+                                         RTR-HQ-01
+                                           /     \
+                                        G0/1     G0/2
+                                         |         |
+                                        G0/1      G0/1
+                                  SW-GUEST-01   SW-SERVICES-01
+                                        Fa0/1      Fa0/1
+                                         |         |
+                                  PC-GUEST-01   SRV-HQ-01
+
+Staff:    192.168.110.0/24
+Guest:    192.168.111.0/24
+Services: 192.168.112.0/24</div><h3>Addressing Plan</h3><table><thead><tr><th>Device / Interface</th><th>IP Address</th><th>Mask</th><th>Gateway</th></tr></thead><tbody><tr><td>RTR-HQ-01 G0/0</td><td>192.168.110.1</td><td>255.255.255.0</td><td>Routing table</td></tr><tr><td>RTR-HQ-01 G0/1</td><td>192.168.111.1</td><td>255.255.255.0</td><td>Routing table</td></tr><tr><td>RTR-HQ-01 G0/2</td><td>192.168.112.1</td><td>255.255.255.0</td><td>Routing table</td></tr><tr><td>PC-ADMIN-01 Fa0</td><td>192.168.110.21</td><td>255.255.255.0</td><td>192.168.110.1</td></tr><tr><td>PC-STAFF-01 Fa0</td><td>192.168.110.22</td><td>255.255.255.0</td><td>192.168.110.1</td></tr><tr><td>PC-GUEST-01 Fa0</td><td>192.168.111.21</td><td>255.255.255.0</td><td>192.168.111.1</td></tr><tr><td>SRV-HQ-01 Fa0</td><td>192.168.112.10</td><td>255.255.255.0</td><td>192.168.112.1</td></tr></tbody></table><p>Use DNS <code>192.168.112.10</code> on all endpoints. All addressing is static. No static routes, NAT, DHCP, VLAN trunks, or switch management IPs are needed. Each LAN uses a separate router interface and switch.</p><div class="note"><strong>Model choice:</strong> Use a 2911 with G0/0, G0/1, and G0/2 so the configuration matches. The admin PC shares the staff LAN for simplicity; a dedicated management network would be a separate design improvement.</div></section>
+<section id="build" class="card"><h2>4. Build the Packet Tracer Network</h2><h3>Part A — Create the Project</h3><ol><li>Create <code>Chapter11_Access_Control_Demo.pkt</code>.</li><li>Add and rename the eight devices from the inventory.</li><li>Label each subnet and router interface in the workspace.</li><li>Add a note: “Guest: DNS + HTTP to shared server only. Router SSH: admin workstation only.”</li></ol><h3>Part B — Cable Devices</h3><p>Use copper straight-through cables for all connections.</p><table><thead><tr><th>From</th><th>To</th></tr></thead><tbody><tr><td>PC-ADMIN-01 Fa0</td><td>SW-STAFF-01 Fa0/1</td></tr><tr><td>PC-STAFF-01 Fa0</td><td>SW-STAFF-01 Fa0/2</td></tr><tr><td>SW-STAFF-01 G0/1</td><td>RTR-HQ-01 G0/0</td></tr><tr><td>PC-GUEST-01 Fa0</td><td>SW-GUEST-01 Fa0/1</td></tr><tr><td>SW-GUEST-01 G0/1</td><td>RTR-HQ-01 G0/1</td></tr><tr><td>SRV-HQ-01 Fa0</td><td>SW-SERVICES-01 Fa0/1</td></tr><tr><td>SW-SERVICES-01 G0/1</td><td>RTR-HQ-01 G0/2</td></tr></tbody></table><p>Allow switch links to settle. Router links stay down until enabled. Use direct device CLI access for configuration so an ACL mistake cannot remove the instructor's recovery path.</p></section>
+<section id="configure" class="card"><h2>5. Configure the Network and SSH Management</h2><h3>Part C — Configure Router Interfaces</h3><p>Open RTR-HQ-01 CLI. Answer <code>no</code> to the initial setup dialog if prompted.</p><pre><code>enable
+configure terminal
+hostname RTR-HQ-01
+interface gigabitEthernet0/0
+ description Staff and admin LAN
+ ip address 192.168.110.1 255.255.255.0
+ no shutdown
+ exit
+interface gigabitEthernet0/1
+ description Guest LAN - policy applied inbound later
+ ip address 192.168.111.1 255.255.255.0
+ no shutdown
+ exit
+interface gigabitEthernet0/2
+ description Shared services LAN
+ ip address 192.168.112.1 255.255.255.0
+ no shutdown
+ exit
+end</code></pre><h3>Part D — Configure Endpoints and Shared Services</h3><ol><li>On each endpoint, choose <strong>Desktop &gt; IP Configuration &gt; Static</strong> and enter the plan's address, mask, gateway, and DNS.</li><li>On SRV-HQ-01, open <strong>Services &gt; DNS</strong>, turn DNS On, and add the A record <code>portal.northstar.com</code> → <code>192.168.112.10</code>.</li><li>Open <strong>Services &gt; HTTP</strong>, turn HTTP On, edit <code>index.html</code>, and save:</li></ol><pre><code>&lt;html&gt;&lt;body&gt;
+&lt;h1&gt;Northstar Shared Portal&lt;/h1&gt;
+&lt;p&gt;Chapter 11: Access Control Demo&lt;/p&gt;
+&lt;p&gt;Guests may use this web service and its DNS server.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</code></pre><p>The .com DNS name is local to the simulation. The page contains fictional, non-sensitive content; HTTP is unencrypted. A network ACL permitting HTTP does not authenticate website users.</p><h3>Part E — Enable Local SSH Authentication</h3><p>On the router, enter:</p><pre><code>configure terminal
+ip domain-name northstar.com
+username netadmin privilege 15 secret N0rthstar-Admin11!
+crypto key generate rsa</code></pre><p>At the modulus prompt, enter <code>2048</code>. Wait for key generation, then continue:</p><pre><code>ip ssh version 2
+line vty 0 4
+ login local
+ transport input ssh
+ exec-timeout 5 0
+ exit
+end
+show ip ssh
+show line</code></pre><p>If additional VTY lines 5–15 exist on the selected image, disable their remote transport so they cannot provide an alternate path:</p><pre><code>configure terminal
+line vty 5 15
+ transport input none
+end</code></pre><p>If that line range does not exist, omit that block; inspect <code>show line</code> and <code>show running-config</code> rather than assuming every image has the same VTY count. Verify SSH version 2 before proceeding. If the simulator image rejects 2048-bit keys, use a compatible router/image for this demo.</p><div class="warning"><strong>Classroom credential:</strong> <code>netadmin</code> / <code>N0rthstar-Admin11!</code> is a published simulation-only account with full privilege 15. It is not a production password or a demonstration of granular role-based authorization. The domain-name command supports the router's SSH identity setup; it does not create a DNS record.</div></section>
+<section id="verify" class="card"><h2>6. Verify the Working Baseline</h2><h3>Part F — Check Networking Before Filtering</h3><p>On the router:</p><pre><code>show ip interface brief
+show ip route
+show ip ssh</code></pre><p>Expect all three interfaces up/up and connected routes for all three LANs. On the admin PC, ping the staff PC and server. On the guest PC, ping its gateway, staff PC 192.168.110.22, and server 192.168.112.10. All should work at this stage.</p><p>From every PC, browse to <code>http://192.168.112.10</code> and <code>http://portal.northstar.com</code>. Repeat an initial ping if ARP causes a first-packet timeout.</p><h3>Part G — Verify Authentication and Transport</h3><p>From PC-ADMIN-01 Command Prompt:</p><pre><code>ssh -l netadmin 192.168.110.1</code></pre><p>Enter the classroom password. Expect the privileged <code>RTR-HQ-01#</code> prompt. Run <code>show ip interface brief</code>, then <code>exit</code>. Repeat with an incorrect password and confirm authentication fails.</p><p>Before applying the source ACL, test the same correct login from PC-STAFF-01. It should succeed; this establishes that SSH reachability exists before source restriction. Exit the session.</p><p>From the admin PC, attempt <code>telnet 192.168.110.1</code>. It should fail because the enabled VTY lines accept SSH only.</p><div class="success"><strong>Checkpoint:</strong> On the router run <code>copy running-config startup-config</code>, accept the filename, and save <code>Chapter11_Access_Baseline.pkt</code>. Use Save As to create a separate working copy for ACL changes.</div></section>
+<section id="controls" class="card"><h2>7. Apply and Test Access Controls</h2><h3>Part H — Restrict Router Management to the Admin PC</h3><p>Using direct router CLI, define a standard ACL and apply it to the enabled VTY lines:</p><pre><code>configure terminal
+ip access-list standard ADMIN-SOURCES
+ permit host 192.168.110.21
+ deny any
+ exit
+line vty 0 4
+ access-class ADMIN-SOURCES in
+ exit
+end</code></pre><p>Open a new admin SSH session; it should succeed with valid credentials. Exit, then open a new session from PC-STAFF-01 using the same account; it should be blocked. Test new sessions because a previously established session may not be a reliable test of admission controls.</p><p>Inspect <code>show access-lists</code> and the VTY portion of <code>show running-config</code>. The explicit deny makes the policy visible; an implicit deny exists even without that line. The restriction governs remote terminal access, not ordinary routed portal traffic.</p><h3>Part I — Permit Guest DNS and HTTP Only</h3><p>Create the extended ACL in its complete intended order, then attach it inbound on the guest-facing interface:</p><pre><code>configure terminal
+ip access-list extended GUEST-IN
+ permit udp 192.168.111.0 0.0.0.255 host 192.168.112.10 eq 53
+ permit tcp 192.168.111.0 0.0.0.255 host 192.168.112.10 eq 53
+ permit tcp 192.168.111.0 0.0.0.255 host 192.168.112.10 eq 80
+ deny ip any any
+ exit
+interface gigabitEthernet0/1
+ ip access-group GUEST-IN in
+ exit
+end
+show access-lists
+show ip interface gigabitEthernet0/1</code></pre><p>The source wildcard <code>0.0.0.255</code> matches the /24 guest range. <code>host</code> selects one destination. Each <code>eq</code> after the destination matches its service port. Both DNS transports are permitted even if the simulator's simple query uses UDP.</p><p>“Inbound” means packets entering the router from the guest LAN. Server replies leave toward the guest through this interface, so this inbound ACL does not inspect those reply packets. This is directional filtering, not stateful connection tracking.</p><h3>Part J — Acceptance Test Matrix</h3><table><thead><tr><th>Source / Action</th><th>Expected After Controls</th><th>Reason</th></tr></thead><tbody><tr><td>Admin: SSH to 192.168.110.1 with correct password</td><td>Success</td><td>Allowed source plus valid local authentication</td></tr><tr><td>Admin: SSH with wrong password</td><td>Failure</td><td>Authentication still required</td></tr><tr><td>Staff: new SSH session to 192.168.110.1</td><td>Failure</td><td>VTY source ACL</td></tr><tr><td>Admin: Telnet to 192.168.110.1</td><td>Failure</td><td>SSH-only transport</td></tr><tr><td>Guest: http://192.168.112.10</td><td>Success</td><td>TCP 80 allowed to the server</td></tr><tr><td>Guest: http://portal.northstar.com</td><td>Success</td><td>DNS and HTTP permitted</td></tr><tr><td>Guest: ping 192.168.112.10</td><td>Failure</td><td>ICMP not permitted</td></tr><tr><td>Guest: ping 192.168.110.22</td><td>Failure</td><td>Staff destination not permitted</td></tr><tr><td>Guest: ping 192.168.111.1</td><td>Failure</td><td>IP packet enters the filtered interface; gateway ICMP is denied</td></tr><tr><td>Guest: SSH to 192.168.110.1</td><td>Failure</td><td>Guest ingress policy blocks it; VTY policy is an additional restriction</td></tr><tr><td>Staff: server ping and portal HTTP</td><td>Success</td><td>Traffic enters G0/0, not the guest ingress interface</td></tr></tbody></table><div class="note"><strong>Expected restriction:</strong> Guest ARP can still resolve its gateway's MAC; ARP is not an IPv4 packet matched by this IP ACL. A failed guest ping is expected and does not prove the permitted web service is down.</div><h3>Part K — Observe Rule Matching</h3><ol><li>Use Simulation Mode with DNS, TCP, HTTP, and ICMP filters.</li><li>From the guest, request the portal and observe forwarding toward the server.</li><li>Send a guest ping to the server and inspect where the router drops it.</li><li>Return to Realtime and inspect <code>show access-lists</code>; compare rule counters before and after tests where supported.</li><li>Record both successful and denied results rather than only checking connectivity.</li></ol><p>Cached DNS can hide a query. Add a fresh server A record <code>accesscheck.northstar.com</code> → 192.168.112.10 and request that name when you need evidence of a new lookup.</p><div class="warning"><strong>Policy limits:</strong> The ACL is stateless. Replies sent from a guest to a staff-initiated connection can also be denied; do not claim unrestricted staff-to-guest sessions. Same-LAN guest traffic does not pass through this router ACL. Source-IP restrictions also do not authenticate a user or replace endpoint, physical, or application controls.</div><p>When the matrix passes, save router startup configuration and save <code>Chapter11_Access_Controlled.pkt</code>. Preserve this file before troubleshooting.</p></section>
+<section id="troubleshooting" class="card"><h2>8. Troubleshooting and Recovery</h2><div class="note"><strong>One change at a time:</strong> Work in a separate copy, keep direct router CLI available, and retest the whole acceptance matrix after recovery. Do not save intentional faults over the controlled checkpoint.</div><h3>Demo 1 — Incorrect Admin Source</h3><p>Use direct router CLI to replace the permitted admin address with unused .99:</p><pre><code>configure terminal
+no ip access-list standard ADMIN-SOURCES
+ip access-list standard ADMIN-SOURCES
+ permit host 192.168.110.99
+ deny any
+ exit
+end</code></pre><p>Only test after the complete replacement exists. A new admin SSH session should fail even with valid credentials. Restore from direct CLI:</p><pre><code>configure terminal
+no ip access-list standard ADMIN-SOURCES
+ip access-list standard ADMIN-SOURCES
+ permit host 192.168.110.21
+ deny any
+ exit
+end</code></pre><p>The VTY attachment remains configured. Verify a new admin session succeeds and a staff session fails. Deleting an applied ACL can create a transient policy gap, so this classroom replacement technique belongs in the isolated working copy; production changes require an appropriate change procedure.</p><h3>Demo 2 — Missing DNS Permission</h3><p>On the router remove only the DNS permits:</p><pre><code>configure terminal
+ip access-list extended GUEST-IN
+ no permit udp 192.168.111.0 0.0.0.255 host 192.168.112.10 eq 53
+ no permit tcp 192.168.111.0 0.0.0.255 host 192.168.112.10 eq 53
+ exit
+end</code></pre><p>Guest direct-IP HTTP should still succeed. Add a new DNS name <code>dnscheck.northstar.com</code> → 192.168.112.10 on the server and request it from the guest; a fresh lookup should fail. A cached portal name is not a reliable DNS test.</p><h3>Demo 3 — Rule Order Mistake</h3><p>While the DNS fault is present, append the same two permits with unnumbered commands:</p><pre><code>configure terminal
+ip access-list extended GUEST-IN
+ permit udp 192.168.111.0 0.0.0.255 host 192.168.112.10 eq 53
+ permit tcp 192.168.111.0 0.0.0.255 host 192.168.112.10 eq 53
+ exit
+end
+show access-lists</code></pre><p>Inspect the displayed order. On the target IOS behavior, the newly appended entries appear after the existing <code>deny ip any any</code>, so DNS is still denied. First match wins; the router does not search for a later, more permissive rule. If a simulator version handles insertion differently, use the actual displayed order to explain the result.</p><h3>Repair the Guest Policy in Its Intended Order</h3><p>For this isolated classroom copy, briefly detach and rebuild the ACL. Guest traffic is unrestricted during detachment, so finish the procedure before resuming tests.</p><pre><code>configure terminal
+interface gigabitEthernet0/1
+ no ip access-group GUEST-IN in
+ exit
+no ip access-list extended GUEST-IN
+ip access-list extended GUEST-IN
+ permit udp 192.168.111.0 0.0.0.255 host 192.168.112.10 eq 53
+ permit tcp 192.168.111.0 0.0.0.255 host 192.168.112.10 eq 53
+ permit tcp 192.168.111.0 0.0.0.255 host 192.168.112.10 eq 80
+ deny ip any any
+ exit
+interface gigabitEthernet0/1
+ ip access-group GUEST-IN in
+ exit
+end</code></pre><p>Verify ordered rules, attachment direction, a fresh DNS lookup, guest HTTP success, and guest ICMP denial.</p><h3>Demo 4 — Wrong Local Password</h3><p>From the allowed admin PC, attempt SSH with an incorrect password. Network access reaches the authentication stage but login fails. Use the correct classroom password and verify success. Compare this with a non-admin source being blocked before it can establish a normal login session.</p><h3>Troubleshooting Decision Table</h3><table><thead><tr><th>Symptom</th><th>First Checks</th></tr></thead><tbody><tr><td>Admin SSH fails</td><td>IP reachability, SSH version/keys, local user, VTY login, source ACL, available lines</td></tr><tr><td>Staff SSH unexpectedly succeeds</td><td>New vs. existing session; access-class on all enabled VTY lines</td></tr><tr><td>Guest HTTP by IP works; fresh DNS name fails</td><td>DNS permissions before deny, server DNS state/record, client DNS setting</td></tr><tr><td>Guest ping fails but portal works</td><td>Expected policy; do not “fix” by allowing all IP traffic</td></tr><tr><td>Guest reaches staff</td><td>Guest ACL attachment, direction, rule order, and actual source path</td></tr><tr><td>All guest applications fail</td><td>ACL permits, correct source subnet/destination/ports, server/gateway settings</td></tr></tbody></table><p>Finish with the entire acceptance matrix passing, including denied cases. Save only the repaired configuration and working copy.</p></section>
+<section id="explanations" class="card"><h2>9. Instructor Explanation Blocks</h2><h3>Identification, Authentication, Authorization, Accounting</h3><p>The username identifies an account. The password authenticates the account in this local example. The account's privilege and policy decisions control permitted actions. Accounting records activity; a complete accounting system is not configured here. ACL counters provide limited packet-match evidence, not a user audit trail.</p><h3>Least Privilege and Default Deny</h3><p>The guest policy names exactly the shared services it needs. Unlisted routed guest traffic is denied. The admin account has full device privilege for teaching convenience, so it is not an example of granular administrator least privilege.</p><h3>Standard vs. Extended ACL</h3><p>The standard ACL selects management sources. The extended ACL selects source, destination, IP protocol, and service port. Both are ordered lists. An ACL definition does nothing until used by an appropriate feature or interface.</p><h3>Management Access vs. Transit Traffic</h3><p><code>access-class</code> on VTY lines controls remote terminal access to the router. <code>ip access-group</code> filters IP packets at an interface. Keeping these purposes distinct helps avoid blocking unrelated user services while fixing management policy.</p><h3>Identity-Based Controls Beyond This Demo</h3><p>Centralized RADIUS or TACACS+ can support device or network access workflows. MFA adds another authentication factor; 802.1X controls port-based network admission with an authenticator and authentication service. Application roles determine what signed-in users can do inside a service. These mechanisms solve different problems and are discussed rather than configured here.</p><h3>Access-Control Models</h3><p>Role-based access ties permissions to job functions; attribute-based decisions evaluate attributes and context; discretionary models allow resource owners to grant access; mandatory models enforce centrally defined classifications or labels. A source-IP ACL does not implement all of these models or establish a zero-trust architecture by itself.</p><h3>Discussion Prompts and Expected Answers</h3><ul><li><strong>Can valid credentials still be denied?</strong> Yes; network source policy can prevent access to the login service.</li><li><strong>Does allowing TCP 80 prove a visitor is authorized to see every web page?</strong> No; the application needs its own authorization.</li><li><strong>Why permit both UDP and TCP 53?</strong> DNS can use either transport, even if this demo's simple lookup uses UDP.</li><li><strong>Why does guest gateway ping fail?</strong> The ingress IPv4 ACL also filters that ICMP packet.</li><li><strong>Why test denied traffic?</strong> Successful permitted traffic alone does not prove the restriction works.</li></ul></section>
+<section id="timing" class="card"><h2>10. Suggested 2-Hour Instructor Timing Plan</h2><table><thead><tr><th>Time</th><th>Activity</th></tr></thead><tbody><tr><td>0–10 min</td><td>Introduce policy, authentication, authorization, and least privilege</td></tr><tr><td>10–25 min</td><td>Build and label the topology; configure endpoints</td></tr><tr><td>25–40 min</td><td>Configure router interfaces, DNS, and HTTP</td></tr><tr><td>40–55 min</td><td>Enable SSH, verify local authentication, and save baseline</td></tr><tr><td>55–70 min</td><td>Restrict VTY sources; test admin and staff sessions</td></tr><tr><td>70–85 min</td><td>Apply guest service ACL and run acceptance tests</td></tr><tr><td>85–100 min</td><td>Inspect rule matching and explain directional filtering</td></tr><tr><td>100–115 min</td><td>Demonstrate missing DNS permission and rule order; restore</td></tr><tr><td>115–120 min</td><td>Review final matrix, limits, and saved controlled state</td></tr></tbody></table><div class="note"><strong>Pacing:</strong> Prepare working baseline and controlled checkpoints before class. Use the wrong-admin-source exercise as an optional extension if SSH setup or policy discussion requires more time.</div></section>
+<section id="summary" class="card"><h2>11. Final Demo Summary</h2><div class="topology">Guest opens http://portal.northstar.com
+
+1. Guest sends a DNS query toward its gateway.
+2. GUEST-IN permits DNS only to 192.168.112.10.
+3. DNS returns the shared server's address.
+4. GUEST-IN permits the guest's TCP 80 request to that server.
+5. Server replies leave toward the guest; no outbound ACL is applied.
+6. Other guest IPv4 traffic is denied on ingress.
+
+Admin opens SSH to 192.168.110.1
+
+1. VTY source ACL admits 192.168.110.21.
+2. SSH protects the remote management session.
+3. Local login checks netadmin's password.
+4. The classroom account receives configured privilege 15.</div><div class="success"><strong>Key lesson:</strong> Define who or what may reach each service, apply the appropriate control, and verify both permissions and denials. Authentication, network filtering, and application authorization are complementary.</div><h3>Final State Checklist</h3><ul><li>Admin SSH succeeds with the correct password and fails with an incorrect one.</li><li>New staff and guest SSH sessions are blocked; Telnet is blocked.</li><li>Guest DNS and HTTP to the shared server work; guest ICMP and staff access do not.</li><li>Staff portal access still works.</li><li>Rule order, interface direction, and enabled VTY lines match the policy.</li><li>The baseline and controlled .pkt checkpoints are saved separately.</li></ul><h3>Instructor References and Preflight</h3><ul><li><a href="https://www.cengageasia.com/title/default/detail?isbn=9798214405902">Cengage: 10th-edition chapter sequence</a></li><li><a href="https://www.cisco.com/c/en/us/support/docs/security-vpn/secure-shell-ssh/4145-ssh.html">Cisco: Configure SSH on Routers</a></li><li><a href="https://tutorials.ptnetacad.net/help/default/mode_simulation.htm">Cisco Packet Tracer: Simulation Mode</a></li></ul><p>Commands are designed for the listed simulated devices. Run the baseline, all acceptance tests, and chosen faults in your installed Packet Tracer version before teaching. This webpage is a guide, not a supplied .pkt project or a record of an executed simulation.</p></section><p class="footer">Original instructor/demo webpage for Internetworking Basics. Chapter 11 preserves the earlier chapters' presentation style and is saved separately. No textbook content is reproduced.</p>
+</main></body></html>
