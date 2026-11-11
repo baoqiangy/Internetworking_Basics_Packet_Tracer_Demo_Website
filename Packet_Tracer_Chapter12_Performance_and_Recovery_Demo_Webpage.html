@@ -273,6 +273,7 @@ interface gigabitEthernet0/2
 ip route 192.168.121.0 255.255.255.0 10.12.0.2
 ip route 192.168.121.0 255.255.255.0 10.12.0.6 10
 end
+show running-config | include ip route
 copy running-config startup-config</code></pre><p>Accept the default destination filename by pressing Enter.</p><h3>Part D — Configure the Services Router</h3><pre><code>enable
 configure terminal
 hostname RTR-SERVICES-01
@@ -294,6 +295,7 @@ interface gigabitEthernet0/2
 ip route 192.168.120.0 255.255.255.0 10.12.0.1
 ip route 192.168.120.0 255.255.255.0 10.12.0.5 10
 end
+show running-config | include ip route
 copy running-config startup-config</code></pre><div class="note"><strong>Route explanation:</strong> The final <code>10</code> is administrative distance, not hop count, speed, or delay. The primary static route defaults to distance 1. These routes specify the next-hop IP address. The router uses its routing table to determine the outgoing interface for that next hop. The backup stays configured but is normally absent from the active routing table while the preferred route is usable.</div><h3>Part E — Configure Endpoints and Services</h3><ol><li>On both PCs and the server open <strong>Desktop &gt; IP Configuration &gt; Static</strong> and enter the addressing-plan values.</li><li>On SRV-PORTAL-01 open <strong>Services &gt; DNS</strong>, enable DNS, and add <code>portal.northstar.com</code>, type A, address <code>192.168.121.10</code>.</li><li>Open <strong>Services &gt; HTTP</strong>, enable HTTP, edit <code>index.html</code>, and save:</li></ol><pre><code>&lt;html&gt;&lt;body&gt;
 &lt;h1&gt;Northstar Service Status Portal&lt;/h1&gt;
 &lt;p&gt;Chapter 12: Performance and Recovery&lt;/p&gt;
